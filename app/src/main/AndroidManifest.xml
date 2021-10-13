@@ -8,8 +8,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.RealityCheck">
+        android:theme="@style/Theme.RealityCheck"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Home"
+            android:exported="true"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.RealityCheck.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

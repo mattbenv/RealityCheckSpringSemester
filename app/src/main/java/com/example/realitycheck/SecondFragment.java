@@ -1,5 +1,5 @@
 package com.example.realitycheck;
-
+//https://firebase.google.com/docs/auth/android/google-signin?utm_source=studio
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
