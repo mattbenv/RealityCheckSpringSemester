@@ -58,7 +58,7 @@ public class SignUpPage extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(SignUpPage.this)
-                        .navigate(R.id.action_SignUpPage_to_FirstFragment);
+                        .navigate(R.id.action_SignUpPage_to_WelcomePage);
             }
         });
 

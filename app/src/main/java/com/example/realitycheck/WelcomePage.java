@@ -11,7 +11,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.realitycheck.databinding.FragmentFirstBinding;
 
-public class FirstFragment extends Fragment {
+public class WelcomePage extends Fragment {
 
     private FragmentFirstBinding binding;
 
@@ -32,8 +32,8 @@ public class FirstFragment extends Fragment {
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SignUpPage);
+                NavHostFragment.findNavController(WelcomePage.this)
+                        .navigate(R.id.action_WelcomePage_to_SignUpPage);
             }
         });
     }

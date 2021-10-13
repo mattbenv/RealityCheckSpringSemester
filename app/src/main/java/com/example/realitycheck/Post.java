@@ -10,7 +10,7 @@ import java.util.Map;
 
 // [START post_class]
 @IgnoreExtraProperties
-public class Post {
+public abstract class Post {
 
     public String news_post;
     public Image image;
