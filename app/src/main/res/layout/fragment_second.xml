@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="false"
+    android:background="@color/white"
     tools:context=".SecondFragment">
 
     <TextView
@@ -28,16 +30,16 @@
         android:layout_marginTop="650dp"
         android:layout_marginEnd="268dp"
         android:layout_marginBottom="33dp"
-        android:enabled="true"
         android:clickable="true"
+        android:enabled="true"
+        android:focusable="true"
         android:text="@string/previous"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:focusable="true" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
 
@@ -104,28 +106,38 @@
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <Button
-        android:clickable="true"
         android:id="@+id/createAccount"
         android:layout_width="173dp"
         android:layout_height="75dp"
         android:layout_gravity="start"
-        android:layout_marginStart="224dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="204dp"
+        android:clickable="true"
         android:enabled="true"
         android:text="Create Account"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
         android:src="@drawable/rchecklogo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.393"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="415dp"
+        android:layout_height="483dp"
+        android:layout_marginTop="204dp"
+        android:src="@drawable/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
