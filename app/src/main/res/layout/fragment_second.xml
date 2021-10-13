@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="false"
     android:background="@color/white"
-    tools:context=".SecondFragment">
+    tools:context=".SignUpPage">
 
     <TextView
         android:id="@+id/textview_second"

@@ -21,7 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class SecondFragment extends Fragment {
+public class SignUpPage extends Fragment {
 
     private FragmentSecondBinding binding;
     private FirebaseAuth mAuth;
@@ -57,8 +57,8 @@ public class SecondFragment extends Fragment {
         binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(SecondFragment.this)
-                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
+                NavHostFragment.findNavController(SignUpPage.this)
+                        .navigate(R.id.action_SignUpPage_to_FirstFragment);
             }
         });
 
@@ -104,7 +104,7 @@ public class SecondFragment extends Fragment {
         //Authenticate and add user to database
 
         mAuth.createUserWithEmailAndPassword(emailValue,passwordValue)
-                .addOnCompleteListener(SecondFragment.this.getActivity(),new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(SignUpPage.this.getActivity(),new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
