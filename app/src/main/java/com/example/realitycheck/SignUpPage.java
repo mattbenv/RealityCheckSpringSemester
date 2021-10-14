@@ -108,7 +108,7 @@ public class SignUpPage extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User(emailValue,usernameValue,null,0, 0,0);
+                            User user = new User(emailValue,usernameValue,null,null, null,null);
                             FirebaseDatabase.getInstance().getReference()
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user);
