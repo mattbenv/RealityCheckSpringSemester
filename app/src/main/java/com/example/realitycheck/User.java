@@ -16,6 +16,8 @@ public class User {
     public User[] following;
     public Post[] posts;
     public User[] friends;
+    public Post[] postLiked;
+    public Post[] reposted;
 
     //more information to track
 

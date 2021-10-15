@@ -17,6 +17,8 @@ public abstract class Post {
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
 
+    //TODO: WE need to make a method called createPost that whenever a post calls it, it knows where to be directed
+
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
