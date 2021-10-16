@@ -1,5 +1,6 @@
 package com.example.realitycheck;
 //https://firebase.google.com/docs/auth/android/google-signin?utm_source=studio
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +11,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.realitycheck.databinding.FragmentFirstBinding;
 import com.example.realitycheck.databinding.FragmentSecondBinding;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class SignUpPage extends Fragment {
 
@@ -108,10 +114,25 @@ public class SignUpPage extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User(emailValue,usernameValue,null,null, null,null);
+                            User user = new User(emailValue,usernameValue,new ArrayList<Post>(),new ArrayList<User>() , new ArrayList<User>(),new ArrayList<User>());
                             FirebaseDatabase.getInstance().getReference()
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user);
+
+
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Account created successfully!")
+                                    .setMessage("Please login")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            NavHostFragment.findNavController(SignUpPage.this)
+                                                    .navigate(R.id.action_SignUpPage_to_WelcomePage);
+                                        }
+                                    }).show();
+
+
                                 }
                             }
 

@@ -26,20 +26,17 @@
         android:id="@+id/button_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="650dp"
-        android:layout_marginEnd="268dp"
-        android:layout_marginBottom="33dp"
         android:clickable="true"
         android:enabled="true"
         android:focusable="true"
         android:text="@string/previous"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.105"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.951" />
 
     <EditText
 
@@ -114,13 +111,15 @@
         android:layout_width="173dp"
         android:layout_height="75dp"
         android:layout_gravity="start"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="204dp"
         android:clickable="true"
         android:enabled="true"
         android:text="Create Account"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.865"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.852" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -137,7 +136,7 @@
         android:id="@+id/imageView9"
         android:layout_width="415dp"
         android:layout_height="483dp"
-        android:layout_marginTop="204dp"
+        android:layout_marginTop="196dp"
         android:src="@drawable/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

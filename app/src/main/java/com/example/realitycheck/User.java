@@ -12,24 +12,24 @@ public class User {
     public int numfollowers;
     public int numfollowing;
     public int numfriends;
-    public User[] followers;
-    public User[] following;
-    public Post[] posts;
-    public User[] friends;
+    public ArrayList<User> followers;
+    public ArrayList<User> following;
+    public ArrayList<Post> posts;
+    public ArrayList<User> friends;
     public Post[] postLiked;
     public Post[] reposted;
 
     //more information to track
 
-    public User(String email, String username, Post[] posts, User[] followers, User[] following, User[] friends ){
+    public User(String email, String username, ArrayList<Post>  posts, ArrayList<User> followers, ArrayList<User> following, ArrayList<User> friends ){
         this.email=email;
         this.username  = username;
 
         this.followers = followers;
-        this.numfollowers = followers.length;
+        this.numfollowers = followers.size();
 
         this.following = following;
-        this.numfollowing = following.length;
+        this.numfollowing = following.size();
 
         this.friends = friends;
         this.numfriends = returnNumfriends(followers, following);
@@ -39,11 +39,11 @@ public class User {
     }
 
     //This function compares the followers to following and returns the number of Friends
-    public int returnNumfriends(User[] followers, User[] following){
+    public int returnNumfriends(ArrayList<User> followers, ArrayList<User>  following){
         int count=0;
-        for (int i = 0;i < followers.length-1; i++) {
-            for(int j = 1; j <following.length-1; j++) {
-                if (followers[i]==following[j]){
+        for (int i = 0;i < followers.size()-1; i++) {
+            for(int j = 1; j <following.size()-1; j++) {
+                if (followers.get(i)==following.get(j)){
                         count++;
                 }
             }
@@ -51,13 +51,13 @@ public class User {
         return count;
     }
     //This function compares the followers to following and returns the number of Friends
-    public User[] returnfriends(User[] followers, User[] following){
+    public ArrayList<User>  returnfriends(ArrayList<User> followers, ArrayList<User> following){
         int count=0;
-        User[] friends = new User[100]; //allocated 100 friends to be the capacity if this reaches above 100 reallocate
-        for (int i = 0;i < followers.length-1; i++) {
-            for(int j = 1; j <following.length-1; j++) {
-                if (followers[i]==following[j]){
-                    friends[count]=followers[i];
+        ArrayList<User>  friends = new ArrayList<User>(); //allocated 100 friends to be the capacity if this reaches above 100 reallocate
+        for (int i = 0;i < followers.size()-1; i++) {
+            for(int j = 1; j <following.size()-1; j++) {
+                if (followers.get(i)==following.get(j)){
+                    friends.add(followers.get(i));
                     count++;
                 }
             }

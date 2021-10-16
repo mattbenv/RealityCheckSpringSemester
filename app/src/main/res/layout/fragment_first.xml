@@ -8,15 +8,30 @@
     tools:context=".WelcomePage">
 
     <Button
-        android:id="@+id/button_first"
+        android:id="@+id/button_signup"
         android:layout_width="144dp"
         android:layout_height="78dp"
-        android:layout_marginBottom="84dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="37dp"
         android:text="Sign Up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/button_signin"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+    <Button
+        android:id="@+id/button_signin"
+        android:layout_width="144dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="37dp"
+        android:text="Log In"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_signup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -58,7 +73,7 @@
         android:textAllCaps="false"
         android:textSize="16sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toTopOf="@+id/button_first"
+        app:layout_constraintBottom_toTopOf="@+id/button_signup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent" />
