@@ -56,7 +56,6 @@ public class SignUpPage extends Fragment {
             @Override
             public void onClick(View view) {
                 registerUser();
-
             }
         });
 

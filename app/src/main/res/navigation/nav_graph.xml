@@ -40,5 +40,12 @@
             app:destination="@id/WelcomePage" />
     </fragment>
 
+    <fragment
+        android:id="@+id/home"
+        android:name="com.example.realitycheck.Home"
+        android:label="Home Page"
+        tools:layout="@layout/home">
+    </fragment>
+
 
 </navigation>
