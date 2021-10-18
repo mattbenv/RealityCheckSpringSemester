@@ -11,8 +11,17 @@ import java.util.Map;
 // [START post_class]
 @IgnoreExtraProperties
 public abstract class Post {
+    public User owner;
+    public void CreatePost(){
 
-    public String news_post;
+    }
+    public Post(User owner){
+        this.owner = owner;
+    }
+    public Post(){
+
+    }
+   /* public String news_post;
     public Image image;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
@@ -40,5 +49,5 @@ public abstract class Post {
 
         return result;
     }
-    // [END post_to_map]
+    // [END post_to_map]*/
 }

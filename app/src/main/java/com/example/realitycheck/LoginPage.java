@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-import com.example.realitycheck.databinding.FragmentThirdBinding;
+import com.example.realitycheck.databinding.LoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -19,7 +19,7 @@ public class LoginPage extends Fragment{
 
 
 
-    private FragmentThirdBinding binding;
+    private LoginBinding binding;
     private FirebaseAuth mAuth;
 
     @Override
@@ -29,7 +29,7 @@ public class LoginPage extends Fragment{
     ) {
 
         mAuth = FirebaseAuth.getInstance();
-        binding = FragmentThirdBinding.inflate(inflater, container, false);
+        binding = LoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }

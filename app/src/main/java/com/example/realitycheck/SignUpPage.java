@@ -15,8 +15,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.realitycheck.databinding.FragmentFirstBinding;
-import com.example.realitycheck.databinding.FragmentSecondBinding;
+import com.example.realitycheck.databinding.WelcomeBinding;
+import com.example.realitycheck.databinding.SignupBinding;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 public class SignUpPage extends Fragment {
 
-    private FragmentSecondBinding binding;
+    private SignupBinding binding;
     private FirebaseAuth mAuth;
     private EditText email, username, password, confirmpassword;
 
@@ -39,7 +39,7 @@ public class SignUpPage extends Fragment {
             Bundle savedInstanceState
     ) {
         mAuth = FirebaseAuth.getInstance();
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
+        binding = SignupBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }

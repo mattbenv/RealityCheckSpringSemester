@@ -9,7 +9,7 @@
         android:id="@+id/WelcomePage"
         android:name="com.example.realitycheck.WelcomePage"
         android:label="Welcome Page"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/welcome">
 
         <action
             android:id="@+id/action_WelcomePage_to_SignUpPage"
@@ -22,7 +22,7 @@
         android:id="@+id/SignUpPage"
         android:name="com.example.realitycheck.SignUpPage"
         android:label="Sign Up Page"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/signup">
 
         <action
             android:id="@+id/action_SignUpPage_to_WelcomePage"
@@ -33,7 +33,7 @@
         android:id="@+id/LoginPage"
         android:name="com.example.realitycheck.LoginPage"
         android:label="Log In Page"
-        tools:layout="@layout/fragment_third">
+        tools:layout="@layout/login">
 
         <action
             android:id="@+id/action_LogInPage_to_WelcomePage"

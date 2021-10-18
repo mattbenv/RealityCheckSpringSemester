@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.realitycheck.databinding.FragmentFirstBinding;
+import com.example.realitycheck.databinding.WelcomeBinding;
 
 public class WelcomePage extends Fragment {
 
-    private FragmentFirstBinding binding;
+    private WelcomeBinding binding;
 
     @Override
     public View onCreateView(
@@ -21,7 +21,7 @@ public class WelcomePage extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
+        binding = WelcomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }

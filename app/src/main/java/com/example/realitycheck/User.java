@@ -16,8 +16,8 @@ public class User {
     public ArrayList<User> following;
     public ArrayList<Post> posts;
     public ArrayList<User> friends;
-    public Post[] postLiked;
-    public Post[] reposted;
+    public ArrayList<Post> postLiked;
+    public ArrayList<Post> reposted;
 
     //more information to track
 

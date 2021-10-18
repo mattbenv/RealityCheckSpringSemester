@@ -11,17 +11,17 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 
-import com.example.realitycheck.databinding.ActivityHomeBinding;
+import com.example.realitycheck.databinding.HomeBinding;
 
 public class Home extends AppCompatActivity {
 
-    private ActivityHomeBinding binding;
+    private HomeBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        binding = HomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         Toolbar toolbar = binding.toolbar;
