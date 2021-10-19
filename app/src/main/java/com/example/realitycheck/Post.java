@@ -11,13 +11,7 @@ import java.util.Map;
 // [START post_class]
 @IgnoreExtraProperties
 public abstract class Post {
-    public User owner;
-    public void CreatePost(){
-
-    }
-    public Post(User owner){
-        this.owner = owner;
-    }
+    public abstract void createPost();
     public Post(){
 
     }

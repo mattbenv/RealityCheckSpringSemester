@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+    //Todo: we need to format some testing so that we can figure out exactly how we want things to run.
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
