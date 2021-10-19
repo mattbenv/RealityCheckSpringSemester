@@ -49,6 +49,7 @@ public class PostActivity extends AppCompatActivity {
             }
             addTempData(title.toString(), content.toString());
         }
+
     }
 
     private void addTempData(String title, String content) {

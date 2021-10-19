@@ -1,5 +1,6 @@
 package com.example.realitycheck;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +80,8 @@ public class LoginPage extends Fragment{
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    // go to post page
+                    startActivity(new Intent(requireActivity(), PostActivity.class));
                     Toast.makeText(getContext(),"Successful login to account \n" , Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(getContext(),"Failed to login please try again", Toast.LENGTH_LONG).show();
