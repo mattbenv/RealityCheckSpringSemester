@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/tv_title"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="XXXXX转推了"
+        android:text="XXXXXre-post"
         android:textColor="#707070"
         />
     <ImageView
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tv_content"
         app:layout_constraintStart_toStartOf="@id/tv_content"
-        android:text="27.3万次观看"
+        android:text="27.3view"
         android:paddingBottom="6dp"
         android:paddingStart="6dp"
         android:textColor="#707070"/>
