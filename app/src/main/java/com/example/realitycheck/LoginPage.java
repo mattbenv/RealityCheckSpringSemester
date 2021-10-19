@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+
 import com.example.realitycheck.databinding.LoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -63,7 +64,7 @@ public class LoginPage extends Fragment{
 
 
     public void UserLogin(){
-        String email = binding.username.getText().toString().trim();
+     /*   String email = binding.username.getText().toString().trim();
         String password = binding.password.getText().toString().trim();
 
         if(email.isEmpty()){
@@ -87,8 +88,8 @@ public class LoginPage extends Fragment{
                     Toast.makeText(getContext(),"Failed to login please try again", Toast.LENGTH_LONG).show();
                 }
             }
-        });
-
+        });*/
+        startActivity(new Intent(requireActivity(), PostActivity.class));
 
     }
 }

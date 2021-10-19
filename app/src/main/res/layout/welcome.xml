@@ -47,13 +47,12 @@
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="334dp"
-        android:layout_height="617dp"
+        android:layout_height="200dp"
         android:src="@drawable/fake_news_web"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/imageView4"/>
 
     <ImageView
         android:id="@+id/imageView6"
@@ -73,7 +72,9 @@
         android:textAllCaps="false"
         android:textSize="16sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toTopOf="@+id/button_signup"
+        app:layout_constraintTop_toBottomOf="@id/imageView5"
+        app:layout_constraintBottom_toTopOf="@id/button_signin"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent" />
