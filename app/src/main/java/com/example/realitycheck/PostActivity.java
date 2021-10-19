@@ -55,7 +55,7 @@ public class PostActivity extends AppCompatActivity {
         PostBean postBean = new PostBean();
         postBean.setTitle(title);
         postBean.setContent(content);
-        postBean.setDescription(title + "转推了");
+        postBean.setDescription(title + "re-post");
         postAdapter.addData(postBean);
     }
 
