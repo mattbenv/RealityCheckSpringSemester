@@ -12,6 +12,7 @@ import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ItemPostBinding;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
@@ -39,6 +40,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         String title = postBean.getTitle();
         String content = postBean.getContent();
         String description = postBean.getDescription();
+        String currentDate = postBean.getCurrentDate();
         if (avatar != null && !avatar.isEmpty()) {
             Glide.with(context).load(avatar).into(holder.binding.sivAvatar);
         }
@@ -51,6 +53,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         if (description != null && !description.isEmpty()) {
             holder.binding.tvDescription.setText(description);
         }
+            holder.binding.date.setText(currentDate);
+
     }
 
     @Override
