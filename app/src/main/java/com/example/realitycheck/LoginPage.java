@@ -64,7 +64,7 @@ public class LoginPage extends Fragment{
 
 
     public void UserLogin(){
-     /*   String email = binding.username.getText().toString().trim();
+        String email = binding.username.getText().toString().trim();
         String password = binding.password.getText().toString().trim();
 
         if(email.isEmpty()){
@@ -88,8 +88,8 @@ public class LoginPage extends Fragment{
                     Toast.makeText(getContext(),"Failed to login please try again", Toast.LENGTH_LONG).show();
                 }
             }
-        });*/
-        startActivity(new Intent(requireActivity(), PostActivity.class));
+        });
+       // startActivity(new Intent(requireActivity(), PostActivity.class));
 
     }
 }

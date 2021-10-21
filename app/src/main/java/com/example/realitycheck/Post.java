@@ -2,17 +2,41 @@ package com.example.realitycheck;
 
 import android.media.Image;
 
+import com.example.realitycheck.bean.PostBean;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 // [START post_class]
 @IgnoreExtraProperties
 public abstract class Post {
+    private Date postDate;
+    private User postAuthor;
     public abstract void createPost();
+    private FirebaseAuth mAuth;
+
     public Post(){
+
+        mAuth = FirebaseAuth.getInstance();
+
+        PostBean postBean = new PostBean();
+        //Using getEmail() because cant figure out how to access username
+        postBean.setTitle(mAuth.getCurrentUser().getEmail());
+        postBean.setContent("this is content of the post");
+        postBean.setDescription(mAuth.getCurrentUser().getEmail()+ "re-post");
+
+
+        String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
+
+        postBean.setCurrentDate(currentDateTimeString);
+        PostActivity.postAdapter.addData(postBean);
+        //Have to update list of posts for current user as well
 
     }
    /* public String news_post;
