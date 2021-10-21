@@ -69,8 +69,7 @@ public class User {
 
     }
 }
-
-class GFG
+class sortable
 {
 
     public static void sortStrings(String[] arr, int n)
