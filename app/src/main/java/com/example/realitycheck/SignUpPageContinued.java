@@ -4,6 +4,7 @@ package com.example.realitycheck;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -22,15 +24,21 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.example.realitycheck.databinding.SignupcontinuedBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 public class SignUpPageContinued extends Fragment {
@@ -43,13 +51,20 @@ public class SignUpPageContinued extends Fragment {
     private String bioValue;
     private String birthdateValue;
     private String profileImagePath;
+    private Uri profileImage;
 
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
         binding = SignupcontinuedBinding.inflate(inflater, container, false);
 
         FloatingActionButton aFab = container.getRootView().findViewById(R.id.fab);
@@ -68,6 +83,7 @@ public class SignUpPageContinued extends Fragment {
             @Override
             public void onClick(View view) {
                 selectImage();
+
             }
         });
 
@@ -81,6 +97,7 @@ public class SignUpPageContinued extends Fragment {
         binding.done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                uploadImage();
                 createdProfile();
             }
         });
@@ -146,7 +163,9 @@ public class SignUpPageContinued extends Fragment {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
 
+
             Uri filePath = data.getData();
+            profileImage = filePath;
             profileImagePath = filePath.toString();
             //ImageView userImage = new ImageView();
             try {
@@ -164,6 +183,42 @@ public class SignUpPageContinued extends Fragment {
             }
         }
     }
+
+
+    private void uploadImage() {
+        if(profileImagePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            ref.putFile(profileImage)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(SignUpPageContinued.this.getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(SignUpPageContinued.this.getActivity(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
+    }
+
 
     @Override
     public void onDestroyView() {
