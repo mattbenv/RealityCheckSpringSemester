@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_SignUpPage_to_WelcomePage"
             app:destination="@id/WelcomePage" />
+        <action
+            android:id="@+id/action_SignUpPage_to_SignUpPageContinued"
+            app:destination="@+id/SignUpPageContinued"/>
     </fragment>
 
     <fragment
@@ -46,6 +49,18 @@
         android:label="Home Page"
         tools:layout="@layout/home">
     </fragment>
+
+    <fragment
+        android:id="@+id/SignUpPageContinued"
+        android:name="com.example.realitycheck.SignUpPageContinued"
+        tools:layout="@layout/signupcontinued">
+
+        <action
+            android:id="@+id/action_SignUpPageContinued_to_LogInPage"
+            app:destination="@+id/LoginPage"/>
+
+    </fragment>
+
 
 
 </navigation>

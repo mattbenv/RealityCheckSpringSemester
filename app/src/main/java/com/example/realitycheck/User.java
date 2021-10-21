@@ -6,6 +6,10 @@ import java.util.ArrayList;
 public class User {
     public String email;
     public String username;
+    public String name;
+    public String bio;
+    public String birthday;
+    public String profileImagePath;
 
 
 
@@ -21,9 +25,13 @@ public class User {
 
     //more information to track
 
-    public User(String email, String username, ArrayList<Post>  posts, ArrayList<User> followers, ArrayList<User> following, ArrayList<User> friends ){
+    public User(String email, String username, String name, String bio, String birthday, String profileImagePath, ArrayList<Post>  posts, ArrayList<User> followers, ArrayList<User> following, ArrayList<User> friends ){
         this.email=email;
         this.username  = username;
+        this.name = name;
+        this.bio = bio;
+        this.birthday = birthday;
+        this.profileImagePath = profileImagePath;
 
         this.followers = followers;
         this.numfollowers = followers.size();

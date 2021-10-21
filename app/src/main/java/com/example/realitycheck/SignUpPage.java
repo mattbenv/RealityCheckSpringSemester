@@ -31,7 +31,8 @@ public class SignUpPage extends Fragment {
 
     private SignupBinding binding;
     private FirebaseAuth mAuth;
-    private EditText email, username, password, confirmpassword;
+    public static EditText email, username, password, confirmpassword;
+
 
     @Override
     public View onCreateView(
@@ -113,21 +114,15 @@ public class SignUpPage extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User(emailValue,usernameValue,new ArrayList<Post>(),new ArrayList<User>() , new ArrayList<User>(),new ArrayList<User>());
-                            FirebaseDatabase.getInstance().getReference()
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user);
-
-
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Account created successfully!")
-                                    .setMessage("Please login")
+                                    .setMessage("Please continue building your profile")
                                     .setCancelable(false)
-                                    .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                                    .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             NavHostFragment.findNavController(SignUpPage.this)
-                                                    .navigate(R.id.action_SignUpPage_to_WelcomePage);
+                                                    .navigate(R.id.action_SignUpPage_to_SignUpPageContinued);
                                         }
                                     }).show();
 
