@@ -43,19 +43,14 @@ public abstract class Post {
     public Image image;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
-
     //TODO: WE need to make a method called createPost that whenever a post calls it, it knows where to be directed
-
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
-
     public Post(String news_post, Image image) {
         this.news_post = news_post;
         this.image = image;
-
     }
-
     // [START post_to_map]
     @Exclude
     public Map<String, Object> toMap() {
@@ -64,7 +59,6 @@ public abstract class Post {
         result.put("image", image);
         result.put("starCount", starCount);
         result.put("stars", stars);
-
         return result;
     }
     // [END post_to_map]*/

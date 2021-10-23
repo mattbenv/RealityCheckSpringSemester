@@ -22,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+
+import com.example.realitycheck.databinding.HomeBinding;
 import com.example.realitycheck.databinding.SignupcontinuedBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -62,23 +64,18 @@ public class SignUpPageContinued extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
+        //initialize storage reference to firebase
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         binding = SignupcontinuedBinding.inflate(inflater, container, false);
-
-        FloatingActionButton aFab = container.getRootView().findViewById(R.id.fab);
-       //aFab.hide();
-
         return binding.getRoot();
-
-
     }
 
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //allows for selection of picture from device
         binding.selectPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,14 +83,14 @@ public class SignUpPageContinued extends Fragment {
 
             }
         });
-
-
+        //allows for upload of picture using camera
         binding.takePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 takeImage();
             }
         });
+        //stores user uploaded image and creates new account when done is clicked
         binding.done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +129,24 @@ public class SignUpPageContinued extends Fragment {
                                         .navigate(R.id.action_SignUpPageContinued_to_LogInPage);
                             }
                         }).show();
+            }
+        });
+        FirebaseDatabase.getInstance().getReference()
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .setValue(user).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Account was not created")
+                        .setMessage("account creation failed")
+                        .setCancelable(false)
+                        .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+
             }
         });
     }

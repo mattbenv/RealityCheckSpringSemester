@@ -13,29 +13,29 @@ import android.view.View;
 
 import com.example.realitycheck.databinding.HomeBinding;
 
+
+
 public class Home extends AppCompatActivity {
 
     private HomeBinding binding;
+    public static FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //binding class with view
         binding = HomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //set up toolbar
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
         CollapsingToolbarLayout toolBarLayout = binding.toolbarLayout;
         toolBarLayout.setTitle(getTitle());
 
-        FloatingActionButton fab = binding.fab;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        //set up floating action button
+        fab = binding.fab;
+
     }
 }

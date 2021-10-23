@@ -20,13 +20,6 @@ public class TextPost extends Post{
     public void createPost() {
 
 
-      /*  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-        LocalDateTime now = LocalDateTime.now();
-        TextView currDate = PostActivity.binding.getRoot().findViewById(R.id.date);
-        currDate.setText("ASDFSD");
-
-       */
-
 
 
     }

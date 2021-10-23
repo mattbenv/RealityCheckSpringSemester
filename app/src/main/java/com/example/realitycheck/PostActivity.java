@@ -29,6 +29,8 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        FloatingActionButton myFab = binding.getRoot().findViewById(R.id.fab);
+        myFab.show();
         UltimateBarX.statusBar(this)
                 .fitWindow(true)
                 .light(false)
@@ -49,26 +51,11 @@ public class PostActivity extends AppCompatActivity {
                 p.createPost();
             }
         });
+        //layout post adapter
         binding.rlPostBox.setAdapter(postAdapter);
         binding.rlPostBox.setLayoutManager(new LinearLayoutManager(this));
         binding.rlPostBox.setHasFixedSize(true);
         binding.rlPostBox.addItemDecoration(new LinearLayoutDivider(this, LinearLayoutManager.VERTICAL));
-        // add test data
-
-       // addTempData(title.toString(), content.toString());
-       /* for (int i = 1; i < 11; i++) {
-            StringBuilder title = new StringBuilder();
-            StringBuilder content = new StringBuilder();
-            for (int j = 1; j < 4; j++) {
-                title.append(i);
-            }
-            for (int k = 1; k < 50; k++) {
-                content.append(i);
-            }
-            addTempData(title.toString(), content.toString());
-        }
-
-        */
 
 
     }
