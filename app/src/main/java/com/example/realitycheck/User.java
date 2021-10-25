@@ -76,9 +76,6 @@ public class User {
     public void sort( ArrayList<User> users){
 
     }
-}
-class sortable
-{
 
     public static void sortStrings(String[] arr, int n)
     {
