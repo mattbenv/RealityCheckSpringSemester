@@ -89,7 +89,8 @@ public class LoginPage extends Fragment{
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     // go to post page
-                    startActivity(new Intent(requireActivity(), PostActivity.class));
+                    NavHostFragment.findNavController(LoginPage.this)
+                            .navigate(R.id.action_LogInPage_to_PostActivity);
                     Toast.makeText(getContext(),"Successful login to account \n" , Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(getContext(),"Failed to login please try again", Toast.LENGTH_LONG).show();

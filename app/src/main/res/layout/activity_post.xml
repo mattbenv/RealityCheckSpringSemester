@@ -25,6 +25,7 @@
             android:src="@drawable/ava_test"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:clickable="true"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/circleImageStyle" />
 

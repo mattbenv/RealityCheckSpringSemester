@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_LogInPage_to_WelcomePage"
             app:destination="@id/WelcomePage" />
+        <action
+            android:id="@+id/action_LogInPage_to_PostActivity"
+            app:destination="@id/PostActivity" />
     </fragment>
 
     <fragment
@@ -60,6 +63,29 @@
             app:destination="@+id/LoginPage"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/PostActivity"
+        android:name="com.example.realitycheck.PostActivity"
+        tools:layout="@layout/activity_post">
+        <action
+            android:id="@+id/action_PostActivity_to_ProfileActivity"
+            app:destination="@+id/ProfileActivity"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/ProfileActivity"
+        android:name="com.example.realitycheck.ProfileActivity"
+        tools:layout="@layout/activity_profile">
+
+        <action
+            android:id="@+id/action_ProfileActivity_to_PostActivity"
+            app:destination="@+id/PostActivity"/>
+
+    </fragment>
+
+
 
 
 

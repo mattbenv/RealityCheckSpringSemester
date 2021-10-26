@@ -33,7 +33,6 @@ public abstract class Post {
 
 
         String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
-
         postBean.setCurrentDate(currentDateTimeString);
         PostActivity.postAdapter.addData(postBean);
         //Have to update list of posts for current user as well

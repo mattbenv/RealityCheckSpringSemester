@@ -154,8 +154,12 @@ public class SignUpPageContinued extends Fragment {
 
 
     public void takeImage(){
-        //open camera to take picture and upload
+
+
     }
+
+
+
 
 
 
@@ -176,9 +180,6 @@ public class SignUpPageContinued extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-
-
             Uri filePath = data.getData();
             profileImage = filePath;
             profileImagePath = filePath.toString();
