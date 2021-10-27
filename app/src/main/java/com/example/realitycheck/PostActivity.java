@@ -1,7 +1,6 @@
 package com.example.realitycheck;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,8 +15,6 @@ import android.view.ViewGroup;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ActivityPostBinding;
-import com.example.realitycheck.databinding.ActivityProfileBinding;
-import com.example.realitycheck.util.LinearLayoutDivider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.zackratos.ultimatebarx.ultimatebarx.java.Operator;
 import com.zackratos.ultimatebarx.ultimatebarx.java.UltimateBarX;

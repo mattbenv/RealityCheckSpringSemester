@@ -7,14 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ActivityProfileBinding;
-import com.example.realitycheck.util.LinearLayoutDivider;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileActivity extends Fragment {
     private ActivityProfileBinding binding;
