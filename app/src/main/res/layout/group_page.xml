@@ -267,7 +267,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Your Groups"
+                            android:text="Members"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
@@ -307,7 +307,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
-                                android:text="Group 1"
+                                android:text="Member 1"
                                 android:textColor="@color/black"
                                 android:textSize="15sp" />
                         </LinearLayout>
@@ -329,7 +329,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
-                                android:text="Group 2"
+                                android:text="Member 2"
                                 android:textColor="@color/black"
                                 android:textSize="15sp" />
                         </LinearLayout>
@@ -351,7 +351,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
-                                android:text="Group 3"
+                                android:text="Member 3"
                                 android:textColor="@color/black"
                                 android:textSize="15sp" />
                         </LinearLayout>
