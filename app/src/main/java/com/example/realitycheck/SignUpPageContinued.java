@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,14 +33,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -54,6 +58,7 @@ public class SignUpPageContinued extends Fragment {
     private String birthdateValue;
     private String profileImagePath;
     private Uri profileImage;
+    private FirebaseFirestore fStorage;
 
 
     private FirebaseStorage storage;
@@ -67,6 +72,7 @@ public class SignUpPageContinued extends Fragment {
         //initialize storage reference to firebase
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        fStorage = FirebaseFirestore.getInstance();
         binding = SignupcontinuedBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -113,6 +119,35 @@ public class SignUpPageContinued extends Fragment {
         //profileImagePath = "empty profile image path";
 
         User user = new User(emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<Post>(),new ArrayList<User>() , new ArrayList<User>(),new ArrayList<User>());
+        DocumentReference document = fStorage.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Map<String,Object> currUser = new HashMap<>();
+        currUser.put("email",user.email);
+        currUser.put("username",user.username);
+        currUser.put("name",user.name);
+        currUser.put("bio",user.bio);
+        currUser.put("birthday",user.birthday);
+        currUser.put("profileImagePath",user.profileImagePath);
+        currUser.put("posts",user.posts);
+        currUser.put("followers",user.followers);
+        currUser.put("following",user.following);
+        currUser.put("friends",user.friends);
+        document.set(currUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Profile setup is completed!")
+                        .setMessage("Please login to your account")
+                        .setCancelable(false)
+                        .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                NavHostFragment.findNavController(SignUpPageContinued.this)
+                                        .navigate(R.id.action_SignUpPageContinued_to_LogInPage);
+                            }
+                        }).show();
+            }
+        });
+        /*
         FirebaseDatabase.getInstance().getReference()
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -148,7 +183,7 @@ public class SignUpPageContinued extends Fragment {
                         }).show();
 
             }
-        });
+        });*/
     }
 
 

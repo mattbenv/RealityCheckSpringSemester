@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -16,7 +17,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +33,9 @@ public class LoginPage extends Fragment{
 
 
     private LoginBinding binding;
+    private FirebaseFirestore fStorage;
     private FirebaseAuth mAuth;
+    public static User currUser;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     @Override
@@ -36,6 +46,7 @@ public class LoginPage extends Fragment{
         //connection to firebase authentication
         mAuth = FirebaseAuth.getInstance();
 
+        fStorage = FirebaseFirestore.getInstance();
         //binding class with view
         binding = LoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -113,6 +124,7 @@ public class LoginPage extends Fragment{
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    createUserFromFireBase();
                     // go to post page
                     NavHostFragment.findNavController(LoginPage.this)
                             .navigate(R.id.action_LogInPage_to_PostActivity);
@@ -123,6 +135,27 @@ public class LoginPage extends Fragment{
             }
         });
 
+    }
+
+    public void createUserFromFireBase(){
+        DocumentReference docRef = fStorage.collection("Users").document(mAuth.getCurrentUser().getUid());
+        docRef.addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Map<String,Object> userMap = value.getData();
+                String email = userMap.get("email").toString();
+                String username = userMap.get("username").toString();
+                String name = userMap.get("name").toString();
+                String bio = userMap.get("bio").toString();
+                String birthday = userMap.get("birthday").toString();
+                String profileImagePath = userMap.get("profileImagePath").toString();
+                ArrayList<Post> posts = (ArrayList<Post>)  userMap.get("posts");
+                ArrayList<User> followers =(ArrayList<User>)   userMap.get("followers");
+                ArrayList<User> following = (ArrayList<User>) userMap.get("following");
+                ArrayList<User> friends  = (ArrayList<User>) userMap.get("friends");
+                currUser = new User(email,username,name,bio,birthday,profileImagePath,posts,followers,following,friends);
+            }
+        });
     }
 }
 

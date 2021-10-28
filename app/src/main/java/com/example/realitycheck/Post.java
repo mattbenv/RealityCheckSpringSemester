@@ -34,9 +34,9 @@ public abstract class Post {
 
 
         PostBean postBean = new PostBean();
-        //Using getEmail() because cant figure out how to access username
-        postBean.setTitle(mAuth.getCurrentUser().getEmail());
-        postBean.setContent("this is content of the post");
+        //Login.currUser stores the current user logged in
+        postBean.setTitle(LoginPage.currUser.username);
+        postBean.setContent(LoginPage.currUser.bio);
         postBean.setDescription(mAuth.getCurrentUser().getEmail()+ "re-post");
 
 
