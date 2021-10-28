@@ -1,6 +1,5 @@
 package com.example.realitycheck;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +66,8 @@ public class LoginPage extends Fragment{
         binding.resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resetPassword();
+                NavHostFragment.findNavController(LoginPage.this)
+                        .navigate(R.id.action_LogInPage_to_ResetPasswordActivity);
             }
         });
 
@@ -80,24 +80,7 @@ public class LoginPage extends Fragment{
     }
 
 
-    public void resetPassword(){
-            FirebaseAuth.getInstance().sendPasswordResetEmail(binding.username.getText().toString())
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getContext(), "Check email for new password\n", Toast.LENGTH_LONG).show();
-                            }
-                            if (!task.isSuccessful()) {
-                                if(binding.username.getText().length()<1){
-                                    binding.username.setError("Please enter your email, then click reset password");
-                                }
-                                Toast.makeText(getContext(), "Reset password failed\n", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
 
-    }
     public void UserLogin(){
         String email = binding.username.getText().toString().trim();
         String password = binding.password.getText().toString().trim();

@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_LogInPage_to_PostActivity"
             app:destination="@id/PostActivity" />
+        <action
+            android:id="@+id/action_LogInPage_to_ResetPasswordActivity"
+            app:destination="@id/ResetPasswordActivity" />
     </fragment>
 
     <fragment
@@ -82,6 +85,17 @@
         <action
             android:id="@+id/action_ProfileActivity_to_PostActivity"
             app:destination="@+id/PostActivity"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/ResetPasswordActivity"
+        android:name="com.example.realitycheck.ResetPassword"
+        tools:layout="@layout/activity_reset_password">
+
+        <action
+            android:id="@+id/action_ResetPasswordActivity_to_LoginPage"
+            app:destination="@+id/LoginPage"/>
 
     </fragment>
 

@@ -2,6 +2,7 @@ package com.example.realitycheck.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,6 @@ import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ItemPostBinding;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
@@ -41,6 +41,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         String content = postBean.getContent();
         String description = postBean.getDescription();
         String currentDate = postBean.getCurrentDate();
+        holder.binding.ivLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int likeCount = Integer.parseInt(holder.binding.tvLike.getText().toString());
+                holder.binding.tvLike.setText(Integer.toString(likeCount+1));
+                //update number of likes in post data
+                //update list of users who liked this post
+                //update view display number of likes
+            }
+        });
         if (avatar != null && !avatar.isEmpty()) {
             Glide.with(context).load(avatar).into(holder.binding.sivAvatar);
         }

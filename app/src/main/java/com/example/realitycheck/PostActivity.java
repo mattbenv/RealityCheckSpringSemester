@@ -1,32 +1,36 @@
 package com.example.realitycheck;
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.graphics.Color;
-import android.os.Bundle;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ActivityPostBinding;
-import com.example.realitycheck.databinding.ActivityProfileBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.zackratos.ultimatebarx.ultimatebarx.java.Operator;
 import com.zackratos.ultimatebarx.ultimatebarx.java.UltimateBarX;
+
+import java.util.Date;
 
 public class PostActivity extends Fragment {
 
     public static ActivityPostBinding binding;
     public static PostAdapter postAdapter;
 
+    public FirebaseFirestore fStorage;
     public PostAdapter getPostAdapter(){
         return this.postAdapter;
     }
@@ -41,6 +45,7 @@ public class PostActivity extends Fragment {
         binding  =  ActivityPostBinding.inflate(inflater, container, false);
         FloatingActionButton myFab = binding.getRoot().findViewById(R.id.fab);
         myFab.show();
+        fStorage = FirebaseFirestore.getInstance();
         initData();
         binding.getRoot().findViewById(R.id.shapeableImageView).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,8 +83,10 @@ public class PostActivity extends Fragment {
         binding.getRoot().findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Post p = new TextPost();
+                String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
+                Post p = new TextPost(FirebaseAuth.getInstance().getCurrentUser().getUid(),currentDateTimeString);
                 p.createPost();
+                updatePostInUserPosts(p);
             }
         });
         //layout post adapter
@@ -90,6 +97,17 @@ public class PostActivity extends Fragment {
 
 
     }
+
+    private void updatePostInUserPosts(Post post){
+        LoginPage.currUser.posts.add(post);
+        fStorage.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update("posts", LoginPage.currUser.posts).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(PostActivity.this.getActivity(), "post added", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     private void addTempData(String title, String content) {
         PostBean postBean = new PostBean();
