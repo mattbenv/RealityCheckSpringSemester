@@ -21,6 +21,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -33,8 +35,10 @@ public class LoginPage extends Fragment{
 
     private LoginBinding binding;
     private FirebaseFirestore fStorage;
+    private FirebaseStorage fImageStorage;
     private FirebaseAuth mAuth;
     public static User currUser;
+    public static StorageReference storageProfilePictureReference;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     @Override
@@ -46,6 +50,7 @@ public class LoginPage extends Fragment{
         mAuth = FirebaseAuth.getInstance();
 
         fStorage = FirebaseFirestore.getInstance();
+        fImageStorage = FirebaseStorage.getInstance();
         //binding class with view
         binding = LoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -132,11 +137,14 @@ public class LoginPage extends Fragment{
                 String bio = userMap.get("bio").toString();
                 String birthday = userMap.get("birthday").toString();
                 String profileImagePath = userMap.get("profileImagePath").toString();
-                ArrayList<Post> posts = (ArrayList<Post>)  userMap.get("posts");
-                ArrayList<User> followers =(ArrayList<User>)   userMap.get("followers");
-                ArrayList<User> following = (ArrayList<User>) userMap.get("following");
+                ArrayList<String> posts = (ArrayList<String>)  userMap.get("posts");
+                ArrayList<String> followers =(ArrayList<String>)   userMap.get("followers");
+                ArrayList<String> following = (ArrayList<String>) userMap.get("following");
                 ArrayList<User> friends  = (ArrayList<User>) userMap.get("friends");
                 currUser = new User(email,username,name,bio,birthday,profileImagePath,posts,followers,following,friends);
+                // Reference to an image file in Cloud Storage
+                storageProfilePictureReference = fImageStorage.getReference().child("images/" + profileImagePath);
+
             }
         });
     }

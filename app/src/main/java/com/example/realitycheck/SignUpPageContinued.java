@@ -11,12 +11,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,22 +21,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.realitycheck.databinding.HomeBinding;
 import com.example.realitycheck.databinding.SignupcontinuedBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,7 +110,25 @@ public class SignUpPageContinued extends Fragment {
         // will use buttons to get photo input and save image path for now is left empty
         //profileImagePath = "empty profile image path";
 
-        User user = new User(emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<Post>(),new ArrayList<User>() , new ArrayList<User>(),new ArrayList<User>());
+        ArrayList<String> followers = new ArrayList<>();
+        ArrayList<String> following = new ArrayList<>();
+        following.add("TestUser");
+        following.add("someusername");
+        following.add("Testing123");
+        following.add("newUsername");
+        following.add("hellouser");
+        following.add("name");
+        following.add("oooooo");
+
+        followers.add("T12345 username");
+        followers.add("Testing123");
+        followers.add("something");
+        followers.add("TestUser22");
+        followers.add("TestUser");
+
+        User user = new User(emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<String>(),followers , following,new ArrayList<User>());
+       //test puposes adding foloowers and following
+
         DocumentReference document = fStorage.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Map<String,Object> currUser = new HashMap<>();
         currUser.put("email",user.email);
@@ -239,11 +249,15 @@ public class SignUpPageContinued extends Fragment {
     private void uploadImage() {
         if(profileImagePath != null)
         {
+
+
+            UUID imageId = UUID.randomUUID();
+            profileImagePath = imageId.toString();
             final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            StorageReference ref = storageReference.child("images/"+ imageId.toString());
             ref.putFile(profileImage)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override

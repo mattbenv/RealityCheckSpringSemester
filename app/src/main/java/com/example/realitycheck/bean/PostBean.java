@@ -1,15 +1,22 @@
 package com.example.realitycheck.bean;
 
-import java.util.Date;
+import java.util.UUID;
 
 public class PostBean {
 
     String avatar;
     String Title;
+    UUID postId;
     String content;
     String description;
     String currentDate;
 
+    public UUID getPostId(){
+        return this.postId;
+    }
+    public void setPostId(UUID postID){
+        this.postId = postID;
+    }
     public String getDescription() {
         return description;
     }

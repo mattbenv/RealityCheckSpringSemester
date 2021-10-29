@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,7 +15,6 @@ import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ActivityPostBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -73,7 +71,7 @@ public class PostActivity extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        //binding = null;
     }
 
     private void initData() {
@@ -86,7 +84,7 @@ public class PostActivity extends Fragment {
                 String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
                 Post p = new TextPost(FirebaseAuth.getInstance().getCurrentUser().getUid(),currentDateTimeString);
                 p.createPost();
-                updatePostInUserPosts(p);
+
             }
         });
         //layout post adapter
@@ -98,15 +96,7 @@ public class PostActivity extends Fragment {
 
     }
 
-    private void updatePostInUserPosts(Post post){
-        LoginPage.currUser.posts.add(post);
-        fStorage.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update("posts", LoginPage.currUser.posts).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(PostActivity.this.getActivity(), "post added", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+
 
 
     private void addTempData(String title, String content) {

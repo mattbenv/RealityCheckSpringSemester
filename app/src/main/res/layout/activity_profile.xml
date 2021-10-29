@@ -27,7 +27,7 @@
 
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageViewBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/abc_vector_test" />
@@ -115,6 +115,7 @@
 
 
                     <ImageView
+                        android:id="@+id/profilePic"
                         android:layout_width="96dp"
                         android:layout_height="77dp"
                         android:scaleType="centerCrop"
@@ -125,6 +126,7 @@
 
 
                 <TextView
+                    android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -165,12 +167,21 @@
 
                         </LinearLayout>
 
-                        <TextView
+                        <ScrollView
+                            android:id="@+id/SCROLLER_ID"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="75dp"
+                            android:fillViewport="true"
+                            android:scrollbars="vertical">
+
+                        <TextView
+                            android:id="@+id/User_Bio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:background="@android:color/white"
                             android:text="User Bio..." />
+                        </ScrollView>
                     </LinearLayout>
 
 
@@ -191,7 +202,7 @@
 
 
                 <TextView
-                    android:id="@+id/personalinfobtn"
+                    android:id="@+id/following"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -209,7 +220,7 @@
                     android:background="@color/black" />
 
                 <TextView
-                    android:id="@+id/experiencebtn"
+                    android:id="@+id/followers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -227,7 +238,7 @@
                     android:background="@color/black" />
 
                 <TextView
-                    android:id="@+id/reviewbtn"
+                    android:id="@+id/taggedIn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
