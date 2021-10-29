@@ -66,6 +66,8 @@ public class PostActivity extends Fragment {
         operator.apply();
         //getSupportActionBar().hide();
 
+
+
     }
 
     @Override

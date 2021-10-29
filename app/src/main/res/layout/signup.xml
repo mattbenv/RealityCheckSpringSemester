@@ -120,7 +120,7 @@
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="415dp"
-        android:layout_height="483dp"
+        android:layout_height="490dp"
         android:layout_marginTop="196dp"
         android:src="@drawable/black"
         app:layout_constraintEnd_toEndOf="parent"

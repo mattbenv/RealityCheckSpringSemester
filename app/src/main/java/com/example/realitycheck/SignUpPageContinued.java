@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.UUID;
 
 
-public class SignUpPageContinued extends Fragment {
+public class SignUpPageContinued extends Fragment{
 
     private static final int PICK_IMAGE_REQUEST = 22;
     private SignupcontinuedBinding binding;
