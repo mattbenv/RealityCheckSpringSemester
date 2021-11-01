@@ -129,6 +129,7 @@ public class SignUpPageContinued extends Fragment{
         User user = new User(emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<String>(),followers , following,new ArrayList<User>());
        //test puposes adding foloowers and following
 
+        //ran
         DocumentReference document = fStorage.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Map<String,Object> currUser = new HashMap<>();
         currUser.put("email",user.email);

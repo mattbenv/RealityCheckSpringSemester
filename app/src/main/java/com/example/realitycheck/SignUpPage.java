@@ -122,6 +122,7 @@ public class SignUpPage extends Fragment {
             return true;
         }
     }
+
     public void registerUser(){
 
         //Authenticate and add user to database

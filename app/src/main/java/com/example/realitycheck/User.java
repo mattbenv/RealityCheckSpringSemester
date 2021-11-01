@@ -16,6 +16,7 @@ public class User {
     public int numfollowers;
     public int numfollowing;
     public int numfriends;
+
     //change from user list to string for now
     public ArrayList<String> followers;
     public ArrayList<String> following;
