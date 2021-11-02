@@ -124,7 +124,7 @@ public class LoginPage extends Fragment{
         });
 
     }
-
+    // this creates the user from the database
     public void createUserFromFireBase(){
         DocumentReference docRef = fStorage.collection("Users").document(mAuth.getCurrentUser().getUid());
         docRef.addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {

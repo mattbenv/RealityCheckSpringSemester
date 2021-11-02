@@ -62,9 +62,8 @@ public class SignUpPageContinued extends Fragment{
             Bundle savedInstanceState
     ) {
         //initialize storage reference to firebase
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
-        fStorage = FirebaseFirestore.getInstance();
+        storageReference = storage.getReference(); //where we store images
+        fStorage = FirebaseFirestore.getInstance(); //where we store users and posts
         binding = SignupcontinuedBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -76,7 +75,7 @@ public class SignUpPageContinued extends Fragment{
         //allows for selection of picture from device
         binding.selectPicture.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) { //this calls the method for selecting pics
                 selectImage();
 
             }
@@ -87,11 +86,11 @@ public class SignUpPageContinued extends Fragment{
             public void onClick(View view) {
                 takeImage();
             }
-        });
+        }); //this calls the method for taking pics
         //stores user uploaded image and creates new account when done is clicked
         binding.done.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) { //this uploads the pic we selected/took and create profile
                 uploadImage();
                 createdProfile();
             }
@@ -101,6 +100,7 @@ public class SignUpPageContinued extends Fragment{
     }
 
     public void createdProfile(){
+        //it gets values from the signuppage/continuedpage
         emailValue = SignUpPage.email.getText().toString().trim();
         usernameValue = SignUpPage.username.getText().toString().trim();
         nameValue = binding.name.getText().toString().trim();
@@ -130,8 +130,9 @@ public class SignUpPageContinued extends Fragment{
        //test puposes adding foloowers and following
 
         //ran
+        //this adds user to the database in the user collection
         DocumentReference document = fStorage.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        Map<String,Object> currUser = new HashMap<>();
+        Map<String,Object> currUser = new HashMap<>(); //corresponding each value to the actual value
         currUser.put("email",user.email);
         currUser.put("username",user.username);
         currUser.put("name",user.name);
@@ -142,6 +143,7 @@ public class SignUpPageContinued extends Fragment{
         currUser.put("followers",user.followers);
         currUser.put("following",user.following);
         currUser.put("friends",user.friends);
+        // on success of user added to database: message to take you to login page appears
         document.set(currUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -158,47 +160,11 @@ public class SignUpPageContinued extends Fragment{
                         }).show();
             }
         });
-        /*
-        FirebaseDatabase.getInstance().getReference()
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Profile setup is completed!")
-                        .setMessage("Please login to your account")
-                        .setCancelable(false)
-                        .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                NavHostFragment.findNavController(SignUpPageContinued.this)
-                                        .navigate(R.id.action_SignUpPageContinued_to_LogInPage);
-                            }
-                        }).show();
-            }
-        });
-        FirebaseDatabase.getInstance().getReference()
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .setValue(user).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Account was not created")
-                        .setMessage("account creation failed")
-                        .setCancelable(false)
-                        .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).show();
 
-            }
-        });*/
     }
 
 
-
+//todo: allow for users to use camera to take a picture
     public void takeImage(){
 
 
@@ -208,10 +174,10 @@ public class SignUpPageContinued extends Fragment{
 
 
 
-
+    //allows user to select an image from their device
     public void selectImage()
     {
-        Intent intent = new Intent();
+        Intent intent = new Intent(); // intent = screen
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(
@@ -221,6 +187,7 @@ public class SignUpPageContinued extends Fragment{
                 PICK_IMAGE_REQUEST);
     }
 
+    //this is called everytime when selectImage() is called
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
@@ -229,7 +196,6 @@ public class SignUpPageContinued extends Fragment{
             Uri filePath = data.getData();
             profileImage = filePath;
             profileImagePath = filePath.toString();
-            //ImageView userImage = new ImageView();
             try {
                 Bitmap bitmap = MediaStore
                         .Images
@@ -239,6 +205,8 @@ public class SignUpPageContinued extends Fragment{
                                 filePath);
                 binding.imageView.setImageBitmap(bitmap);            }
 
+            // when image selction fails
+ //todo: write an exception that is printed when user denies access to gallery
             catch (IOException e) {
                 // Log the exception
                 e.printStackTrace();
@@ -246,18 +214,19 @@ public class SignUpPageContinued extends Fragment{
         }
     }
 
-
+    // this uploads image to the database
     private void uploadImage() {
         if(profileImagePath != null)
         {
 
-
+            //creates a profile image path for the newly uploaded image
             UUID imageId = UUID.randomUUID();
             profileImagePath = imageId.toString();
             final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
+            //adds image to the database
             StorageReference ref = storageReference.child("images/"+ imageId.toString());
             ref.putFile(profileImage)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
+//todo: understand how homepage works which is related to post adapter/viewholder/activity. if we can, design new one
 public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
     private Context context;

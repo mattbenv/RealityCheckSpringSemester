@@ -29,7 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+// we are using firebase authentication to allow users to signup and collect their email/password
 public class SignUpPage extends Fragment {
 
     private SignupBinding binding;
@@ -51,7 +51,7 @@ public class SignUpPage extends Fragment {
         return binding.getRoot();
 
     }
-
+    // binding connects the view to the class, and stores user-inputed information
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         email = binding.email;
         username = binding.username;
@@ -59,7 +59,7 @@ public class SignUpPage extends Fragment {
         confirmpassword = binding.confirmpassword;
 
         super.onViewCreated(view, savedInstanceState);
-
+    // this is to create an account
         binding.createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +76,7 @@ public class SignUpPage extends Fragment {
 
 
     }
-
+    // this functions tests the validity of the credentials: including password length etc...
     public boolean testInformation(){
         //gets string values
         String emailValue = email.getText().toString().trim();
@@ -122,7 +122,7 @@ public class SignUpPage extends Fragment {
             return true;
         }
     }
-
+    // this gets our instance of the firebase authentication and authenticates user using their email/password
     public void registerUser(){
 
         //Authenticate and add user to database

@@ -15,7 +15,7 @@ import com.example.realitycheck.databinding.WelcomeBinding;
 
 public class WelcomePage extends Fragment {
 
-    private WelcomeBinding binding;
+    private WelcomeBinding binding; // binds the welcome page class with the welcome page xml file (layout)
 
     @Override
     public View onCreateView(
@@ -31,6 +31,7 @@ public class WelcomePage extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //working on animating the rotating image reality check logo, and zoom in and out on other imagesTodo
+        //button that navigates to the sign up page
         binding.buttonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,6 +40,7 @@ public class WelcomePage extends Fragment {
             }
         });
 
+        //button that navigates to login page
         binding.buttonSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,7 +48,7 @@ public class WelcomePage extends Fragment {
             }
         });
     }
-
+    //every time we leave the page, it destroys the page
     @Override
     public void onDestroyView() {
         super.onDestroyView();
