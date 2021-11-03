@@ -1,5 +1,6 @@
 package com.example.realitycheck;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.realitycheck.databinding.LoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +24,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class LoginPage extends Fragment{
     private FirebaseStorage fImageStorage;
     private FirebaseAuth mAuth;
     public static User currUser;
-    public static StorageReference storageProfilePictureReference;
+    public static Uri storageProfilePictureReference;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     @Override
@@ -143,7 +144,12 @@ public class LoginPage extends Fragment{
                 ArrayList<User> friends  = (ArrayList<User>) userMap.get("friends");
                 currUser = new User(email,username,name,bio,birthday,profileImagePath,posts,followers,following,friends);
                 // Reference to an image file in Cloud Storage
-                storageProfilePictureReference = fImageStorage.getReference().child("images/" + profileImagePath);
+                FirebaseStorage.getInstance().getReference().child("images/"+profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                       storageProfilePictureReference = uri;
+                    }
+                });
 
             }
         });

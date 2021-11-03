@@ -4,12 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.realitycheck.LoginPage;
+import com.example.realitycheck.R;
 import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ItemPostBinding;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,6 +55,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         String description = postBean.getDescription();
         String currentDate = postBean.getCurrentDate();
         final int[] a = new int[1];
+
+
+        ImageView imageView = holder.binding.sivAvatar;
+        Glide.with(context)
+                .load(LoginPage.storageProfilePictureReference)
+                .into(imageView);
 
         holder.binding.ivLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +110,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
     }
 
     public void addData(PostBean newItem) {
-        postList.add(newItem);
+        postList.add(0,newItem);
+        notifyItemInserted(0);
         notifyItemInserted(postList.size());
         notifyItemChanged(postList.size());
     }

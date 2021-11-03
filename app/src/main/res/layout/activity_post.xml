@@ -65,10 +65,10 @@
         android:id="@+id/bnav_post_bottom"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/menu_post"
         android:background="#000"
-        app:itemIconTint="@color/selector_post_nav"/>
+        app:itemIconTint="@color/selector_post_nav"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/menu_post" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

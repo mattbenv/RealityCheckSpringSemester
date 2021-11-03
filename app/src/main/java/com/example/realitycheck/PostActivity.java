@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ActivityPostBinding;
@@ -48,6 +50,12 @@ public class PostActivity extends Fragment {
         myFab.show();
         fStorage = FirebaseFirestore.getInstance();
         initData();
+
+        ImageView imageView = binding.getRoot().findViewById(R.id.shapeableImageView);
+        Glide.with(this.getContext())
+                .load(LoginPage.storageProfilePictureReference)
+                .into(imageView);
+
         binding.getRoot().findViewById(R.id.shapeableImageView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +95,7 @@ public class PostActivity extends Fragment {
             public void onClick(View view) {
                 String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
                 Post p = new TextPost(FirebaseAuth.getInstance().getCurrentUser().getUid(),currentDateTimeString);
+                binding.rlPostBox.getLayoutManager().scrollToPosition(0);
                 p.createPost();
 
             }

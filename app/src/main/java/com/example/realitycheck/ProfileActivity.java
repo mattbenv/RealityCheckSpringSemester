@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ActivityProfileBinding;
@@ -22,8 +24,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,20 +59,20 @@ public class ProfileActivity extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(ProfileActivity.this)
                         .navigate(R.id.action_ProfileActivity_to_PostActivity);
+
             }
 
             
         });
 
         //sets profile picture
-        /*
-        ImageView imageView = this.getView().findViewById(R.id.profilePic);
 
+        ImageView imageView = this.getView().findViewById(R.id.profilePic);
         Glide.with(this.getContext())
                 .load(LoginPage.storageProfilePictureReference)
                 .into(imageView);
 
-         */
+
 
         binding.following.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,17 +111,19 @@ public class ProfileActivity extends Fragment {
     }
 
     public void setPosts(){
+        //setup new postadapter on profile page
         postAdapter = new PostAdapter(this.getContext());
         binding.rlPostBox.setAdapter(postAdapter);
         binding.rlPostBox.setLayoutManager(new LinearLayoutManager(this.getContext()));
         binding.rlPostBox.setHasFixedSize(true);
         binding.rlPostBox.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
-        //for posts is user post list generate each post
 
+        //Set up for loop for each post in userpost list
         ArrayList<String> userPosts = LoginPage.currUser.posts;
         Map<String, Object> postBeanValues =  new HashMap<String, Object>();
         for (String post : userPosts) {
             int[] numLikes = new int[1];
+           
             Task<DocumentSnapshot> document = FirebaseFirestore.getInstance().collection("Posts").document(post).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -152,6 +158,8 @@ public class ProfileActivity extends Fragment {
         }
 
         }
+
+
 
 
     @Override

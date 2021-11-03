@@ -72,6 +72,14 @@ public class SignUpPageContinued extends Fragment{
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //gets values from the signuppage/continuedpage
+        emailValue = SignUpPage.email.getText().toString().trim();
+        usernameValue = SignUpPage.username.getText().toString().trim();
+        nameValue = binding.name.getText().toString().trim();
+        bioValue = binding.UserBio.getText().toString().trim();
+        birthdateValue = binding.dateOfBirth.getText().toString().trim();
+
+
         //allows for selection of picture from device
         binding.selectPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,15 +105,10 @@ public class SignUpPageContinued extends Fragment{
         });
 
 
+
     }
 
     public void createdProfile(){
-        //it gets values from the signuppage/continuedpage
-        emailValue = SignUpPage.email.getText().toString().trim();
-        usernameValue = SignUpPage.username.getText().toString().trim();
-        nameValue = binding.name.getText().toString().trim();
-        bioValue = binding.UserBio.getText().toString().trim();
-        birthdateValue = binding.dateOfBirth.getText().toString().trim();
 
         // will use buttons to get photo input and save image path for now is left empty
         //profileImagePath = "empty profile image path";
@@ -216,18 +219,13 @@ public class SignUpPageContinued extends Fragment{
 
     // this uploads image to the database
     private void uploadImage() {
-        if(profileImagePath != null)
-        {
-
             //creates a profile image path for the newly uploaded image
-            UUID imageId = UUID.randomUUID();
-            profileImagePath = imageId.toString();
+            profileImagePath = usernameValue+ "_profile_picture" ;
             final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-
             //adds image to the database
-            StorageReference ref = storageReference.child("images/"+ imageId.toString());
+            StorageReference ref = storageReference.child("images/"+ profileImagePath);
             ref.putFile(profileImage)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -251,7 +249,7 @@ public class SignUpPageContinued extends Fragment{
                             progressDialog.setMessage("Uploaded "+(int)progress+"%");
                         }
                     });
-        }
+
     }
 
 
