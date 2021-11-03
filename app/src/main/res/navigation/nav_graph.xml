@@ -70,6 +70,7 @@
     <fragment
         android:id="@+id/PostActivity"
         android:name="com.example.realitycheck.PostActivity"
+        android:label="Post Activity"
         tools:layout="@layout/activity_post">
         <action
             android:id="@+id/action_PostActivity_to_ProfileActivity"

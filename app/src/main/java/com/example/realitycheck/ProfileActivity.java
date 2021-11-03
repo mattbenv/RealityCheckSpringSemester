@@ -7,14 +7,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.realitycheck.adapter.PostAdapter;
+import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ActivityProfileBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileActivity extends Fragment {
     private ActivityProfileBinding binding;
@@ -27,9 +40,9 @@ public class ProfileActivity extends Fragment {
             Bundle savedInstanceState
     ) {
 
-
         binding  =  ActivityProfileBinding.inflate(inflater, container, false);
         setPosts();
+        MainActivity.toolbar.hide();
         return binding.getRoot();
     }
 
@@ -95,26 +108,50 @@ public class ProfileActivity extends Fragment {
 
     public void setPosts(){
         postAdapter = new PostAdapter(this.getContext());
-        binding.rlPostBox.setAdapter(PostActivity.postAdapter);
+        binding.rlPostBox.setAdapter(postAdapter);
         binding.rlPostBox.setLayoutManager(new LinearLayoutManager(this.getContext()));
         binding.rlPostBox.setHasFixedSize(true);
         binding.rlPostBox.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
         //for posts is user post list generate each post
 
+        ArrayList<String> userPosts = LoginPage.currUser.posts;
+        Map<String, Object> postBeanValues =  new HashMap<String, Object>();
+        for (String post : userPosts) {
+            int[] numLikes = new int[1];
+            Task<DocumentSnapshot> document = FirebaseFirestore.getInstance().collection("Posts").document(post).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if(document.exists()){
+                            Map<String, Object> postMap = document.getData();
+                            String likes = postMap.get("likeCount").toString();
+                            String postAuthor = postMap.get("postAuthor").toString();
+                            String postDate = postMap.get("postDate").toString();
+                            String content = postMap.get("content").toString();
 
-        /*
-        for(int i = 0;i<5;i++){
+                            postBeanValues.put("title", postAuthor);
+                            postBeanValues.put("content", content);
+                            postBeanValues.put("postDate", postDate);
+                            postBeanValues.put("likeCount", likes);
+
+
+                        }
+                    }
+                }
+
+            });
             PostBean postBean = new PostBean();
-            postBean.setTitle("post " + i);
-            postBean.setContent("content of post number "+ i) ;
-            postBean.setDescription("post " + i +" re-post");
+            postBean.setTitle(String.valueOf(postBeanValues.get("title")));
+            postBean.setContent((String) postBeanValues.get("content"));
+            postBean.setDescription(postBeanValues.get("title") + "re-post");
+            postBean.setCurrentDate((String) postBeanValues.get("postDate"));
             postAdapter.addData(postBean);
+
 
         }
 
-         */
-
-    }
+        }
 
 
     @Override

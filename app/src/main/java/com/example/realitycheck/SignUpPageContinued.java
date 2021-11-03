@@ -62,7 +62,7 @@ public class SignUpPageContinued extends Fragment{
             Bundle savedInstanceState
     ) {
         //initialize storage reference to firebase
-        storageReference = storage.getReference(); //where we store images
+        storageReference = FirebaseStorage.getInstance().getReference(); //where we store images
         fStorage = FirebaseFirestore.getInstance(); //where we store users and posts
         binding = SignupcontinuedBinding.inflate(inflater, container, false);
         return binding.getRoot();

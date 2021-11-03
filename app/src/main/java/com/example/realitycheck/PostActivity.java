@@ -41,6 +41,9 @@ public class PostActivity extends Fragment {
             Bundle savedInstanceState
     ) {
         binding  =  ActivityPostBinding.inflate(inflater, container, false);
+
+
+        MainActivity.toolbar.hide();
         FloatingActionButton myFab = binding.getRoot().findViewById(R.id.fab);
         myFab.show();
         fStorage = FirebaseFirestore.getInstance();
@@ -64,7 +67,6 @@ public class PostActivity extends Fragment {
         operator.light(false);
         operator.color(Color.BLACK);
         operator.apply();
-        //getSupportActionBar().hide();
 
 
 

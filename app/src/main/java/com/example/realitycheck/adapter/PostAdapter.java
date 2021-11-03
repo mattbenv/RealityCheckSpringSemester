@@ -48,7 +48,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
         String avatar = postBean.getAvatar();
         String title = postBean.getTitle();
         String content = postBean.getContent();
-        UUID postID = postBean.getPostId();
+        String postID = postBean.getPostId();
         String description = postBean.getDescription();
         String currentDate = postBean.getCurrentDate();
         final int[] a = new int[1];

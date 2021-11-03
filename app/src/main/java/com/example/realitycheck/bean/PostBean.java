@@ -6,15 +6,15 @@ public class PostBean {
 
     String avatar;
     String Title;
-    UUID postId;
+    String postId;
     String content;
     String description;
     String currentDate;
 
-    public UUID getPostId(){
+    public String getPostId(){
         return this.postId;
     }
-    public void setPostId(UUID postID){
+    public void setPostId(String postID){
         this.postId = postID;
     }
     public String getDescription() {

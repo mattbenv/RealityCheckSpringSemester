@@ -19,7 +19,7 @@ public abstract class Post {
     private String postDate;
     private String postAuthor;
     private int likeCount;
-    private UUID postId;
+    private String postId;
 
     public abstract void createPost();
     public FirebaseAuth mAuth;
@@ -50,16 +50,19 @@ public abstract class Post {
 
     public void addPostToDatabase(){
         //create post
-        postId = UUID.randomUUID();
-        LoginPage.currUser.posts.add(postId.toString());
+        int numposts = LoginPage.currUser.posts.size();
+        postId = LoginPage.currUser.username + "_Post_" + numposts;
+
         DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(String.valueOf(postId));
         Map<String, Object> currPost = new HashMap<>();
         currPost.put("postAuthor", LoginPage.currUser.username);
         currPost.put("postDate", java.text.DateFormat.getDateTimeInstance().format(new Date()));
         currPost.put("likeCount", 0);
+        currPost.put("likedBy",null);
+        currPost.put("content","some post content");
         document.set(currPost);
         //add post id to user posts feild
-        LoginPage.currUser.posts.add(postId.toString());
+        LoginPage.currUser.posts.add(postId);
         FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update("posts", LoginPage.currUser.posts).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
