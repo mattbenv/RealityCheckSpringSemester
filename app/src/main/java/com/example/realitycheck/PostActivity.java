@@ -3,6 +3,7 @@ package com.example.realitycheck;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.bean.PostBean;
 import com.example.realitycheck.databinding.ActivityPostBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,6 +52,29 @@ public class PostActivity extends Fragment {
         myFab.show();
         fStorage = FirebaseFirestore.getInstance();
         initData();
+
+        BottomNavigationView bottomNavigationView = binding.getRoot().findViewById(R.id.bnav_post_bottom);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.post_search:
+                        NavHostFragment.findNavController(PostActivity.this)
+                                .navigate(R.id.action_PostActivity_to_SearchActivity);
+                        break;
+                    case R.id.post_home:
+                        //
+                        break;
+                    case R.id.post_notification:
+                        //
+                        break;
+                    case R.id.post_message:
+                        //
+                        break;
+                }
+                return true;
+            }
+        });
 
         ImageView imageView = binding.getRoot().findViewById(R.id.shapeableImageView);
         Glide.with(this.getContext())

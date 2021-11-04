@@ -76,6 +76,10 @@
             android:id="@+id/action_PostActivity_to_ProfileActivity"
             app:destination="@+id/ProfileActivity"/>
 
+        <action
+            android:id="@+id/action_PostActivity_to_SearchActivity"
+            app:destination="@+id/SearchActivity"/>
+
     </fragment>
 
     <fragment
@@ -99,6 +103,19 @@
             app:destination="@+id/LoginPage"/>
 
     </fragment>
+
+
+    <fragment
+        android:id="@+id/SearchActivity"
+        android:name="com.example.realitycheck.SearchPage"
+        tools:layout="@layout/activity_search">
+
+        <action
+            android:id="@+id/action_SearchActivity_to_PostActivity"
+            app:destination="@+id/PostActivity"/>
+
+    </fragment>
+
 
 
 
