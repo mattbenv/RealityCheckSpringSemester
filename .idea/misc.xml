@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/RealityCheck/app/src/main/res/layout/activity_post.xml" value="0.259375" />
+        <entry key="..\:/RealityCheck/app/src/main/res/layout/drawer_header.xml" value="0.259375" />
+        <entry key="..\:/RealityCheck/app/src/main/res/layout/home.xml" value="0.259375" />
+        <entry key="..\:/RealityCheck/app/src/main/res/menu/menu_drawer.xml" value="0.259375" />
+        <entry key="..\:/RealityCheck/app/src/main/res/menu/menu_home.xml" value="0.259375" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/RealityCheck/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.14895833333333333" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/RealityCheck/app/src/main/res/drawable-xxhdpi/ic_add_24.xml" value="0.14895833333333333" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/RealityCheck/app/src/main/res/drawable-xxhdpi/ic_cycle.xml" value="0.14895833333333333" />

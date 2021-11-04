@@ -56,7 +56,7 @@
         android:id="@+id/rl_post_box"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bnav_post_bottom"
+        app:layout_constraintBottom_toTopOf="@+id/bnav_post_bottom"
         app:layout_constraintTop_toBottomOf="@id/cl_post_topBar"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp" />

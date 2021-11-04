@@ -95,11 +95,11 @@ public class PostActivity extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Operator operator = UltimateBarX.statusBar(this);
-        operator.fitWindow(true);
-        operator.light(false);
-        operator.color(Color.BLACK);
-        operator.apply();
+//        Operator operator = UltimateBarX.statusBar(this);
+//        operator.fitWindow(true);
+//        operator.light(false);
+//        operator.color(Color.BLACK);
+//        operator.apply();
 
 
 
