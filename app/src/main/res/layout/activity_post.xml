@@ -23,7 +23,7 @@
             android:layout_marginStart="12dp"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ava_test"
+            android:src="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:clickable="true"

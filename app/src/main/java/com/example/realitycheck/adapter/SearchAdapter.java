@@ -1,48 +1,42 @@
-
-
 package com.example.realitycheck.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.LoginPage;
-import com.example.realitycheck.PostActivity;
-import com.example.realitycheck.R;
-import com.example.realitycheck.SearchPage;
-import com.example.realitycheck.bean.PostBean;
+import com.example.realitycheck.SignUpPageContinued;
+import com.example.realitycheck.User;
 import com.example.realitycheck.databinding.ItemSearchUserBinding;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+
 //todo: understand how homepage works which is related to post adapter/viewholder/activity. if we can, design new one
-public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implements Filterable {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> implements Filterable {
 
     private Context context;
     public List<String> userList;
     public List<String> allUsers;
     public List<String> names;
-    public int a;
+    public ArrayList<User> users;
 
-    public List<String> getUserList(){
+    public List<String> getUserList() {
         //test values
         userList = new ArrayList<>();
         userList.add("AlexUsername");
@@ -78,10 +72,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
         names.add("Gus");
         return userList;
     }
-    public SearchAdapter(Context context) {
+
+    public SearchAdapter(Context context, ArrayList<User> user) {
         this.context = context;
         userList = getUserList();
         allUsers = getUserList();
+        users = user;
 
     }
 
@@ -91,44 +87,75 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
         ItemSearchUserBinding binding = ItemSearchUserBinding.inflate(LayoutInflater.from(context), parent, false);
         SearchViewHolder searchViewHolder = new SearchViewHolder(binding);
         return searchViewHolder;
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
-        String user = userList.get(position);
+        /*String user = userList.get(position);
         holder.binding.tvTitle.setText(user);
         String name = names.get(position);
         holder.binding.tvDescription.setText(name);
+
+         */
+        User user = users.get(position);
+
+        holder.userName.setText(user.username);
+        holder.realName.setText(user.name);
+
+        //follow user button
+        holder.binding.ivMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginPage.currUser.following.add(user.username);
+                //user.followers.add(LoginPage.currUser.username);
+                Toast.makeText(SearchAdapter.this.context, ("Followed "+ user.username), Toast.LENGTH_SHORT).show();
+            }
+        });
+        ImageView imageView = holder.profilePicture;
+
+        FirebaseStorage.getInstance().getReference().child("images/"+user.profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(holder.binding.getRoot().getContext())
+                        .load(uri)
+                        .into(imageView);
+            }
+        });
+
+
+
+
 
     }
 
     @Override
     public int getItemCount() {
-        return userList.size();
+        return users.size();
     }
 
-    public void addData(String newItem) {
-        userList.add(newItem);
+    public void addData(User newItem) {
+        users.add(newItem);
     }
 
     @Override
     public Filter getFilter() {
         return filter;
     }
+
     //sets up filter for filtering lists that gets displayed
     Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            List<String> resultList = new ArrayList<>();
-            if(!charSequence.toString().isEmpty()){
-                for(String user: allUsers){
-                    if(user.toLowerCase().contains(charSequence.toString().toLowerCase())){
+            List<User> resultList = new ArrayList<>();
+            if (!charSequence.toString().isEmpty()) {
+                for (User user : users) {
+                    if (user.username.toLowerCase().contains(charSequence.toString().toLowerCase())) {
                         resultList.add(user);
                     }
                 }
-            }
-            else{
-                resultList.addAll(allUsers);
+            } else {
+                //resultList.addAll(allUsers);
             }
             FilterResults filterResults = new FilterResults();
             filterResults.values = resultList;
@@ -137,18 +164,27 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            userList.clear();
-            userList.addAll((Collection<? extends String>) filterResults.values);
+            users.clear();
+            users.addAll((Collection<? extends User>) filterResults.values);
             notifyDataSetChanged();
 
         }
     };
-}
 
-class SearchViewHolder extends RecyclerView.ViewHolder {
-    ItemSearchUserBinding binding;
-    public SearchViewHolder(ItemSearchUserBinding binding) {
-        super(binding.getRoot());
-        this.binding = binding;
+
+    public static class SearchViewHolder extends RecyclerView.ViewHolder {
+        ItemSearchUserBinding binding;
+
+        TextView userName;
+        TextView realName;
+        ImageView profilePicture;
+        public SearchViewHolder(ItemSearchUserBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+            userName = this.binding.tvTitle;
+            realName = this.binding.tvDescription;
+            profilePicture = this.binding.sivAvatar;
+        }
+
     }
 }

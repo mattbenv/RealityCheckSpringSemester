@@ -27,11 +27,12 @@
         android:id="@+id/siv_avatar"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:adjustViewBounds="true"
+        app:shapeAppearanceOverlay="@style/circleImageView"
         app:layout_constraintTop_toTopOf="parent"
         android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ava_test"
-        app:shapeAppearanceOverlay="@style/circleImageStyle"
+        android:src="@color/white"
         android:scaleType="centerCrop"
         android:layout_marginTop="5dp"/>
 

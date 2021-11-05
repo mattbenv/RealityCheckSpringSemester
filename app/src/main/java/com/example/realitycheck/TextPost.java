@@ -7,6 +7,9 @@ import androidx.annotation.RequiresApi;
 public class TextPost extends Post{
 
 
+    public TextPost(){
+
+    }
     public TextPost(String postAuthor, String postDate) {
         super(postAuthor, postDate);
     }

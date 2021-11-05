@@ -24,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class SignUpPage extends Fragment {
         confirmpassword = binding.confirmpassword;
 
         super.onViewCreated(view, savedInstanceState);
-    // this is to create an account
+        // this is to create an account
         binding.createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,11 +127,19 @@ public class SignUpPage extends Fragment {
     public void registerUser(){
 
         //Authenticate and add user to database
+
         mAuth.createUserWithEmailAndPassword(email.getText().toString().trim(),password.getText().toString().trim())
                 .addOnCompleteListener(SignUpPage.this.getActivity(),new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(binding.username.getText().toString())
+                                    .build();
+
+                            mAuth.getCurrentUser().updateProfile(profileUpdates);
+
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Account created successfully!")
                                     .setMessage("Please continue building your profile")
@@ -144,8 +153,8 @@ public class SignUpPage extends Fragment {
                                     }).show();
 
 
-                                }
-                            }
+                        }
+                    }
 
                 });
 

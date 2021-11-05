@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.realitycheck.databinding.LoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -109,6 +110,7 @@ public class LoginPage extends Fragment{
         }
 
         //Authenticates with firebase and signs in user
+
         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -127,11 +129,12 @@ public class LoginPage extends Fragment{
     }
     // this creates the user from the database
     public void createUserFromFireBase(){
-        DocumentReference docRef = fStorage.collection("Users").document(mAuth.getCurrentUser().getUid());
+        DocumentReference docRef = fStorage.collection("Users").document(mAuth.getCurrentUser().getDisplayName());
         docRef.addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Map<String,Object> userMap = value.getData();
+                String uid = userMap.get("uid").toString();
                 String email = userMap.get("email").toString();
                 String username = userMap.get("username").toString();
                 String name = userMap.get("name").toString();
@@ -141,15 +144,16 @@ public class LoginPage extends Fragment{
                 ArrayList<String> posts = (ArrayList<String>)  userMap.get("posts");
                 ArrayList<String> followers =(ArrayList<String>)   userMap.get("followers");
                 ArrayList<String> following = (ArrayList<String>) userMap.get("following");
-                ArrayList<User> friends  = (ArrayList<User>) userMap.get("friends");
-                currUser = new User(email,username,name,bio,birthday,profileImagePath,posts,followers,following,friends);
+                ArrayList<String> friends  = (ArrayList<String>) userMap.get("friends");
+                currUser = new User(uid,email,username,name,bio,birthday,profileImagePath,posts,followers,following,friends);
                 // Reference to an image file in Cloud Storage
                 FirebaseStorage.getInstance().getReference().child("images/"+profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                       storageProfilePictureReference = uri;
+                        storageProfilePictureReference = uri;
                     }
                 });
+
 
             }
         });

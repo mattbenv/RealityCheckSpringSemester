@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/tv_title"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="XXXXXre-post"
+        android:text=""
         android:textColor="#707070"
         />
 
@@ -29,14 +29,7 @@
         app:layout_constraintEnd_toEndOf="@+id/iv_more"
         tools:layout_editor_absoluteY="16dp" />
 
-    <ImageView
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        app:layout_constraintEnd_toStartOf="@id/tv_description"
-        app:layout_constraintTop_toTopOf="@id/tv_description"
-        app:layout_constraintBottom_toBottomOf="@id/tv_description"
-        android:src="@drawable/ic_cycle"
-        android:layout_marginEnd="6dp"/>
+
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/siv_avatar"
@@ -44,7 +37,7 @@
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ava_test"
+        android:src="@color/white"
         app:shapeAppearanceOverlay="@style/circleImageStyle"
         android:scaleType="centerCrop"
         android:layout_marginTop="24dp"/>

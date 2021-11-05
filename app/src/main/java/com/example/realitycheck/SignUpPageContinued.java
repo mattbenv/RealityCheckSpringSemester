@@ -116,13 +116,7 @@ public class SignUpPageContinued extends Fragment{
 
         ArrayList<String> followers = new ArrayList<>();
         ArrayList<String> following = new ArrayList<>();
-        following.add("TestUser");
-        following.add("someusername");
-        following.add("Testing123");
-        following.add("newUsername");
-        following.add("hellouser");
-        following.add("name");
-        following.add("oooooo");
+
 
         followers.add("T12345 username");
         followers.add("Testing123");
@@ -130,14 +124,16 @@ public class SignUpPageContinued extends Fragment{
         followers.add("TestUser22");
         followers.add("TestUser");
 
-        User user = new User(emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<String>(),followers , following,new ArrayList<User>());
-       //test puposes adding foloowers and following
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        User user = new User(uid,emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<String>(),followers , following,new ArrayList<String>());
+        //test puposes adding foloowers and following
 
         //ran
         //this adds user to the database in the user collection
-        DocumentReference document = fStorage.collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        DocumentReference document = fStorage.collection("Users").document(usernameValue);
         Map<String,Object> currUser = new HashMap<>(); //corresponding each value to the actual value
         currUser.put("email",user.email);
+        currUser.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
         currUser.put("username",user.username);
         currUser.put("name",user.name);
         currUser.put("bio",user.bio);
@@ -168,9 +164,8 @@ public class SignUpPageContinued extends Fragment{
     }
 
 
-//todo: allow for users to use camera to take a picture
+    //todo: allow for users to use camera to take a picture
     public void takeImage(){
-
 
     }
 
@@ -210,7 +205,7 @@ public class SignUpPageContinued extends Fragment{
                 binding.imageView.setImageBitmap(bitmap);            }
 
             // when image selction fails
- //todo: write an exception that is printed when user denies access to gallery
+            //todo: write an exception that is printed when user denies access to gallery
             catch (IOException e) {
                 // Log the exception
                 e.printStackTrace();
@@ -220,10 +215,11 @@ public class SignUpPageContinued extends Fragment{
 
     // this uploads image to the database
     private void uploadImage() {
-            //creates a profile image path for the newly uploaded image
-            profileImagePath = usernameValue+ "_profile_picture" ;
-            final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
-            progressDialog.setTitle("Uploading...");
+        //creates a profile image path for the newly uploaded image
+        profileImagePath = usernameValue+ "_profile_picture" ;
+        final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
+        progressDialog.setTitle("Uploading...");
+        if(profileImage!= null) {
             progressDialog.show();
             //adds image to the database
             StorageReference ref = storageReference.child("images/"+ profileImagePath);
@@ -239,18 +235,18 @@ public class SignUpPageContinued extends Fragment{
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(SignUpPageContinued.this.getActivity(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpPageContinued.this.getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
-
+        }
     }
 
 

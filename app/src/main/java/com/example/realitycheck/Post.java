@@ -1,17 +1,11 @@
 package com.example.realitycheck;
 
-import com.example.realitycheck.bean.PostBean;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.ArrayList;
 
 // [START post_class]
 @IgnoreExtraProperties
@@ -19,58 +13,59 @@ public abstract class Post {
     private String postDate;
     private String postAuthor;
     private int likeCount;
+
+
+
+    public ArrayList<String> getLikedBy() {
+        return this.likedBy;
+    }
+
+    public void addToLikedBy(String username){
+        this.likedBy.add(username);
+    }
+    public void setLikedBy(ArrayList<String> likedBY) {
+        this.likedBy = likedBY;
+    }
+
+    private ArrayList<String> likedBy;
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
     private String postId;
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    private String content;
     public abstract void createPost();
     public FirebaseAuth mAuth;
     public DatabaseReference ref;
     public FirebaseFirestore fStorage;
 
+    public Post(){
+        this.likedBy = new ArrayList<String>();
+
+    }
+
     public Post(String postAuthor, String postDate) {
         //initialize post fields
         this.postAuthor = postAuthor;
         this.postDate = postDate;
-        addPostToDatabase();
-        createPostBean();
-
+        this.likedBy = new ArrayList<String>();
 
     }
 
-    public void createPostBean(){
-        PostBean postBean = new PostBean();
-        postBean.setPostId(postId);
-        //Login.currUser stores the current user logged in
-        postBean.setTitle(LoginPage.currUser.username);
-        postBean.setContent("This is the content of the post created by: " + LoginPage.currUser.username + " the bio of this user is " + LoginPage.currUser.bio);
-        postBean.setDescription(LoginPage.currUser.username + "re-post");
-        String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
-        postBean.setCurrentDate(currentDateTimeString);
-        PostActivity.postAdapter.addData(postBean);
-    }
-
-    public void addPostToDatabase(){
-        //create post
-        int numposts = LoginPage.currUser.posts.size();
-        postId = LoginPage.currUser.username + "_Post_" + numposts;
-
-        DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(String.valueOf(postId));
-        Map<String, Object> currPost = new HashMap<>();
-        currPost.put("postAuthor", LoginPage.currUser.username);
-        currPost.put("postDate", java.text.DateFormat.getDateTimeInstance().format(new Date()));
-        currPost.put("likeCount", 0);
-        currPost.put("likedBy",null);
-        currPost.put("content","some post content");
-        document.set(currPost);
-        //add post id to user posts feild
-        LoginPage.currUser.posts.add(postId);
-        FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update("posts", LoginPage.currUser.posts).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-
-            }
-        });
-
-    }
 
 
     public String getPostDate() {
