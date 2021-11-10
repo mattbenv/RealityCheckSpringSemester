@@ -19,7 +19,7 @@
 
         android:id="@+id/topbar"
         android:layout_width="match_parent"
-        android:layout_height="125dp"
+        android:layout_height="76dp"
         android:layout_alignParentTop="true"
         android:background="#101012"
         android:gravity="center_vertical"
@@ -55,25 +55,17 @@
             android:layout_width="50dp"
             android:layout_height="50dp">
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Settings"
-                android:textColor="@color/white"
-                android:textSize="12dp" />
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_centerInParent="true"
                 android:padding="6dp" />
 
             <ImageView
                 android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
@@ -99,19 +91,23 @@
             android:paddingRight="20dp">
 
             <!--Top Profile Section -->
+
+            <!--Option Bar-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#060707"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="26dp">
+                android:padding="26dp"
+                app:cardCornerRadius="40dp">
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="78dp"
-                    app:cardCornerRadius="6dp"
-                    app:cardElevation="0dp">
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:cardCornerRadius="40dp"
+                    app:elevation="12dp">
 
 
                     <ImageView
@@ -189,8 +185,6 @@
 
 
             </LinearLayout>
-
-            <!--Option Bar-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -514,7 +508,7 @@
 
                 <LinearLayout
                     android:layout_width="385dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
@@ -522,7 +516,7 @@
                         android:id="@+id/rl_post_box"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="1dp"
+                        android:padding="0dp"
                         app:layout_constraintVertical_bias="0.0"
                         tools:layout_editor_absoluteX="0dp" />
                 </LinearLayout>

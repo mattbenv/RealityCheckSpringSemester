@@ -113,7 +113,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
     }
+    //Somewehere in here i want to use this animation when a post is liked.
+    /*
+    // Declaring the animation view
+LottieAnimationView animationView
+    = findViewById(R.id.animationView);
+animationView
+    .addAnimatorUpdateListener(
+        (animation) -> {
+            // Do something.
+        });
+animationView
+    .playAnimation();
 
+if (animationView.isAnimating()) {
+    // Do something.
+}
+     */
     @Override
     public int getItemCount() {
         return postList.size();

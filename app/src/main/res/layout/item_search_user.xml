@@ -14,19 +14,39 @@
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="@id/tv_title"
         app:layout_constraintTop_toTopOf="@id/tv_title"
-        android:text="XXXXXre-post"
-        android:textSize="16sp"
+        android:text="NAME"
+        android:textSize="13sp"
         android:textColor="#707070"
+
         />
 
 
 
+    <!--<androidx.cardview.widget.CardView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:cardCornerRadius="30dp"
+        app:elevation="12dp"
+        app:layout_centerHorizontal="true">
 
+
+        <ImageView
+            android:id="@+id/siv_avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="5dp" />
+
+
+    </androidx.cardview.widget.CardView>-->
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/siv_avatar"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:adjustViewBounds="true"
         app:shapeAppearanceOverlay="@style/circleImageView"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +54,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:src="@color/white"
         android:scaleType="centerCrop"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp"
+        />
 
     <TextView
         android:id="@+id/tv_title"
@@ -42,12 +63,12 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/siv_avatar"
         app:layout_constraintTop_toTopOf="@id/siv_avatar"
-        android:text="DERAGAYA_"
+        android:text="USERNAME"
         android:textColor="#fff"
         android:clickable="true"
         android:layout_marginStart="6dp"
         android:textStyle="bold"
-        android:textSize="24sp"/>
+        android:textSize="18sp"/>
     <ImageView
         android:id="@+id/iv_more"
         android:layout_width="50dp"
@@ -58,6 +79,17 @@
         android:layout_marginEnd="6dp"
         android:src="@drawable/ic_add_24"
         />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/blackcheck"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/blackcheck" />
 
 
 
