@@ -136,14 +136,16 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/heart1"
-        android:layout_width="22dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="23dp"
+        android:layout_width="40.5dp"
+        android:layout_height="40.5dp"
+        android:layout_marginStart="15.5dp"
+        android:layout_marginTop="18dp"
         app:layout_constraintStart_toEndOf="@id/tv_cycle"
-        app:layout_constraintTop_toBottomOf="@id/tv_watched_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content"
         app:lottie_autoPlay="false"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/heart1" />
+
     <TextView
         android:id="@+id/tv_like"
         android:layout_width="wrap_content"

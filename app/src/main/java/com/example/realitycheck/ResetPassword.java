@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.realitycheck.databinding.ActivityResetPasswordBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,6 +51,20 @@ public class ResetPassword extends Fragment {
                 }
                 else{
                     resetPassword();
+                    //todo: somewhere in here I would like to implement the animation used for lock button to load:
+                   /* LottieAnimationView animationView  = binding.lock;
+                    animationView
+                            .addAnimatorUpdateListener(
+                                    (animation) -> {
+                                        // Do something.
+                                    });
+                    animationView
+                            .playAnimation();
+
+                    if (animationView.isAnimating()) {
+                        // Do something.
+                        resetPassword();
+                    }*/
                 }
             }
         });
