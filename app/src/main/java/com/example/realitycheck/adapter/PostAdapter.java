@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.realitycheck.Post;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -113,23 +114,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
     }
-    //Somewehere in here i want to use this animation when a post is liked.
-    /*
-    // Declaring the animation view
-LottieAnimationView animationView
-    = findViewById(R.id.animationView);
-animationView
-    .addAnimatorUpdateListener(
-        (animation) -> {
-            // Do something.
-        });
-animationView
-    .playAnimation();
 
-if (animationView.isAnimating()) {
-    // Do something.
-}
-     */
+
     @Override
     public int getItemCount() {
         return postList.size();
@@ -139,14 +125,29 @@ if (animationView.isAnimating()) {
     public void handleLike(String postID,Post post, PostViewHolder holder){
         DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
         //commented out for now but limits to one like per user
-        //if(!post.getLikedBy().contains(LoginPage.currUser.username)){
+        if(!post.getLikedBy().contains(LoginPage.currUser.username)){
         likes = post.getLikeCount()+1;
         post.setLikeCount(likes);
         document.update("likeCount",likes);
+            //Somewehere in here i want to use this animation when a post is liked.
+
+            // Declaring the animation view
+            LottieAnimationView animationView  = holder.binding.heart1;
+            animationView
+                    .addAnimatorUpdateListener(
+                            (animation) -> {
+                                // Do something.
+                            });
+            animationView
+                    .playAnimation();
+
+            if (animationView.isAnimating()) {
+                // Do something.
+            }
         holder.binding.tvLike.setText(Integer.toString(likes));
         document.update("likedBy",LoginPage.currUser.username);
         post.addToLikedBy(LoginPage.currUser.username);
-        //}
+        }
     }
     public void addData(Post newItem) {
         postList.add(0, newItem);
