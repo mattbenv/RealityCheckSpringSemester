@@ -55,11 +55,13 @@
         app:layout_constraintTop_toBottomOf="@id/imageView4"/>
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/realityCheckLogo"
         android:layout_width="240dp"
         android:layout_height="258dp"
-        android:src="@drawable/rxklogo2"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/rx"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="parent" />
 

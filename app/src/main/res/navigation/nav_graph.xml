@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/WelcomePage"
         android:name="com.example.realitycheck.WelcomePage"
-        android:label="Welcome Page"
-        tools:layout="@layout/welcome">
+        android:label=""
+    tools:layout="@layout/welcome">
 
         <action
             android:id="@+id/action_WelcomePage_to_SignUpPage"
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/LoginPage"
         android:name="com.example.realitycheck.LoginPage"
-        android:label="Log In Page"
+        android:label=""
         tools:layout="@layout/login">
 
         <action
@@ -47,13 +47,6 @@
         <action
             android:id="@+id/action_LogInPage_to_ResetPasswordActivity"
             app:destination="@id/ResetPasswordActivity" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/home"
-        android:name="com.example.realitycheck.Home"
-        android:label="Home Page"
-        tools:layout="@layout/home">
     </fragment>
 
     <fragment
