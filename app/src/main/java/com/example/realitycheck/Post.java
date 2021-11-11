@@ -1,3 +1,4 @@
+
 package com.example.realitycheck;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,7 +14,12 @@ public abstract class Post {
     private String postDate;
     private String postAuthor;
     private int likeCount;
-
+    private ArrayList<String> likedBy;
+    private String postId;
+    private String content;
+    public FirebaseAuth mAuth;
+    public DatabaseReference ref;
+    public FirebaseFirestore fStorage;
 
 
     public ArrayList<String> getLikedBy() {
@@ -23,11 +29,15 @@ public abstract class Post {
     public void addToLikedBy(String username){
         this.likedBy.add(username);
     }
+
+    public void removeFromLikedBy(String username){
+        this.likedBy.remove(username);
+    }
     public void setLikedBy(ArrayList<String> likedBY) {
         this.likedBy = likedBY;
     }
 
-    private ArrayList<String> likedBy;
+
 
     public String getPostId() {
         return postId;
@@ -37,7 +47,7 @@ public abstract class Post {
         this.postId = postId;
     }
 
-    private String postId;
+
 
     public String getContent() {
         return content;
@@ -47,11 +57,9 @@ public abstract class Post {
         this.content = content;
     }
 
-    private String content;
+
     public abstract void createPost();
-    public FirebaseAuth mAuth;
-    public DatabaseReference ref;
-    public FirebaseFirestore fStorage;
+
 
     public Post(){
         this.likedBy = new ArrayList<String>();
@@ -62,7 +70,6 @@ public abstract class Post {
         //initialize post fields
         this.postAuthor = postAuthor;
         this.postDate = postDate;
-        this.likedBy = new ArrayList<String>();
 
     }
 
@@ -115,3 +122,4 @@ public abstract class Post {
     }
     // [END post_to_map]*/
 }
+

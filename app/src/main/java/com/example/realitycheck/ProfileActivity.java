@@ -1,7 +1,11 @@
+
+
 package com.example.realitycheck;
 
 import android.content.DialogInterface;
+import android.net.nsd.NsdManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +23,27 @@ import com.bumptech.glide.Glide;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.databinding.ActivityProfileBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class ProfileActivity extends Fragment {
     private ActivityProfileBinding binding;
     public static PostAdapter postAdapter;
 
+    public ListenerRegistration listenerRegistration;
     private RecyclerView recyclerView;
     public CollectionReference database;
     public ArrayList<Post> list;
@@ -53,7 +65,7 @@ public class ProfileActivity extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.username.setText(LoginPage.currUser.username);
-        binding.UserBio.setText(LoginPage.currUser.bio);
+        //binding.UserBio.setText(LoginPage.currUser.bio);
         binding.imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,43 +126,35 @@ public class ProfileActivity extends Fragment {
         //setup new postadapter on profile page
 
         database = FirebaseFirestore.getInstance().collection("Posts");
-
-
         list = new ArrayList<Post>();
         PostAdapter postAdapter = new PostAdapter(this.getContext(),list);
+
+        for(int i= 0;i<LoginPage.currUser.posts.size();i++){
+            DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Posts").document(LoginPage.currUser.posts.get(i));
+            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    binding.UserBio.setText("SUCCESS");
+                    Post post = new TextPost();
+                    post.setPostAuthor(documentSnapshot.get("postAuthor").toString());
+                    post.setPostDate(documentSnapshot.get("postDate").toString());
+                    post.setContent(documentSnapshot.get("content").toString());
+                    post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
+                    post.setPostId(documentSnapshot.get("postId").toString());
+                    //need to fix convert to
+                    post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
+                    list.add(0,post);
+                    postAdapter.notifyDataSetChanged();
+
+                }
+
+            });
+
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(postAdapter);
-
-        database.addSnapshotListener(new EventListener<QuerySnapshot>() {
-
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                for(DocumentSnapshot val : value.getDocuments()){
-                    if(val.get("postAuthor").toString().equals(LoginPage.currUser.username.toString())) {
-                        Post post = new TextPost();
-                        if (!(val.get("postAuthor") == null)) {
-                            post.setPostAuthor(val.get("postAuthor").toString());
-                        }
-                        if (!(val.get("postDate") == null)) {
-                            post.setPostDate(val.get("postDate").toString());
-                        }
-                        if (!(val.get("content") == null)) {
-                            post.setContent(val.get("content").toString());
-                        }
-                        if (!(val.get("likeCount") == null)) {
-                            post.setLikeCount(Integer.parseInt(val.get("likeCount").toString()));
-                        }
-                        if(!(val.get("postId") == null)){
-                            post.setPostId(val.get("postId").toString());
-                        }
-                        list.add(0,post);
-                    }
-                }
-                postAdapter.notifyDataSetChanged();
-            }
-        });
 
 
 

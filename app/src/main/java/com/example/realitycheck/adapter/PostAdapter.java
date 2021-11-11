@@ -82,10 +82,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         //gets the post authors profile photo and displays it on the posts
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(author);
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                Map<String,Object> userMap = value.getData();
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String,Object> userMap = documentSnapshot.getData();
                 String profileImagePath = userMap.get("profileImagePath").toString();
                 // Reference to an image file in Cloud Storage
                 FirebaseStorage.getInstance().getReference().child("images/"+profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -100,7 +100,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 });
             }
         });
-
         holder.binding.ivCycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,9 +125,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
         //commented out for now but limits to one like per user
         if(!post.getLikedBy().contains(LoginPage.currUser.username)){
-        likes = post.getLikeCount()+1;
-        post.setLikeCount(likes);
-        document.update("likeCount",likes);
+            likes = post.getLikeCount()+1;
+            post.setLikeCount(likes);
+            document.update("likeCount",likes);
             //Somewehere in here i want to use this animation when a post is liked.
 
             // Declaring the animation view
@@ -144,9 +143,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             if (animationView.isAnimating()) {
                 // Do something.
             }
-        holder.binding.tvLike.setText(Integer.toString(likes));
-        document.update("likedBy",LoginPage.currUser.username);
-        post.addToLikedBy(LoginPage.currUser.username);
+            holder.binding.tvLike.setText(Integer.toString(likes));
+            post.addToLikedBy(LoginPage.currUser.username);
+            document.update("likedBy",post.getLikedBy());
+        }
+        //unlike
+        else if(post.getLikedBy().contains(LoginPage.currUser.username)){
+            likes = post.getLikeCount()-1;
+            post.setLikeCount(likes);
+            post.removeFromLikedBy(LoginPage.currUser.username);
+            document.update("likedBy",post.getLikedBy());
+            document.update("likeCount",likes);
+            holder.binding.tvLike.setText(Integer.toString(likes));
         }
     }
     public void addData(Post newItem) {

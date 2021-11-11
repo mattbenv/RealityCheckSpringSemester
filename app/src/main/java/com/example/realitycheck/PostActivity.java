@@ -95,8 +95,6 @@ public class PostActivity extends Fragment {
     private void initData() {
         list = new ArrayList<Post>();
         postAdapter = new PostAdapter(this.getContext(),list);
-        StringBuilder title = new StringBuilder();
-        StringBuilder content = new StringBuilder();
         binding.getRoot().findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,7 +114,6 @@ public class PostActivity extends Fragment {
 
     }
 
-
     public void createPost(){
         String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
         Post post = new TextPost(LoginPage.currUser.username,currentDateTimeString);
@@ -128,6 +125,10 @@ public class PostActivity extends Fragment {
         post.setContent("This is the content of the post created by: " + LoginPage.currUser.username + " the bio of this user is " + LoginPage.currUser.bio);
 
         post.setPostDate(currentDateTimeString);
+
+        //Start with 1 in liked by in order to return array of strings instead of string
+        ArrayList<String> likeList = new ArrayList<>();
+        post.setLikedBy(likeList);
         PostActivity.postAdapter.addData(post);
 
         //create post
