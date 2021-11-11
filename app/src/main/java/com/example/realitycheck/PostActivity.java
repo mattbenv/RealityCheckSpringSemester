@@ -5,12 +5,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.adapter.PostAdapter;
@@ -19,8 +23,10 @@ import com.example.realitycheck.util.LinearLayoutDivider;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -33,6 +39,9 @@ public class PostActivity extends Fragment {
     public static ActivityPostBinding binding;
     public static PostAdapter postAdapter;
     public String postId;
+
+    public RecyclerView recyclerView;
+    ActionBarDrawerToggle toggle;
 
     public ArrayList<Post> list;
     public FirebaseFirestore fStorage;
@@ -48,31 +57,64 @@ public class PostActivity extends Fragment {
             Bundle savedInstanceState
     ) {
         binding  =  ActivityPostBinding.inflate(inflater, container, false);
+        recyclerView = binding.rlPostBox;
 
+        toggle = new ActionBarDrawerToggle(this.getActivity(),binding.drawerLayout,R.string.Open,R.string.Close);
+        binding.drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Toast.makeText(getContext(),item.toString(),Toast.LENGTH_SHORT).show();
+                if(item.toString().equals("Profile")){
+                    NavHostFragment.findNavController(PostActivity.this)
+                    .navigate(R.id.action_PostActivity_to_ProfileActivity);
+                }
+                return true;
+
+            }
+        });
 
         list = new ArrayList<Post>();
         MainActivity.toolbar.hide();
         FloatingActionButton myFab = binding.getRoot().findViewById(R.id.fab);
         myFab.show();
         fStorage = FirebaseFirestore.getInstance();
-        initData();
+        //initData();
+        setPosts();
         bottomNavigate(binding);
         ImageView imageView = binding.getRoot().findViewById(R.id.shapeableImageView);
         Glide.with(this.getContext())
                 .load(LoginPage.storageProfilePictureReference)
                 .into(imageView);
 
+        binding.getRoot().findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
+                //Post p = new TextPost(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),currentDateTimeString);
+                NavHostFragment.findNavController(PostActivity.this).navigate(R.id.action_PostActivity_to_CreatePostActivity);
+            }
+        });
         binding.getRoot().findViewById(R.id.shapeableImageView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(PostActivity.this)
                         .navigate(R.id.action_PostActivity_to_ProfileActivity);
+
             }
         });
         return binding.getRoot();
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+       if(toggle.onOptionsItemSelected(item)){
+           return true;
+       }
+        return super.onOptionsItemSelected(item);
+    }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -92,7 +134,48 @@ public class PostActivity extends Fragment {
         //binding = null;
     }
 
+
+    public void setPosts(){
+        //setup new postadapter on profile page
+
+        list = new ArrayList<Post>();
+        PostAdapter postAdapter = new PostAdapter(this.getContext(),list);
+
+        for(int i= 0;i<LoginPage.currUser.posts.size();i++){
+            DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Posts").document(LoginPage.currUser.posts.get(i));
+            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Post post = new TextPost();
+                    post.setPostAuthor(documentSnapshot.get("postAuthor").toString());
+                    post.setPostDate(documentSnapshot.get("postDate").toString());
+                    post.setContent(documentSnapshot.get("content").toString());
+                    post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
+                    post.setPostId(documentSnapshot.get("postId").toString());
+                    post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
+                    post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
+                    post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
+                    list.add(0,post);
+                    postAdapter.notifyDataSetChanged();
+
+                }
+
+            });
+
+        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
+        recyclerView.setAdapter(postAdapter);
+
+
+
+    }
+
     private void initData() {
+
+
+
         list = new ArrayList<Post>();
         postAdapter = new PostAdapter(this.getContext(),list);
         binding.getRoot().findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
@@ -114,6 +197,54 @@ public class PostActivity extends Fragment {
 
     }
 
+
+    /*
+
+     public void setPosts(){
+
+        ArrayList<String> postIDFeed = new ArrayList<>();
+        for(int i=0;i<LoginPage.currUser.following.size();i++){
+
+
+            //get each user document for who your following
+            DocumentReference documentReferenceUser = FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.following.get(i));
+            documentReferenceUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    //get list of posts for each user
+                    ArrayList<String> userPosts = (ArrayList<String>) documentSnapshot.get("posts");
+                    //add posts from lists to master list for post feed
+                    postIDFeed.addAll(userPosts);
+                }
+            });
+        }
+        //now postIDFeed contains all the postnames we need to generate on our post activity
+        for(String eachPost:postIDFeed){
+            DocumentReference documentReferencePost = FirebaseFirestore.getInstance().collection("Posts").document(eachPost);
+            documentReferencePost.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Post post = new TextPost();
+                    post.setPostAuthor(documentSnapshot.get("postAuthor").toString());
+                    post.setPostDate(documentSnapshot.get("postDate").toString());
+                    post.setContent(documentSnapshot.get("content").toString());
+                    post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
+                    post.setPostId(documentSnapshot.get("postId").toString());
+                    //need to fix convert to
+                    post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
+                    list.add(0,post);
+                    postAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+        binding.rlPostBox.setAdapter(postAdapter);
+        binding.rlPostBox.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        binding.rlPostBox.setHasFixedSize(true);
+        binding.rlPostBox.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
+
+
+    }
+     */
     public void createPost(){
         String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
         Post post = new TextPost(LoginPage.currUser.username,currentDateTimeString);
@@ -124,11 +255,13 @@ public class PostActivity extends Fragment {
         post.setPostAuthor(LoginPage.currUser.username);
         post.setContent("This is the content of the post created by: " + LoginPage.currUser.username + " the bio of this user is " + LoginPage.currUser.bio);
 
+
         post.setPostDate(currentDateTimeString);
 
-        //Start with 1 in liked by in order to return array of strings instead of string
         ArrayList<String> likeList = new ArrayList<>();
         post.setLikedBy(likeList);
+        ArrayList<String> repostList = new ArrayList<>();
+        post.setRepostedBy(repostList);
         PostActivity.postAdapter.addData(post);
 
         //create post
@@ -139,6 +272,8 @@ public class PostActivity extends Fragment {
         currPost.put("postDate", java.text.DateFormat.getDateTimeInstance().format(new Date()));
         currPost.put("likeCount", 0);
         currPost.put("likedBy", post.getLikedBy());
+        currPost.put("repostCount", 0);
+        currPost.put("repostedBy",post.getRepostedBy());
         currPost.put("content", post.getContent());
         document.set(currPost);
 

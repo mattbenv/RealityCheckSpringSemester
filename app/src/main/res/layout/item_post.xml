@@ -101,7 +101,7 @@
         app:layout_constraintTop_toTopOf="@id/iv_review"
         app:layout_constraintBottom_toBottomOf="@id/iv_review"
         app:layout_constraintStart_toEndOf="@id/iv_review"
-        android:text="65"
+        android:text="0"
         android:textColor="#707070"
         android:layout_marginStart="6dp"/>
     <ImageView
@@ -120,7 +120,7 @@
         app:layout_constraintTop_toTopOf="@id/iv_cycle"
         app:layout_constraintBottom_toBottomOf="@id/iv_cycle"
         app:layout_constraintStart_toEndOf="@id/iv_cycle"
-        android:text="1146"
+        android:text="0"
         android:textColor="#707070"
         android:layout_marginStart="6dp"/>
     <ImageView

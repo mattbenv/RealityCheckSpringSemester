@@ -2,6 +2,7 @@
 
 package com.example.realitycheck;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import com.example.realitycheck.databinding.ActivityPostBinding;
 import com.example.realitycheck.databinding.ActivitySearchBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
@@ -22,6 +24,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,6 +61,9 @@ public class SearchPage extends Fragment {
         recyclerView = binding.getRoot().findViewById(R.id.rl_search_box);
         //searchAdapter = new SearchAdapter(this.getContext());
 
+
+
+
         //recyclerView.setAdapter(searchAdapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -70,24 +76,36 @@ public class SearchPage extends Fragment {
         recyclerView.setAdapter(searchAdapter);
 
 
-        database.addSnapshotListener(new EventListener<QuerySnapshot>() {
 
+
+        database.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                for(DocumentSnapshot val : value.getDocuments()){
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(DocumentSnapshot val : queryDocumentSnapshots.getDocuments()){
 
-                    User user = new User();
-                    user.username = val.get("username").toString();
-                    user.name = val.get("name").toString();
+                    User selectedUser = new User();
+                    selectedUser.email = val.get("email").toString();
+                    selectedUser.username = val.get("username").toString();
+                    selectedUser.name = val.get("name").toString();
+                    selectedUser.bio = val.get("bio").toString();
+                    selectedUser.birthday = val.get("birthday").toString();
                     if(!(val.get("profileImagePath") == null)) {
-                        user.profileImagePath = val.get("profileImagePath").toString();
+                        selectedUser.profileImagePath = val.get("profileImagePath").toString();
                     }
+                    selectedUser.posts = (ArrayList<String>)  val.get("posts");
+                    selectedUser.following = (ArrayList<String>) val.get("following");
+                    selectedUser.followers = (ArrayList<String>) val.get("followers");
+                    selectedUser.friends  = (ArrayList<String>) val.get("friends");
+
+
+
                     //User user = val.toObject(User.class);
-                    list.add(user);
+                    list.add(selectedUser);
 
 
                 }
                 searchAdapter.notifyDataSetChanged();
+
             }
         });
 

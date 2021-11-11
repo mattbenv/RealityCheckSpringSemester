@@ -42,6 +42,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private ArrayList<Post> postList;
     int[] likeCount;
     public int likes;
+    public int reposts;
 
     public PostAdapter(Context context, ArrayList<Post> post) {
         this.context = context;
@@ -112,12 +113,43 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 handleLike(postID,post,holder);
             }
         });
+        holder.binding.ivCycle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleRepost(postID,post,holder);
+            }
+        });
     }
 
 
     @Override
     public int getItemCount() {
         return postList.size();
+    }
+
+
+    public void handleRepost(String postID,Post post, PostViewHolder holder){
+
+        DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
+        if(!post.getRepostedBy().contains(LoginPage.currUser.username)){
+            reposts = post.getRepostCount()+1;
+            post.setRepostCount(reposts);
+            document.update("repostCount",reposts);
+
+            holder.binding.tvCycle.setText(Integer.toString(reposts));
+            post.addToRepostedBy(LoginPage.currUser.username);
+            document.update("repostedBy",post.getRepostedBy());
+        }
+        //unlike
+        else if(post.getRepostedBy().contains(LoginPage.currUser.username)){
+            reposts = post.getRepostCount()-1;
+            post.setRepostCount(reposts);
+            post.removeFromRepostedBy(LoginPage.currUser.username);
+            document.update("repostedBy",post.getRepostedBy());
+            document.update("repostCount",reposts);
+            holder.binding.tvCycle.setText(Integer.toString(reposts));
+        }
+
     }
 
     //adds like to post in database and on the view

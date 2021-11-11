@@ -17,9 +17,53 @@ public abstract class Post {
     private ArrayList<String> likedBy;
     private String postId;
     private String content;
+
+    private int repostCount;
+    private ArrayList<String> repostedBy;
     public FirebaseAuth mAuth;
     public DatabaseReference ref;
     public FirebaseFirestore fStorage;
+
+
+
+    public abstract void createPost();
+
+
+    public Post(){
+        this.likedBy = new ArrayList<String>();
+
+    }
+
+    public Post(String postAuthor, String postDate) {
+        //initialize post fields
+        this.postAuthor = postAuthor;
+        this.postDate = postDate;
+
+    }
+
+
+
+
+
+
+    public ArrayList<String> getRepostedBy() {
+        return repostedBy;
+    }
+
+    public void setRepostedBy(ArrayList<String> repostedBy) {
+        this.repostedBy = repostedBy;
+    }
+
+
+
+    public int getRepostCount() {
+        return repostCount;
+    }
+
+    public void setRepostCount(int repostCount) {
+        this.repostCount = repostCount;
+    }
+
 
 
     public ArrayList<String> getLikedBy() {
@@ -35,6 +79,13 @@ public abstract class Post {
     }
     public void setLikedBy(ArrayList<String> likedBY) {
         this.likedBy = likedBY;
+    }
+    public void addToRepostedBy(String username){
+        this.repostedBy.add(username);
+    }
+
+    public void removeFromRepostedBy(String username){
+        this.repostedBy.remove(username);
     }
 
 
@@ -56,25 +107,6 @@ public abstract class Post {
     public void setContent(String content) {
         this.content = content;
     }
-
-
-    public abstract void createPost();
-
-
-    public Post(){
-        this.likedBy = new ArrayList<String>();
-
-    }
-
-    public Post(String postAuthor, String postDate) {
-        //initialize post fields
-        this.postAuthor = postAuthor;
-        this.postDate = postDate;
-
-    }
-
-
-
     public String getPostDate() {
         return postDate;
     }
