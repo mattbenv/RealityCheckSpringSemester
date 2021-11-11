@@ -155,6 +155,8 @@ public class PostActivity extends Fragment {
                     post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
                     post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
                     post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
+                   // post.setComments((ArrayList<HashMap<String,Object>>) documentSnapshot.get("comments"));
+                    //post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
                     list.add(0,post);
                     postAdapter.notifyDataSetChanged();
 

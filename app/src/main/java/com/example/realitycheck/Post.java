@@ -7,6 +7,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // [START post_class]
 @IgnoreExtraProperties
@@ -17,6 +18,13 @@ public abstract class Post {
     private ArrayList<String> likedBy;
     private String postId;
     private String content;
+
+
+    private ArrayList<HashMap<String,Object>> comments;
+
+
+
+    private int commentCount;
 
     private int repostCount;
     private ArrayList<String> repostedBy;
@@ -46,6 +54,7 @@ public abstract class Post {
 
 
 
+
     public ArrayList<String> getRepostedBy() {
         return repostedBy;
     }
@@ -53,6 +62,7 @@ public abstract class Post {
     public void setRepostedBy(ArrayList<String> repostedBy) {
         this.repostedBy = repostedBy;
     }
+
 
 
 
@@ -66,6 +76,13 @@ public abstract class Post {
 
 
 
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
     public ArrayList<String> getLikedBy() {
         return this.likedBy;
     }
@@ -99,6 +116,20 @@ public abstract class Post {
     }
 
 
+    public ArrayList<HashMap<String, Object>> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<HashMap<String, Object>> comments) {
+        this.comments = comments;
+    }
+
+    public void addComment(HashMap<String,Object> comment){
+        this.comments.add(comment);
+    }
+    public void removeComment(HashMap<String,Object> comment){
+        this.comments.remove(comment);
+    }
 
     public String getContent() {
         return content;

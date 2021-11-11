@@ -102,6 +102,8 @@ public class CreatePostActivity extends Fragment {
         post.setLikedBy(likeList);
         ArrayList<String> repostList = new ArrayList<>();
         post.setRepostedBy(repostList);
+        ArrayList<HashMap<String,Object>> comments = new ArrayList<>();
+        post.setComments(comments);
         //PostActivity.postAdapter.addData(post);
 
         //create post
@@ -115,6 +117,8 @@ public class CreatePostActivity extends Fragment {
         currPost.put("repostCount", 0);
         currPost.put("repostedBy",post.getRepostedBy());
         currPost.put("content", post.getContent());
+        currPost.put("comments",post.getComments());
+        currPost.put("commentCount",0);
         document.set(currPost);
 
         //add post id to user posts feild

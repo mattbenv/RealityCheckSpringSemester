@@ -64,6 +64,12 @@ public class SearchPage extends Fragment {
 
 
 
+        //System.out.println(binding.toptab.getTabAt(1));
+
+        
+        System.out.println(binding.toptab.getSelectedTabPosition());
+       // binding.toptab.getSelectedTabPosition()
+
         //recyclerView.setAdapter(searchAdapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -96,9 +102,6 @@ public class SearchPage extends Fragment {
                     selectedUser.following = (ArrayList<String>) val.get("following");
                     selectedUser.followers = (ArrayList<String>) val.get("followers");
                     selectedUser.friends  = (ArrayList<String>) val.get("friends");
-
-
-
                     //User user = val.toObject(User.class);
                     list.add(selectedUser);
 
@@ -108,6 +111,14 @@ public class SearchPage extends Fragment {
 
             }
         });
+        /*ArrayList<String> sortUsernamesOrder = new ArrayList<>();
+        for(User user:list){
+            sortUsernamesOrder.add(user.username);
+        }
+        //sortStrings(sortUsernamesOrder,sortUsernamesOrder);
+
+
+         */
 
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -126,6 +137,29 @@ public class SearchPage extends Fragment {
 
         return binding.getRoot();
     }
+
+
+   /* public static void sortStrings(Arra arr, int n)
+    {
+        String storage;
+
+        // Sorting strings using bubble sort
+        for (int j = 0; j < n - 1; j++)
+        {
+            for (int i = j + 1; i < n; i++)
+            {
+                if (arr[j].compareTo(arr[i]) > 0)
+                {
+                    storage = arr[j];
+                    arr[j] = arr[i];
+                    arr[i] = storage;
+                }
+            }
+        }
+    }
+
+    */
+
 
     public void bottomNavigate(ActivitySearchBinding binding){
         BottomNavigationView bottomNavigationView = binding.getRoot().findViewById(R.id.bnav_post_bottom);

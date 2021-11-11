@@ -37,6 +37,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class ProfileActivity extends Fragment {
@@ -143,6 +144,8 @@ public class ProfileActivity extends Fragment {
                     post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
                     post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
                     post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
+                 //   post.setComments((ArrayList<HashMap<String,Object>>) documentSnapshot.get("comments"));
+                  //  post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
                     list.add(0,post);
                     postAdapter.notifyDataSetChanged();
 
