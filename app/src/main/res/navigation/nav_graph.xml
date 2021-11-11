@@ -86,7 +86,6 @@
         <action
             android:id="@+id/action_ProfileActivity_to_PostActivity"
             app:destination="@+id/PostActivity"/>
-
     </fragment>
 
     <fragment

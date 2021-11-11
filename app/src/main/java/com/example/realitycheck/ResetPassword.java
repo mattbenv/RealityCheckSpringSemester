@@ -52,19 +52,6 @@ public class ResetPassword extends Fragment {
                 else{
                     resetPassword();
                     //todo: somewhere in here I would like to implement the animation used for lock button to load:
-                   /* LottieAnimationView animationView  = binding.lock;
-                    animationView
-                            .addAnimatorUpdateListener(
-                                    (animation) -> {
-                                        // Do something.
-                                    });
-                    animationView
-                            .playAnimation();
-
-                    if (animationView.isAnimating()) {
-                        // Do something.
-                        resetPassword();
-                    }*/
                 }
             }
         });
@@ -77,9 +64,22 @@ public class ResetPassword extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+                            /*LottieAnimationView animationView  = binding.lock;
+                            animationView
+                                    .addAnimatorUpdateListener(
+                                            (animation) -> {
+                                                // Do something.
+                                            });
+                            animationView
+                                    .playAnimation();
+
+                            if (animationView.isAnimating()) {
+                                // Do something.
+                                //resetPassword();
+                            }*/
                             Toast.makeText(getContext(), "Check email for new password\n", Toast.LENGTH_LONG).show();
                             NavHostFragment.findNavController(ResetPassword.this)
-                                    .navigate(R.id.action_ResetPasswordActivity_to_LoginPage);
+                                        .navigate(R.id.action_ResetPasswordActivity_to_LoginPage);
                         }
                         if (!task.isSuccessful()) {
                             Toast.makeText(getContext(), "Reset password failed\n", Toast.LENGTH_LONG).show();
