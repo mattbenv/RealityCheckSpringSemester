@@ -72,6 +72,9 @@
         <action
             android:id="@+id/action_PostActivity_to_SearchPage"
             app:destination="@+id/SearchPage"/>
+        <action
+            android:id="@+id/action_PostActivity_to_CreatePostActivity"
+            app:destination="@+id/CreatePostActivity"/>
 
     </fragment>
 
@@ -104,6 +107,32 @@
 
         <action
             android:id="@+id/action_SearchPage_to_PostActivity"
+            app:destination="@+id/PostActivity"/>
+
+        <action
+            android:id="@+id/action_SearchPage_to_OtherUserProfileActivity"
+            app:destination="@+id/OtherUserProfileActivity"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/OtherUserProfileActivity"
+        android:name="com.example.realitycheck.otherUserProfileActivity"
+        tools:layout="@layout/activity_profile">
+
+        <action
+            android:id="@+id/action_OtherUserProfileActivity_to_SearchActivity"
+            app:destination="@+id/SearchPage"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/CreatePostActivity"
+        android:name="com.example.realitycheck.CreatePostActivity"
+        tools:layout="@layout/activity_create_post">
+
+        <action
+            android:id="@+id/action_CreatePostActivity_to_PostActivity"
             app:destination="@+id/PostActivity"/>
 
     </fragment>

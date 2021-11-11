@@ -1,18 +1,14 @@
-
-
 package com.example.realitycheck;
 
 import android.content.DialogInterface;
-import android.net.nsd.NsdManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
@@ -21,28 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.adapter.PostAdapter;
+import com.example.realitycheck.adapter.SearchAdapter;
 import com.example.realitycheck.databinding.ActivityProfileBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
-public class ProfileActivity extends Fragment {
+public class otherUserProfileActivity extends Fragment {
     private ActivityProfileBinding binding;
     public static PostAdapter postAdapter;
-
     public ListenerRegistration listenerRegistration;
     private RecyclerView recyclerView;
     public CollectionReference database;
@@ -64,13 +54,13 @@ public class ProfileActivity extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.username.setText(LoginPage.currUser.username);
-        binding.UserBio.setText(LoginPage.currUser.bio);
+        binding.username.setText(SearchAdapter.selectedUser.username);
+        binding.UserBio.setText(SearchAdapter.selectedUser.bio);
         binding.imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(ProfileActivity.this)
-                        .navigate(R.id.action_ProfileActivity_to_PostActivity);
+                NavHostFragment.findNavController(otherUserProfileActivity.this)
+                        .navigate(R.id.action_OtherUserProfileActivity_to_SearchActivity);
 
             }
 
@@ -78,11 +68,16 @@ public class ProfileActivity extends Fragment {
         });
 
         //sets profile picture
-
         ImageView imageView = this.getView().findViewById(R.id.profilePic);
-        Glide.with(this.getContext())
-                .load(LoginPage.storageProfilePictureReference)
-                .into(imageView);
+
+        FirebaseStorage.getInstance().getReference().child("images/"+SearchAdapter.selectedUser.profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(binding.getRoot().getContext())
+                        .load(uri)
+                        .into(imageView);
+            }
+        });
 
 
 
@@ -90,8 +85,8 @@ public class ProfileActivity extends Fragment {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("List of people you follow")
-                        .setMessage(LoginPage.currUser.following.toString())
+                        .setTitle("List of who "+SearchAdapter.selectedUser.username+ " follows")
+                        .setMessage(SearchAdapter.selectedUser.following.toString())
                         .setCancelable(true)
                         .setPositiveButton("close", new DialogInterface.OnClickListener() {
                             @Override
@@ -105,8 +100,8 @@ public class ProfileActivity extends Fragment {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("List of your followers")
-                        .setMessage(LoginPage.currUser.followers.toString())
+                        .setTitle("List of "+SearchAdapter.selectedUser.username+'s'+ " followers")
+                        .setMessage(SearchAdapter.selectedUser.followers.toString())
                         .setCancelable(true)
                         .setPositiveButton("close", new DialogInterface.OnClickListener() {
                             @Override
@@ -129,8 +124,8 @@ public class ProfileActivity extends Fragment {
         list = new ArrayList<Post>();
         PostAdapter postAdapter = new PostAdapter(this.getContext(),list);
 
-        for(int i= 0;i<LoginPage.currUser.posts.size();i++){
-            DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Posts").document(LoginPage.currUser.posts.get(i));
+        for(int i= 0;i<SearchAdapter.selectedUser.posts.size();i++){
+            DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Posts").document(SearchAdapter.selectedUser.posts.get(i));
             documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -140,9 +135,10 @@ public class ProfileActivity extends Fragment {
                     post.setContent(documentSnapshot.get("content").toString());
                     post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
                     post.setPostId(documentSnapshot.get("postId").toString());
-                    post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
-                    post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
+                    //need to fix
                     post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
+                    post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
+                    post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
                     list.add(0,post);
                     postAdapter.notifyDataSetChanged();
 
@@ -171,3 +167,4 @@ public class ProfileActivity extends Fragment {
 
 
 }
+

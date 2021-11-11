@@ -1,3 +1,4 @@
+
 package com.example.realitycheck;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,45 +14,20 @@ public abstract class Post {
     private String postDate;
     private String postAuthor;
     private int likeCount;
-
-
-
-    public ArrayList<String> getLikedBy() {
-        return this.likedBy;
-    }
-
-    public void addToLikedBy(String username){
-        this.likedBy.add(username);
-    }
-    public void setLikedBy(ArrayList<String> likedBY) {
-        this.likedBy = likedBY;
-    }
-
     private ArrayList<String> likedBy;
-
-    public String getPostId() {
-        return postId;
-    }
-
-    public void setPostId(String postId) {
-        this.postId = postId;
-    }
-
     private String postId;
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     private String content;
-    public abstract void createPost();
+
+    private int repostCount;
+    private ArrayList<String> repostedBy;
     public FirebaseAuth mAuth;
     public DatabaseReference ref;
     public FirebaseFirestore fStorage;
+
+
+
+    public abstract void createPost();
+
 
     public Post(){
         this.likedBy = new ArrayList<String>();
@@ -62,12 +38,75 @@ public abstract class Post {
         //initialize post fields
         this.postAuthor = postAuthor;
         this.postDate = postDate;
-        this.likedBy = new ArrayList<String>();
 
     }
 
 
 
+
+
+
+    public ArrayList<String> getRepostedBy() {
+        return repostedBy;
+    }
+
+    public void setRepostedBy(ArrayList<String> repostedBy) {
+        this.repostedBy = repostedBy;
+    }
+
+
+
+    public int getRepostCount() {
+        return repostCount;
+    }
+
+    public void setRepostCount(int repostCount) {
+        this.repostCount = repostCount;
+    }
+
+
+
+    public ArrayList<String> getLikedBy() {
+        return this.likedBy;
+    }
+
+    public void addToLikedBy(String username){
+        this.likedBy.add(username);
+    }
+
+    public void removeFromLikedBy(String username){
+        this.likedBy.remove(username);
+    }
+    public void setLikedBy(ArrayList<String> likedBY) {
+        this.likedBy = likedBY;
+    }
+    public void addToRepostedBy(String username){
+        this.repostedBy.add(username);
+    }
+
+    public void removeFromRepostedBy(String username){
+        this.repostedBy.remove(username);
+    }
+
+
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
     public String getPostDate() {
         return postDate;
     }
@@ -115,3 +154,4 @@ public abstract class Post {
     }
     // [END post_to_map]*/
 }
+

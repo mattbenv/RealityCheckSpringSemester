@@ -1,5 +1,7 @@
 package com.example.realitycheck.adapter;
 
+import android.Manifest;
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -13,10 +15,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.LoginPage;
+import com.example.realitycheck.R;
+import com.example.realitycheck.SearchPage;
 import com.example.realitycheck.SignUpPageContinued;
 import com.example.realitycheck.User;
 import com.example.realitycheck.databinding.ItemSearchUserBinding;
@@ -35,6 +42,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public List<String> allUsers;
     public List<String> names;
     public ArrayList<User> users;
+    public static User selectedUser;
+    public static Uri storageProfilePictureReference;
 
     public List<String> getUserList() {
         //test values
@@ -98,23 +107,31 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         holder.binding.tvDescription.setText(name);
 
          */
-        User user = users.get(position);
+        selectedUser = users.get(position);
 
-        holder.userName.setText(user.username);
-        holder.realName.setText(user.name);
+
+        holder.binding.sivAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(SearchAdapter.this.context, ("Clicked"), Toast.LENGTH_SHORT).show();
+                Navigation.createNavigateOnClickListener(R.id.action_SearchPage_to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
+            }
+        });
+        holder.userName.setText(selectedUser.username);
+        holder.realName.setText(selectedUser.name);
 
         //follow user button
         holder.binding.ivMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginPage.currUser.following.add(user.username);
+                LoginPage.currUser.following.add(selectedUser.username);
                 //user.followers.add(LoginPage.currUser.username);
-                Toast.makeText(SearchAdapter.this.context, ("Followed "+ user.username), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchAdapter.this.context, ("Followed "+ selectedUser.username), Toast.LENGTH_SHORT).show();
             }
         });
         ImageView imageView = holder.profilePicture;
 
-        FirebaseStorage.getInstance().getReference().child("images/"+user.profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        FirebaseStorage.getInstance().getReference().child("images/"+selectedUser.profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(holder.binding.getRoot().getContext())
@@ -122,6 +139,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                         .into(imageView);
             }
         });
+
 
 
 
@@ -174,11 +192,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     public static class SearchViewHolder extends RecyclerView.ViewHolder {
         ItemSearchUserBinding binding;
-
         TextView userName;
         TextView realName;
         ImageView profilePicture;
-        public SearchViewHolder(ItemSearchUserBinding binding) {
+        public SearchViewHolder(ItemSearchUserBinding binding){
             super(binding.getRoot());
             this.binding = binding;
             userName = this.binding.tvTitle;

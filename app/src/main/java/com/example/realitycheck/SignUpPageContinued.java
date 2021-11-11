@@ -73,13 +73,6 @@ public class SignUpPageContinued extends Fragment{
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //gets values from the signuppage/continuedpage
-        emailValue = SignUpPage.email.getText().toString().trim();
-        usernameValue = SignUpPage.username.getText().toString().trim();
-        nameValue = binding.name.getText().toString().trim();
-        bioValue = binding.UserBio.getText().toString().trim();
-        birthdateValue = binding.dateOfBirth.getText().toString().trim();
-
 
         //allows for selection of picture from device
         binding.selectPicture.setOnClickListener(new View.OnClickListener() {
@@ -114,18 +107,17 @@ public class SignUpPageContinued extends Fragment{
         // will use buttons to get photo input and save image path for now is left empty
         //profileImagePath = "empty profile image path";
 
-        ArrayList<String> followers = new ArrayList<>();
-        ArrayList<String> following = new ArrayList<>();
 
+        //gets values from the signuppage/continuedpage
+        emailValue = SignUpPage.email.getText().toString().trim();
+        usernameValue = SignUpPage.username.getText().toString().trim();
+        nameValue = binding.name.getText().toString().trim();
+        bioValue = binding.UserBio.getText().toString().trim();
+        birthdateValue = binding.dateOfBirth.getText().toString().trim();
 
-        followers.add("T12345 username");
-        followers.add("Testing123");
-        followers.add("something");
-        followers.add("TestUser22");
-        followers.add("TestUser");
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        User user = new User(uid,emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<String>(),followers , following,new ArrayList<String>());
+        User user = new User(uid,emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>());
         //test puposes adding foloowers and following
 
         //ran
@@ -257,3 +249,15 @@ public class SignUpPageContinued extends Fragment{
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
