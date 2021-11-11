@@ -91,6 +91,7 @@ public class SearchPage extends Fragment {
             }
         });
 
+        //The bar where you can
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
