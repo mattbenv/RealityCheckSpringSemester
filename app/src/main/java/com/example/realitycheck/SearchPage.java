@@ -164,6 +164,7 @@ public class SearchPage extends Fragment {
 
     public void bottomNavigate(ActivitySearchBinding binding){
         BottomNavigationView bottomNavigationView = binding.getRoot().findViewById(R.id.bnav_post_bottom);
+        bottomNavigationView.getMenu().findItem(R.id.post_search).setChecked(true);
         //need to fix to recognize what screen
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

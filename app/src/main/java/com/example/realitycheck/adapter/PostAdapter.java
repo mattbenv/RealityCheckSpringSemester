@@ -1,17 +1,21 @@
 package com.example.realitycheck.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.realitycheck.Post;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +33,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -43,9 +49,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     int[] likeCount;
     public int likes;
     public int reposts;
+    public int comments;
 
     public PostAdapter(Context context, ArrayList<Post> post) {
         this.context = context;
+
         postList = post;
     }
 
@@ -119,6 +127,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 handleRepost(postID,post,holder);
             }
         });
+
+        holder.binding.ivReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleComment(postID,post,holder);
+            }
+        });
+
+
     }
 
 
@@ -152,6 +169,50 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     }
 
+
+
+    public void handleComment(String postID, Post post, PostViewHolder holder){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Comment");
+        final EditText input = new EditText(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Post Comment", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
+                comments = post.getCommentCount()+1;
+                post.setCommentCount(comments);
+                document.update("commentCount",comments);
+                holder.binding.tvReview.setText(Integer.toString(comments));
+                HashMap<String,Object> newComment = new HashMap<>();
+                newComment.put("commentAuthor",LoginPage.currUser.username.toString());
+                newComment.put("comment",input.getText().toString());
+                newComment.put("commentTime", java.text.DateFormat.getDateTimeInstance().format(new Date()));
+                post.addComment(newComment);
+                document.update("comments",post.getComments());
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+
+
+    }
+    
+    
+    
     //adds like to post in database and on the view
     public void handleLike(String postID,Post post, PostViewHolder holder){
         DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());

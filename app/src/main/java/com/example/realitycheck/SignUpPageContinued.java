@@ -93,6 +93,11 @@ public class SignUpPageContinued extends Fragment{
         binding.done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { //this uploads the pic we selected/took and create profile
+                emailValue = SignUpPage.email.getText().toString().trim();
+                usernameValue = SignUpPage.username.getText().toString().trim();
+                nameValue = binding.name.getText().toString().trim();
+                bioValue = binding.UserBio.getText().toString().trim();
+                birthdateValue = binding.dateOfBirth.getText().toString().trim();
                 uploadImage();
                 createdProfile();
             }
@@ -109,11 +114,7 @@ public class SignUpPageContinued extends Fragment{
 
 
         //gets values from the signuppage/continuedpage
-        emailValue = SignUpPage.email.getText().toString().trim();
-        usernameValue = SignUpPage.username.getText().toString().trim();
-        nameValue = binding.name.getText().toString().trim();
-        bioValue = binding.UserBio.getText().toString().trim();
-        birthdateValue = binding.dateOfBirth.getText().toString().trim();
+
 
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
