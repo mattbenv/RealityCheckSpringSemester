@@ -1,50 +1,165 @@
+
 package com.example.realitycheck;
 
-import android.media.Image;
-import android.util.Log;
-
-import com.example.realitycheck.bean.PostBean;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 // [START post_class]
 @IgnoreExtraProperties
 public abstract class Post {
-    private Date postDate;
-    private User postAuthor;
+    private String postDate;
+    private String postAuthor;
+    private int likeCount;
+    private ArrayList<String> likedBy;
+    private String postId;
+    private String content;
+
+
+    private ArrayList<HashMap<String,Object>> comments;
+
+
+
+    private int commentCount;
+
+    private int repostCount;
+    private ArrayList<String> repostedBy;
+    public FirebaseAuth mAuth;
+    public DatabaseReference ref;
+    public FirebaseFirestore fStorage;
+
+
+
     public abstract void createPost();
-    private FirebaseAuth mAuth;
-    private DatabaseReference ref;
+
 
     public Post(){
+        this.likedBy = new ArrayList<String>();
 
-        mAuth = FirebaseAuth.getInstance();
+    }
+
+    public Post(String postAuthor, String postDate) {
+        //initialize post fields
+        this.postAuthor = postAuthor;
+        this.postDate = postDate;
+
+    }
 
 
 
-        PostBean postBean = new PostBean();
-        //Using getEmail() because cant figure out how to access username
-        postBean.setTitle(mAuth.getCurrentUser().getEmail());
-        postBean.setContent("this is content of the post");
-        postBean.setDescription(mAuth.getCurrentUser().getEmail()+ "re-post");
 
 
-        String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
-        postBean.setCurrentDate(currentDateTimeString);
-        PostActivity.postAdapter.addData(postBean);
-        //Have to update list of posts for current user as well
 
+
+    public ArrayList<String> getRepostedBy() {
+        return repostedBy;
+    }
+
+    public void setRepostedBy(ArrayList<String> repostedBy) {
+        this.repostedBy = repostedBy;
+    }
+
+
+
+
+    public int getRepostCount() {
+        return repostCount;
+    }
+
+    public void setRepostCount(int repostCount) {
+        this.repostCount = repostCount;
+    }
+
+
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+    public ArrayList<String> getLikedBy() {
+        return this.likedBy;
+    }
+
+    public void addToLikedBy(String username){
+        this.likedBy.add(username);
+    }
+
+    public void removeFromLikedBy(String username){
+        this.likedBy.remove(username);
+    }
+    public void setLikedBy(ArrayList<String> likedBY) {
+        this.likedBy = likedBY;
+    }
+    public void addToRepostedBy(String username){
+        this.repostedBy.add(username);
+    }
+
+    public void removeFromRepostedBy(String username){
+        this.repostedBy.remove(username);
+    }
+
+
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+
+    public ArrayList<HashMap<String, Object>> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<HashMap<String, Object>> comments) {
+        this.comments = comments;
+    }
+
+    public void addComment(HashMap<String,Object> comment){
+        this.comments.add(comment);
+    }
+    public void removeComment(HashMap<String,Object> comment){
+        this.comments.remove(comment);
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+    public String getPostDate() {
+        return postDate;
+    }
+
+    public void setPostDate(String postDate){
+        this.postDate = postDate;
+    }
+
+    public String getPostAuthor() {
+        return postAuthor;
+    }
+
+    public void setPostAuthor(String postAuthor) {
+        this.postAuthor = postAuthor;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
     }
    /* public String news_post;
     public Image image;
@@ -70,3 +185,4 @@ public abstract class Post {
     }
     // [END post_to_map]*/
 }
+

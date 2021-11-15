@@ -24,20 +24,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+// we are using firebase authentication to allow users to signup and collect their email/password
 public class SignUpPage extends Fragment {
 
     private SignupBinding binding;
     private FirebaseAuth mAuth;
     public static EditText email, username, password, confirmpassword;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-
 
     @Override
     public View onCreateView(
@@ -51,7 +50,7 @@ public class SignUpPage extends Fragment {
         return binding.getRoot();
 
     }
-
+    // binding connects the view to the class, and stores user-inputed information
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         email = binding.email;
         username = binding.username;
@@ -59,7 +58,7 @@ public class SignUpPage extends Fragment {
         confirmpassword = binding.confirmpassword;
 
         super.onViewCreated(view, savedInstanceState);
-
+        // this is to create an account
         binding.createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +75,7 @@ public class SignUpPage extends Fragment {
 
 
     }
-
+    // this functions tests the validity of the credentials: including password length etc...
     public boolean testInformation(){
         //gets string values
         String emailValue = email.getText().toString().trim();
@@ -122,14 +121,23 @@ public class SignUpPage extends Fragment {
             return true;
         }
     }
+    // this gets our instance of the firebase authentication and authenticates user using their email/password
     public void registerUser(){
 
         //Authenticate and add user to database
+
         mAuth.createUserWithEmailAndPassword(email.getText().toString().trim(),password.getText().toString().trim())
                 .addOnCompleteListener(SignUpPage.this.getActivity(),new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(binding.username.getText().toString())
+                                    .build();
+
+                            mAuth.getCurrentUser().updateProfile(profileUpdates);
+
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Account created successfully!")
                                     .setMessage("Please continue building your profile")
@@ -143,8 +151,8 @@ public class SignUpPage extends Fragment {
                                     }).show();
 
 
-                                }
-                            }
+                        }
+                    }
 
                 });
 

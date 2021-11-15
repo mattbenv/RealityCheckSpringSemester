@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="24dp"
         android:hint="Email/Username"
         android:inputType="textEmailAddress"
@@ -28,7 +28,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:hint="@string/prompt_password"
         android:imeActionLabel="@string/action_sign_in_short"
@@ -49,28 +49,29 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="35dp"
         android:layout_marginEnd="48dp"
-        android:layout_marginBottom="0dp"
         android:text="@string/action_sign_in_short"
-        app:layout_constraintBottom_toTopOf="@+id/resetPassword"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.528"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
-
-    <Button
+    <TextView
         android:id="@+id/resetPassword"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_gravity="start"
-        android:layout_marginStart="102dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="109dp"
-        android:layout_marginBottom="221dp"
+        android:layout_marginBottom="384dp"
+        android:clickable="true"
+        android:enabled="true"
         android:text="Reset Password"
+        android:textAlignment="center"
+        android:textColor="#5E35B1"
+
+        android:textSize="20dp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login" />
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -92,11 +93,23 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="72dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/rchecklogo" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/wave"
+        android:layout_width="479dp"
+        android:layout_height="479dp"
+        android:layout_marginTop="384dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.352"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/wave" />
 </androidx.constraintlayout.widget.ConstraintLayout>

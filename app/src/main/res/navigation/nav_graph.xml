@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/WelcomePage"
         android:name="com.example.realitycheck.WelcomePage"
-        android:label="Welcome Page"
-        tools:layout="@layout/welcome">
+        android:label=""
+    tools:layout="@layout/welcome">
 
         <action
             android:id="@+id/action_WelcomePage_to_SignUpPage"
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/LoginPage"
         android:name="com.example.realitycheck.LoginPage"
-        android:label="Log In Page"
+        android:label=""
         tools:layout="@layout/login">
 
         <action
@@ -44,13 +44,9 @@
         <action
             android:id="@+id/action_LogInPage_to_PostActivity"
             app:destination="@id/PostActivity" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/home"
-        android:name="com.example.realitycheck.Home"
-        android:label="Home Page"
-        tools:layout="@layout/home">
+        <action
+            android:id="@+id/action_LogInPage_to_ResetPasswordActivity"
+            app:destination="@id/ResetPasswordActivity" />
     </fragment>
 
     <fragment
@@ -67,10 +63,18 @@
     <fragment
         android:id="@+id/PostActivity"
         android:name="com.example.realitycheck.PostActivity"
+        android:label="Post Activity"
         tools:layout="@layout/activity_post">
         <action
             android:id="@+id/action_PostActivity_to_ProfileActivity"
             app:destination="@+id/ProfileActivity"/>
+
+        <action
+            android:id="@+id/action_PostActivity_to_SearchPage"
+            app:destination="@+id/SearchPage"/>
+        <action
+            android:id="@+id/action_PostActivity_to_CreatePostActivity"
+            app:destination="@+id/CreatePostActivity"/>
 
     </fragment>
 
@@ -82,8 +86,57 @@
         <action
             android:id="@+id/action_ProfileActivity_to_PostActivity"
             app:destination="@+id/PostActivity"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/ResetPasswordActivity"
+        android:name="com.example.realitycheck.ResetPassword"
+        tools:layout="@layout/activity_reset_password">
+
+        <action
+            android:id="@+id/action_ResetPasswordActivity_to_LoginPage"
+            app:destination="@+id/LoginPage"/>
 
     </fragment>
+
+
+    <fragment
+        android:id="@+id/SearchPage"
+        android:name="com.example.realitycheck.SearchPage"
+        tools:layout="@layout/activity_search">
+
+        <action
+            android:id="@+id/action_SearchPage_to_PostActivity"
+            app:destination="@+id/PostActivity"/>
+
+        <action
+            android:id="@+id/action_SearchPage_to_OtherUserProfileActivity"
+            app:destination="@+id/OtherUserProfileActivity"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/OtherUserProfileActivity"
+        android:name="com.example.realitycheck.otherUserProfileActivity"
+        tools:layout="@layout/activity_profile">
+
+        <action
+            android:id="@+id/action_OtherUserProfileActivity_to_SearchActivity"
+            app:destination="@+id/SearchPage"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/CreatePostActivity"
+        android:name="com.example.realitycheck.CreatePostActivity"
+        tools:layout="@layout/activity_create_post">
+
+        <action
+            android:id="@+id/action_CreatePostActivity_to_PostActivity"
+            app:destination="@+id/PostActivity"/>
+
+    </fragment>
+
 
 
 

@@ -9,6 +9,7 @@ public class User {
     public String name;
     public String bio;
     public String birthday;
+    public String uid;
     public String profileImagePath;
 
 
@@ -16,16 +17,23 @@ public class User {
     public int numfollowers;
     public int numfollowing;
     public int numfriends;
-    public ArrayList<User> followers;
-    public ArrayList<User> following;
-    public ArrayList<Post> posts;
-    public ArrayList<User> friends;
+
+
+    //change from user list to string for now
+    public ArrayList<String> followers;
+    public ArrayList<String> following;
+    public ArrayList<String> posts;
+    public ArrayList<String> friends;
     public ArrayList<Post> postLiked;
     public ArrayList<Post> reposted;
 
     //more information to track
+    public User(){
 
-    public User(String email, String username, String name, String bio, String birthday, String profileImagePath, ArrayList<Post>  posts, ArrayList<User> followers, ArrayList<User> following, ArrayList<User> friends){
+    }
+
+    public User(String uid,String email, String username, String name, String bio, String birthday, String profileImagePath, ArrayList<String>  posts, ArrayList<String> followers, ArrayList<String> following, ArrayList<String> friends){
+        this.uid = uid;
         this.email=email;
         this.username  = username;
         this.name = name;
@@ -47,15 +55,15 @@ public class User {
     }
 
     //This function compares the followers to following and returns the number of Friends
-    public int returnNumfriends(ArrayList<User> followers, ArrayList<User>  following){
+    public int returnNumfriends(ArrayList<String> followers, ArrayList<String>  following){
         int count=0;
         for (int i = 0;i < followers.size()-1; i++) {
             for(int j = 1; j <following.size()-1; j++) {
                 if (followers.get(i)==following.get(j)){
-                        count++;
+                    count++;
                 }
             }
-            }
+        }
         return count;
     }
     //This function compares the followers to following and returns the number of Friends
