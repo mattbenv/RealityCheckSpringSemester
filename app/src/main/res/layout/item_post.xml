@@ -31,24 +31,33 @@
         tools:layout_editor_absoluteY="16dp" />
 
 
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/siv_avatar"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/avatarCard"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="50dp"
+        app:elevation="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@color/white"
-        app:shapeAppearanceOverlay="@style/circleImageStyle"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="24dp"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_avatar"
+            android:layout_width="50dp"
+            android:layout_height="46dp"
+            android:scaleType="centerCrop"
+            android:src="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_gravity="center"
+            app:shapeAppearanceOverlay="@style/circleImageStyle" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/siv_avatar"
-        app:layout_constraintTop_toTopOf="@id/siv_avatar"
+        app:layout_constraintStart_toEndOf="@id/avatarCard"
+        app:layout_constraintTop_toTopOf="@id/avatarCard"
         android:text="DERAGAYA_"
         android:textColor="#fff"
         android:layout_marginStart="6dp"

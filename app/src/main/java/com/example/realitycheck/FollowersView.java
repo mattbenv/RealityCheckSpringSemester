@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavHostController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,24 +48,19 @@ public class FollowersView extends Fragment {
 
         recyclerView = binding.rlSearchBox;
 
-        binding.imageViewBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FollowersView.this)
-                        .navigate(R.id.action_ViewFollowersActivity_to_ProfileActivity);
-            }
-        });
+
 
         list = new ArrayList<User>();
         searchAdapter = new SearchAdapter(this.getContext(),list);
-        setUserList(followersViewType);
+        setUserList(followersViewType,SearchAdapter.selectedUser);
 
         return binding.getRoot();
     }
 
-    public void setUserList(Boolean type){
+    public void setUserList(Boolean type,User selectedUser){
         if(type== true) {
             binding.title.setText("Followers");
+            User userToUse = new User();
             if (LoginPage.currUser.followers.size() > 0) {
                 for (int i = 0; i < LoginPage.currUser.followers.size(); i++) {
                     database = FirebaseFirestore.getInstance().collection("Users").whereEqualTo("username", LoginPage.currUser.followers.get(i));
@@ -138,6 +134,8 @@ public class FollowersView extends Fragment {
         recyclerView.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
 
         recyclerView.setAdapter(searchAdapter);
+
+
 
     }
 

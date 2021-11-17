@@ -106,7 +106,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
         selectedUser = users.get(position);
 
-
         holder.binding.sivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,6 +114,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
             }
         });
+
         holder.userName.setText(selectedUser.username);
         holder.realName.setText(selectedUser.name);
 
@@ -122,6 +122,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         holder.binding.ivMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                selectedUser = users.get(position);
                 LottieAnimationView animationView  = holder.binding.blackcheck;
                 if (!LoginPage.currUser.following.contains(selectedUser.username)) {
                     LoginPage.currUser.following.add(selectedUser.username);
