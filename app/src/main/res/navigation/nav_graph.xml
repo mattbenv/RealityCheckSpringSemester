@@ -9,7 +9,7 @@
         android:id="@+id/WelcomePage"
         android:name="com.example.realitycheck.WelcomePage"
         android:label=""
-    tools:layout="@layout/welcome">
+        tools:layout="@layout/welcome">
 
         <action
             android:id="@+id/action_WelcomePage_to_SignUpPage"
@@ -76,6 +76,13 @@
             android:id="@+id/action_PostActivity_to_CreatePostActivity"
             app:destination="@+id/CreatePostActivity"/>
 
+        <action
+            android:id="@+id/to_ViewPostActivity"
+            app:destination="@+id/ViewPostActivity"/>
+        <action
+            android:id="@+id/to_OtherUserProfileActivity"
+            app:destination="@+id/OtherUserProfileActivity"/>
+
     </fragment>
 
     <fragment
@@ -86,6 +93,18 @@
         <action
             android:id="@+id/action_ProfileActivity_to_PostActivity"
             app:destination="@+id/PostActivity"/>
+        <action
+            android:id="@+id/action_ProfileActivity_to_ViewFollowersActivity"
+            app:destination="@+id/ViewFollowersActivity"/>
+        <action
+            android:id="@+id/to_ViewPostActivity"
+            app:destination="@+id/ViewPostActivity"/>
+        <action
+            android:id="@+id/to_OtherUserProfileActivity"
+            app:destination="@+id/OtherUserProfileActivity"/>
+
+
+
     </fragment>
 
     <fragment
@@ -110,7 +129,7 @@
             app:destination="@+id/PostActivity"/>
 
         <action
-            android:id="@+id/action_SearchPage_to_OtherUserProfileActivity"
+            android:id="@+id/to_OtherUserProfileActivity"
             app:destination="@+id/OtherUserProfileActivity"/>
 
     </fragment>
@@ -124,6 +143,18 @@
             android:id="@+id/action_OtherUserProfileActivity_to_SearchActivity"
             app:destination="@+id/SearchPage"/>
 
+
+        <action
+            android:id="@+id/action_otherUserProfileActivity_to_ViewFollowersActivity"
+            app:destination="@+id/ViewFollowersActivity"/>
+
+        <action
+            android:id="@+id/to_ViewPostActivity"
+            app:destination="@+id/ViewPostActivity"/>
+        <action
+            android:id="@+id/to_OtherUserProfileActivity"
+            app:destination="@+id/OtherUserProfileActivity"/>
+
     </fragment>
 
     <fragment
@@ -136,6 +167,30 @@
             app:destination="@+id/PostActivity"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/ViewFollowersActivity"
+        android:name="com.example.realitycheck.FollowersView"
+        tools:layout="@layout/activity_followers_view">
+
+        <action
+            android:id="@+id/action_ViewFollowersActivity_to_ProfileActivity"
+            app:destination="@+id/ProfileActivity"/>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/ViewPostActivity"
+        android:name="com.example.realitycheck.ViewPostActivity"
+        tools:layout="@layout/activity_view_post">
+
+        <action
+            android:id="@+id/action_ViewPostActivity_to_PostActivity"
+            app:destination="@+id/PostActivity"/>
+
+    </fragment>
+
 
 
 

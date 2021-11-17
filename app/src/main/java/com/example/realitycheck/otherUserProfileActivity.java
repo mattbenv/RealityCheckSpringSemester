@@ -1,6 +1,5 @@
 package com.example.realitycheck;
 
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +27,6 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class otherUserProfileActivity extends Fragment {
     private ActivityProfileBinding binding;
@@ -38,6 +35,7 @@ public class otherUserProfileActivity extends Fragment {
     private RecyclerView recyclerView;
     public CollectionReference database;
     public ArrayList<Post> list;
+    public static String previousActivty;
 
 
     @Override
@@ -57,9 +55,16 @@ public class otherUserProfileActivity extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding.username.setText(SearchAdapter.selectedUser.username);
         binding.UserBio.setText(SearchAdapter.selectedUser.bio);
+        binding.realName.setText(SearchAdapter.selectedUser.name);
+        int numFollowers = SearchAdapter.selectedUser.followers.size();
+        int numFollowing = SearchAdapter.selectedUser.following.size();
+
+        binding.followerCount.setText(String.valueOf(numFollowers));
+        binding.followingCount.setText(String.valueOf(numFollowing));
         binding.imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 NavHostFragment.findNavController(otherUserProfileActivity.this)
                         .navigate(R.id.action_OtherUserProfileActivity_to_SearchActivity);
 
@@ -81,35 +86,22 @@ public class otherUserProfileActivity extends Fragment {
         });
 
 
-
         binding.following.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("List of who "+SearchAdapter.selectedUser.username+ " follows")
-                        .setMessage(SearchAdapter.selectedUser.following.toString())
-                        .setCancelable(true)
-                        .setPositiveButton("close", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                FollowersView.followersViewType = false;
+                NavHostFragment.findNavController(otherUserProfileActivity.this)
+                        .navigate(R.id.action_otherUserProfileActivity_to_ViewFollowersActivity);
 
-                            }
-                        }).show();
             }
         });
         binding.followers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("List of "+SearchAdapter.selectedUser.username+'s'+ " followers")
-                        .setMessage(SearchAdapter.selectedUser.followers.toString())
-                        .setCancelable(true)
-                        .setPositiveButton("close", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                FollowersView.followersViewType = true;
+                NavHostFragment.findNavController(otherUserProfileActivity.this)
+                        .navigate(R.id.action_otherUserProfileActivity_to_ViewFollowersActivity);
 
-                            }
-                        }).show();
             }
         });
 
@@ -117,6 +109,7 @@ public class otherUserProfileActivity extends Fragment {
 
 
     }
+
 
     public void setPosts(){
         //setup new postadapter on profile page
@@ -140,7 +133,7 @@ public class otherUserProfileActivity extends Fragment {
                     post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
                     post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
                     post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
-                    post.setComments((ArrayList<HashMap<String,Object>>) documentSnapshot.get("comments"));
+                    post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
                     post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
                     list.add(0,post);
                     postAdapter.notifyDataSetChanged();
@@ -170,4 +163,6 @@ public class otherUserProfileActivity extends Fragment {
 
 
 }
+
+
 

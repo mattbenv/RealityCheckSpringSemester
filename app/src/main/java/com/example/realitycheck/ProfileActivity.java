@@ -2,18 +2,13 @@
 
 package com.example.realitycheck;
 
-import android.content.DialogInterface;
-import android.net.nsd.NsdManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,22 +18,14 @@ import com.bumptech.glide.Glide;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.databinding.ActivityProfileBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 public class ProfileActivity extends Fragment {
     private ActivityProfileBinding binding;
@@ -67,6 +54,11 @@ public class ProfileActivity extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding.username.setText(LoginPage.currUser.username);
         binding.UserBio.setText(LoginPage.currUser.bio);
+        binding.realName.setText(LoginPage.currUser.name);
+        int numFollowers = LoginPage.currUser.followers.size();
+        int numFollowing = LoginPage.currUser.following.size();
+        binding.followerCount.setText(String.valueOf(numFollowers));
+        binding.followingCount.setText(String.valueOf(numFollowing));
         binding.imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,31 +82,19 @@ public class ProfileActivity extends Fragment {
         binding.following.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("List of people you follow")
-                        .setMessage(LoginPage.currUser.following.toString())
-                        .setCancelable(true)
-                        .setPositiveButton("close", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                FollowersView.followersViewType = false;
+                NavHostFragment.findNavController(ProfileActivity.this)
+                        .navigate(R.id.action_ProfileActivity_to_ViewFollowersActivity);
 
-                            }
-                        }).show();
             }
         });
         binding.followers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("List of your followers")
-                        .setMessage(LoginPage.currUser.followers.toString())
-                        .setCancelable(true)
-                        .setPositiveButton("close", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                FollowersView.followersViewType = true;
+                NavHostFragment.findNavController(ProfileActivity.this)
+                        .navigate(R.id.action_ProfileActivity_to_ViewFollowersActivity);
 
-                            }
-                        }).show();
             }
         });
 
@@ -144,7 +124,7 @@ public class ProfileActivity extends Fragment {
                     post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
                     post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
                     post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
-                    post.setComments((ArrayList<HashMap<String,Object>>) documentSnapshot.get("comments"));
+                    post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
                     post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
                     list.add(0,post);
                     postAdapter.notifyDataSetChanged();
@@ -174,3 +154,4 @@ public class ProfileActivity extends Fragment {
 
 
 }
+
