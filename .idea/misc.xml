@@ -3,10 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Jonathan Zhang/StudioProjects/RealityCheck/app/src/main/res/layout/group_page.xml" value="0.20425724637681159" />
-        <entry key="app/src/main/res/layout/group_page.xml" value="0.24479166666666666" />
+        <entry key="..\:/Users/Jonathan Zhang/StudioProjects/RealityCheck/app/src/main/res/layout/activity_profile.xml" value="0.25181159420289856" />
+        <entry key="..\:/Users/Jonathan Zhang/StudioProjects/RealityCheck/app/src/main/res/layout/create_group.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Jonathan Zhang/StudioProjects/RealityCheck/app/src/main/res/layout/creategroup.xml" value="0.25181159420289856" />
+        <entry key="..\:/Users/Jonathan Zhang/StudioProjects/RealityCheck/app/src/main/res/layout/group_page.xml" value="0.25181159420289856" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>

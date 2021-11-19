@@ -1,5 +1,7 @@
 package com.example.realitycheck;
 
+import static com.example.realitycheck.LoginPage.currUser;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,36 +15,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.realitycheck.databinding.CreategroupBinding;
+import com.example.realitycheck.databinding.CreateGroupBinding;
 import com.example.realitycheck.databinding.SignupcontinuedBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 
-public class CreateGroup extends Fragment {
+public class CreateGroupActivity extends Fragment {
 
     private FirebaseAuth mAuth;
-    public static EditText groupname, addmembers;
-    private CreategroupBinding binding;
+    //public static EditText groupName, addMembers;
+
+    public String groupName, bio, profileImagePath;
+    public boolean privacy; //true is private, false is public
+    public int size; //number of members
+    public ArrayList<User> members;
+    public ArrayList<Post> posts;
+    public ArrayList<Post> postLiked;
+    public ArrayList<Post> reposted;
+
+    private CreateGroupBinding binding;
     private StorageReference storageReference;
     private FirebaseFirestore fStorage;
 
-    public static boolean CreateGroupType;
-
-   /*@Override
-   protected void onCreate(Bundle savedInstanceState) {
-       super.onCreate(savedInstanceState);
-       setContentView(R.layout.creategroup);
-   }*/
-
-    @Override
+    /*@Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
@@ -50,27 +58,37 @@ public class CreateGroup extends Fragment {
         //initialize storage reference to firebase
         storageReference = FirebaseStorage.getInstance().getReference(); //where we store images
         fStorage = FirebaseFirestore.getInstance(); //where we store group attributes
-        binding = CreategroupBinding.inflate(inflater, container, false);
+        binding = CreateGroupBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
-    // binding connects the view to the class, and stores group-inputed information
-    /*public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        groupname = binding.groupname;
-        addmembers = binding.addmembers;
-
+    // binding connects the view to the class, and stores group-inputted information
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         // this is to create an account
-        binding.createGroup.setOnClickListener(new View.OnClickListener() {
+        binding.CreateGroupActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                testInformation();
-                if (testInformation() == false) {
-                    testInformation();
+                groupName = binding.groupName.getText().toString();
+                bio = binding.addBio.getText().toString();
+                members.add(currUser);
+                //members.add(binding.addMembers.getText().toUser());
+                //profileImagePath =;
+                privacy = binding.setSecurity.isActivated();
+
+                if (!groupName.isEmpty() && !members.isEmpty() && !bio.isEmpty()) {
+                    Group group = new Group(groupName, bio, profileImagePath, privacy, posts, members);
+                    DocumentReference document = fStorage.collection("Groups").document(groupName);
+                    Map<String, Object> currGroup = new HashMap<>();
+                    currGroup.put("bio", group.bio);
+                    currGroup.put("groupName", group.groupName);
+                    currGroup.put("members", group.members);
+                    currGroup.put("privacy", group.privacy);
+                    currGroup.put("profileImagePath", group.profileImagePath);
+                    currGroup.put("size", group.members.size());
                 }
-                if (testInformation() == true) {
-                    registerUser();
-                }
+
             }
         });
 
@@ -78,7 +96,7 @@ public class CreateGroup extends Fragment {
     }
 
     // this functions tests the validity of the credentials: including password length etc...
-    public boolean testInformation(){
+    /*public boolean testInformation(){
         //gets string values
         String groupnameValue = groupname.getText().toString().trim();
         String addmembersValue = addmembers.getText().toString().trim();

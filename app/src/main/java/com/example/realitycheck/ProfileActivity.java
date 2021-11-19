@@ -100,7 +100,6 @@ public class ProfileActivity extends Fragment {
         binding.addgroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateGroup.CreateGroupType = true;
                 NavHostFragment.findNavController(ProfileActivity.this)
                         .navigate(R.id.action_ProfileActivity_to_CreateGroup);
 

@@ -4,7 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateGroup">
+    tools:context=".CreateGroupActivity">
+
+    <EditText
+        android:id="@+id/addBio"
+        android:layout_width="367dp"
+        android:layout_height="44dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="240dp"
+        android:layout_weight="1"
+        android:background="@drawable/roundable"
+        android:hint="Add Bio"
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/createNewGroup"
@@ -20,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/groupname"
+        android:id="@+id/groupName"
         android:layout_width="367dp"
         android:layout_height="44dp"
         android:layout_alignParentStart="true"
@@ -34,7 +48,7 @@
         android:textSize="20dp" />
 
     <EditText
-        android:id="@+id/addmembers"
+        android:id="@+id/addMembers"
         android:layout_width="365dp"
         android:layout_height="46dp"
         android:layout_alignParentStart="true"
@@ -47,34 +61,21 @@
         android:hint="  Add Members"
         android:textSize="20dp" />
 
-    <CheckBox
-        android:id="@+id/publicsecurity"
+    <ToggleButton
+        android:id="@+id/setSecurity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="254dp"
-        android:layout_marginEnd="316dp"
-        android:text="Public" />
-
-    <CheckBox
-        android:id="@+id/privatesecurity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="302dp"
-        android:layout_marginEnd="311dp"
-        android:text="Private" />
+        android:layout_marginTop="314dp"
+        android:layout_marginEnd="287dp"
+        android:checked="false"
+        android:text="setSecurity"
+        android:textOff="Public"
+        android:textOn="Private" />
 
     <Button
-        android:id="@+id/createGroup"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.899"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.629"
+        android:id="@+id/CreateGroupActivity"
         android:layout_width="173dp"
         android:layout_height="75dp"
         android:layout_alignParentStart="true"
@@ -84,6 +85,12 @@
         android:layout_marginTop="452dp"
         android:clickable="true"
         android:enabled="true"
-        android:text="Create Group" />
+        android:text="Create Group"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.899"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.629" />
 
 </RelativeLayout>
