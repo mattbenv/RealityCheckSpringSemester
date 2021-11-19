@@ -27,10 +27,10 @@ Each page in the application is called a fragment:
      -app/source/main/res/navigation/nav_graph
 
 Each fragment can be found as a .xml file
- --app/source/main/res/layout
+ -app/source/main/res/layout
  WelcomePage, Login, Signup, SignupContinue, ActivityResetPassword, Activity Post, Profile, comment, createpost, etc.
 
 Then we have our objects:
---app/source/main/java
+-app/source/main/java
 Users, otherUserProfile, WelcomePage, SignupPage, SignUpPageContinue, Posts, TextPost, Webpost, ImagePost, VideoPost, PostAdapter, SearchAdapter.
 
