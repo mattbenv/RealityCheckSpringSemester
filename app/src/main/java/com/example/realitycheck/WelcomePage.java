@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -18,13 +19,20 @@ import com.example.realitycheck.databinding.WelcomeBinding;
 
 public class WelcomePage extends Fragment {
     Animation rotateAnimation;
-    ImageView imageView;
+    Animation slideAnimation;
+    ImageView realitychecklogo;
+    ImageView fakenews;
+    ImageView computerwebpic;
 
     private void rotateAnimation(){
         rotateAnimation= AnimationUtils.loadAnimation(getContext(),R.anim.rotate);
-        imageView.startAnimation(rotateAnimation);
+        realitychecklogo.startAnimation(rotateAnimation);
     }
-
+    public void translateAnimation(){
+        slideAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in);
+        fakenews.startAnimation(slideAnimation);
+        computerwebpic.startAnimation(slideAnimation);
+    }
 
     private WelcomeBinding binding; // binds the welcome page class with the welcome page xml file (layout)
 
@@ -36,15 +44,18 @@ public class WelcomePage extends Fragment {
 
         binding = WelcomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //working on animating the rotating image reality check logo, and zoom in and out on other images
-        //ImageView itemImageView = view.findViewById(R.id.realityCheckLogo);
-        //ViewCompat.setTransitionName(itemImageView,"fadeout");
-        imageView=(ImageView) view.findViewById(R.id.realityCheckLogo);
+        fakenews = (ImageView) view.findViewById(R.id.fakenews);
+        realitychecklogo=(ImageView) view.findViewById(R.id.realityCheckLogo);
+        computerwebpic = (ImageView) view.findViewById(R.id.computerweb);
+        translateAnimation();
+
+        realitychecklogo.animate().translationY(0).translationX(10).alpha(1).setDuration(1000).setStartDelay(1600).start();
+        fakenews.animate().translationY(0).translationX(10).alpha(1).setDuration(1000).setStartDelay(1600).start();
+        computerwebpic.animate().translationY(0).translationX(10).alpha(1).setDuration(1000).setStartDelay(1600).start();
         rotateAnimation();
         //button that navigates to the sign up page
         binding.buttonSignup.setOnClickListener(new View.OnClickListener() {

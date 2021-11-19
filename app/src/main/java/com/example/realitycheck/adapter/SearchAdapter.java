@@ -1,9 +1,6 @@
 package com.example.realitycheck.adapter;
 
-import android.Manifest;
-import android.app.Fragment;
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,19 +12,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.LoginPage;
 import com.example.realitycheck.R;
-import com.example.realitycheck.SearchPage;
-import com.example.realitycheck.SignUpPageContinued;
 import com.example.realitycheck.User;
 import com.example.realitycheck.databinding.ItemSearchUserBinding;
+import com.example.realitycheck.otherUserProfileActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
@@ -107,16 +103,18 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         holder.binding.tvDescription.setText(name);
 
          */
-        selectedUser = users.get(position);
 
+        selectedUser = users.get(position);
 
         holder.binding.sivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SearchAdapter.this.context, ("Clicked"), Toast.LENGTH_SHORT).show();
-                Navigation.createNavigateOnClickListener(R.id.action_SearchPage_to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
+                selectedUser = users.get(position);
+                otherUserProfileActivity.previousActivty= "search";
+                Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
             }
         });
+
         holder.userName.setText(selectedUser.username);
         holder.realName.setText(selectedUser.name);
 
@@ -124,9 +122,34 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         holder.binding.ivMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginPage.currUser.following.add(selectedUser.username);
-                //user.followers.add(LoginPage.currUser.username);
-                Toast.makeText(SearchAdapter.this.context, ("Followed "+ selectedUser.username), Toast.LENGTH_SHORT).show();
+                selectedUser = users.get(position);
+                LottieAnimationView animationView  = holder.binding.blackcheck;
+                if (!LoginPage.currUser.following.contains(selectedUser.username)) {
+                    LoginPage.currUser.following.add(selectedUser.username);
+                    FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username).update("following", LoginPage.currUser.following);
+                    selectedUser.followers.add(LoginPage.currUser.username);
+                    FirebaseFirestore.getInstance().collection("Users").document(selectedUser.username).update("followers", selectedUser.followers);
+                    // Declaring the animation view
+                    animationView
+                            .addAnimatorUpdateListener(
+                                    (animation) -> {
+                                        // Do something.
+                                    });
+                    animationView
+                            .playAnimation();
+
+                    if (animationView.isAnimating()) {
+                        // Do something.
+                    }
+                    Toast.makeText(SearchAdapter.this.context, ("Followed " + selectedUser.username), Toast.LENGTH_SHORT).show();
+                }
+                else if(LoginPage.currUser.following.contains(selectedUser.username)){
+                    LoginPage.currUser.following.remove(selectedUser.username);
+                    FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username).update("following", LoginPage.currUser.following);
+                    selectedUser.followers.remove(LoginPage.currUser.username);
+                    FirebaseFirestore.getInstance().collection("Users").document(selectedUser.username).update("followers", selectedUser.followers);
+                    Toast.makeText(SearchAdapter.this.context, ("Unfollowed " + selectedUser.username), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         ImageView imageView = holder.profilePicture;

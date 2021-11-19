@@ -2,40 +2,31 @@
 
 package com.example.realitycheck;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.realitycheck.adapter.SearchAdapter;
-import com.example.realitycheck.databinding.ActivityPostBinding;
-import com.example.realitycheck.databinding.ActivitySearchBinding;
-import com.example.realitycheck.util.LinearLayoutDivider;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.realitycheck.adapter.SearchAdapter;
+import com.example.realitycheck.databinding.ActivitySearchBinding;
+import com.example.realitycheck.util.LinearLayoutDivider;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class SearchPage extends Fragment {
@@ -66,9 +57,9 @@ public class SearchPage extends Fragment {
 
         //System.out.println(binding.toptab.getTabAt(1));
 
-        
+
         System.out.println(binding.toptab.getSelectedTabPosition());
-       // binding.toptab.getSelectedTabPosition()
+        // binding.toptab.getSelectedTabPosition()
 
         //recyclerView.setAdapter(searchAdapter);
 
@@ -111,14 +102,6 @@ public class SearchPage extends Fragment {
 
             }
         });
-        /*ArrayList<String> sortUsernamesOrder = new ArrayList<>();
-        for(User user:list){
-            sortUsernamesOrder.add(user.username);
-        }
-        //sortStrings(sortUsernamesOrder,sortUsernamesOrder);
-
-
-         */
 
         //The bar where you can
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -138,28 +121,6 @@ public class SearchPage extends Fragment {
 
         return binding.getRoot();
     }
-
-
-   /* public static void sortStrings(Arra arr, int n)
-    {
-        String storage;
-
-        // Sorting strings using bubble sort
-        for (int j = 0; j < n - 1; j++)
-        {
-            for (int i = j + 1; i < n; i++)
-            {
-                if (arr[j].compareTo(arr[i]) > 0)
-                {
-                    storage = arr[j];
-                    arr[j] = arr[i];
-                    arr[i] = storage;
-                }
-            }
-        }
-    }
-
-    */
 
 
     public void bottomNavigate(ActivitySearchBinding binding){

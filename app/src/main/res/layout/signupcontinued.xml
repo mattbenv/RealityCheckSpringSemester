@@ -64,7 +64,12 @@
         android:layout_marginTop="43dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="3dp"
+        android:background="@drawable/roundable"
         android:hint="Name"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         app:layout_constraintBottom_toTopOf="@+id/dateOfBirth"
@@ -83,7 +88,7 @@
         android:layout_marginBottom="25dp"
         android:enabled="true"
         android:clickable="true"
-        android:text="Done"
+        android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -129,6 +134,7 @@
             android:id="@+id/SCROLLER_ID"
             android:layout_width="match_parent"
             android:layout_height="142dp"
+            android:backgroundTint="#F1EBEB"
             android:fillViewport="true"
             android:scrollbars="vertical">
 
@@ -137,7 +143,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1.0"
-                android:text="Tell us something about yourself"
+                android:hint="Describe yourself"
+                android:text=""
                 android:textSize="18dp" />
         </ScrollView>
     </LinearLayout>
@@ -151,6 +158,11 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="12dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/roundable"
         android:hint="Date of Birth (MM/DD/YYY)"
         android:inputType="date"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
@@ -180,12 +192,13 @@
         android:layout_marginTop="14dp"
         android:layout_marginEnd="65dp"
         android:layout_marginBottom="180dp"
+        android:background="@drawable/roundable"
+        android:src="@color/white"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/selectPicture"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        android:src="@color/white" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/takePicture"

@@ -1,43 +1,36 @@
 package com.example.realitycheck.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.example.realitycheck.Post;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.RequiresApi;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.LoginPage;
-import com.example.realitycheck.R;
-import com.example.realitycheck.User;
 import com.example.realitycheck.Post;
+import com.example.realitycheck.R;
+import com.example.realitycheck.ViewPostActivity;
 import com.example.realitycheck.databinding.ItemPostBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
-import java.util.UUID;
 //todo: understand how homepage works which is related to post adapter/viewholder/activity. if we can, design new one
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
@@ -50,10 +43,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public int likes;
     public int reposts;
     public int comments;
+    public static Post post;
 
     public PostAdapter(Context context, ArrayList<Post> post) {
         this.context = context;
-
         postList = post;
     }
 
@@ -67,13 +60,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
+
+        //sorts list of post based on post date
+        //need to convert String postDate to dateTime in order to compare accurately
+        Collections.sort(postList, new Comparator<Post>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public int compare(Post post, Post t1) {
+                return(post.getPostDate().compareTo(t1.getPostDate()));
+
+            }
+        });
+        Collections.reverse(postList);
+
+
         //gets current post from the recycler view list based its position
-        Post post = postList.get(position);
+        post = postList.get(position);
+
 
         //gets post values
         String content = post.getContent();
         String postID = post.getPostId();
         String currentDate = post.getPostDate();
+        int commentCount = post.getCommentCount();
         String author = post.getPostAuthor();
         likes = post.getLikeCount();
         ArrayList<String> likedBy = post.getLikedBy();
@@ -81,12 +90,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         likeCount = new int[1];
         likeCount[0] = likes;
 
-
         //displays values using item_post layout
         holder.binding.tvLike.setText(String.valueOf(likes));
+        holder.binding.tvCycle.setText(String.valueOf(post.getRepostCount()));
         holder.binding.tvTitle.setText(author);
         holder.binding.tvContent.setText(content);
         holder.binding.date.setText(currentDate);
+        holder.binding.tvReview.setText(String.valueOf(commentCount));
+
+        ViewPostActivity.savedPosition = 0;
+
+        holder.binding.post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                post = postList.get(position);
+                ViewPostActivity.savedPosition = position;
+                post.setCommentCount(Integer.parseInt(holder.binding.tvReview.getText().toString()));
+                post.setLikeCount(Integer.parseInt(holder.binding.tvLike.getText().toString()));
+                post.setRepostCount(Integer.parseInt(holder.binding.tvCycle.getText().toString()));
+                Navigation.createNavigateOnClickListener(R.id.to_ViewPostActivity).onClick(holder.binding.post);
+            }
+        });
 
 
         //gets the post authors profile photo and displays it on the posts
@@ -131,7 +155,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.binding.ivReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handleComment(postID,post,holder);
+                post = postList.get(position);
+                Navigation.createNavigateOnClickListener(R.id.to_ViewPostActivity).onClick(holder.binding.post);
             }
         });
 
@@ -171,50 +196,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
 
 
-    public void handleComment(String postID, Post post, PostViewHolder holder){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Comment");
-        final EditText input = new EditText(context);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-        builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton("Post Comment", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
-                comments = post.getCommentCount()+1;
-                post.setCommentCount(comments);
-                document.update("commentCount",comments);
-                holder.binding.tvReview.setText(Integer.toString(comments));
-                HashMap<String,Object> newComment = new HashMap<>();
-                newComment.put("commentAuthor",LoginPage.currUser.username.toString());
-                newComment.put("comment",input.getText().toString());
-                newComment.put("commentTime", java.text.DateFormat.getDateTimeInstance().format(new Date()));
-                post.addComment(newComment);
-                document.update("comments",post.getComments());
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.show();
 
 
-    }
-    
-    
-    
     //adds like to post in database and on the view
     public void handleLike(String postID,Post post, PostViewHolder holder){
+        LottieAnimationView animationView  = holder.binding.heart1;
         DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
         //commented out for now but limits to one like per user
         if(!post.getLikedBy().contains(LoginPage.currUser.username)){
@@ -224,7 +210,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             //Somewehere in here i want to use this animation when a post is liked.
 
             // Declaring the animation view
-            LottieAnimationView animationView  = holder.binding.heart1;
             animationView
                     .addAnimatorUpdateListener(
                             (animation) -> {
@@ -242,6 +227,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
         //unlike
         else if(post.getLikedBy().contains(LoginPage.currUser.username)){
+            //need to remove like animation in here
             likes = post.getLikeCount()-1;
             post.setLikeCount(likes);
             post.removeFromLikedBy(LoginPage.currUser.username);

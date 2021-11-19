@@ -7,23 +7,17 @@
     android:orientation="vertical"
     tools:context=".ProfileActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="240dp">
-
-
-    </LinearLayout>
 
     <!--Top Header Layout-->
     <LinearLayout
 
         android:id="@+id/topbar"
         android:layout_width="match_parent"
-        android:layout_height="76dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#101012"
+        android:background="#060707"
         android:gravity="center_vertical"
-        android:padding="25dp">
+        android:padding="15dp">
 
 
         <ImageView
@@ -32,82 +26,58 @@
             android:layout_height="wrap_content"
             android:src="@drawable/abc_vector_test" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <RelativeLayout
-            android:layout_width="50dp"
-            android:layout_height="50dp">
-
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_centerInParent="true"
-                android:padding="6dp" />
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:src="@android:drawable/ic_menu_manage" />
-            />
-        </RelativeLayout>
-
+        <ImageView
+            android:id="@+id/settings"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_more_horiz"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title" />
     </LinearLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/topbar"
         android:scrollbars="none">
 
+
+
         <LinearLayout
+            android:id="@+id/topofProfile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#060707"
             android:orientation="vertical"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingRight="20dp">
 
-            <!--Top Profile Section -->
 
-            <!--Option Bar-->
-
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#060707"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="26dp"
+                android:paddingStart="10dp"
                 app:cardCornerRadius="40dp">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/profilePicCard"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    app:cardCornerRadius="40dp"
-                    app:elevation="12dp">
+                    android:layout_marginTop="5dp"
+                    app:cardCornerRadius="50dp"
+                    app:elevation="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
 
                     <ImageView
@@ -122,130 +92,124 @@
 
 
                 <TextView
-                    android:id="@+id/username"
+                    android:id="@+id/realName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Username"
-
+                    android:text="Real Name"
                     android:textColor="@color/white"
                     android:textSize="21sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/profilePicCard"
+                    app:layout_constraintTop_toBottomOf="@id/profilePicCard" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginTop="6dp"
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                    android:text="Username"
+                    android:textColor="#707070"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/profilePicCard"
+                    app:layout_constraintTop_toBottomOf="@id/realName" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/UserBio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Bio:"
-                                android:textColor="@color/white"
-                                android:textSize="17sp"
-                                android:textStyle="bold" />
+                    android:text="Bio"
 
-                            <Space
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/profilePicCard"
+                    app:layout_constraintTop_toBottomOf="@id/username" />
 
-
-                        </LinearLayout>
-
-                        <ScrollView
-                            android:id="@+id/SCROLLER_ID"
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            android:fillViewport="true"
-                            android:scrollbars="vertical">
-
-                            <TextView
-                                android:id="@+id/User_Bio"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:background="@android:color/white"
-                                android:text="User Bio..." />
-                        </ScrollView>
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
+                <TextView
+                    android:id="@+id/followingCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingBottom="12dp"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/UserBio" />
 
                 <TextView
                     android:id="@+id/following"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:padding="13dp"
-                    android:text="Following"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="5dp"
 
-                <LinearLayout
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/black" />
+                    android:paddingBottom="12dp"
+                    android:text="Following"
+                    android:textColor="#707070"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@id/followingCount"
+                    app:layout_constraintTop_toBottomOf="@id/UserBio" />
+
+                <TextView
+                    android:id="@+id/followerCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="30dp"
+                    android:paddingBottom="12dp"
+
+                    android:text="0"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toEndOf="@id/following"
+                    app:layout_constraintTop_toBottomOf="@id/UserBio" />
 
                 <TextView
                     android:id="@+id/followers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:padding="13dp"
-                    android:text="Followers"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="5dp"
+                    android:paddingBottom="12dp"
 
-                <LinearLayout
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/black" />
+                    android:text="Followers"
+                    android:textColor="#707070"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@id/followerCount"
+                    app:layout_constraintTop_toBottomOf="@id/UserBio" />
 
                 <TextView
-                    android:id="@+id/taggedIn"
+                    android:id="@+id/tagCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:padding="13dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="30dp"
+                    android:paddingBottom="12dp"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toEndOf="@id/followers"
+                    app:layout_constraintTop_toBottomOf="@id/UserBio" />
+
+
+                <TextView
+                    android:id="@+id/taggedin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="5dp"
+                    android:paddingBottom="12dp"
                     android:text="Tagged In"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textColor="#707070"
+                    android:textSize="16dp"
+                    app:layout_constraintStart_toEndOf="@id/tagCount"
+                    app:layout_constraintTop_toBottomOf="@id/UserBio" />
 
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <!--Bootom Cards with sections-->
             <LinearLayout
@@ -262,6 +226,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:background="@color/white"
                     android:orientation="vertical"
                     android:padding="16dp">
 
@@ -369,6 +334,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:background="@color/white"
                     android:orientation="vertical"
                     android:padding="16dp">
 
@@ -512,6 +478,7 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rl_post_box"
                         android:layout_width="match_parent"
@@ -519,15 +486,14 @@
                         android:padding="0dp"
                         app:layout_constraintVertical_bias="0.0"
                         tools:layout_editor_absoluteX="0dp" />
+
                 </LinearLayout>
-
-
             </LinearLayout>
 
         </LinearLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 </RelativeLayout>

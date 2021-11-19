@@ -20,7 +20,7 @@ public abstract class Post {
     private String content;
 
 
-    private ArrayList<HashMap<String,Object>> comments;
+    private ArrayList<Comment> comments;
 
 
 
@@ -116,18 +116,18 @@ public abstract class Post {
     }
 
 
-    public ArrayList<HashMap<String, Object>> getComments() {
+    public ArrayList<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<HashMap<String, Object>> comments) {
+    public void setComments(ArrayList<Comment> comments) {
         this.comments = comments;
     }
 
-    public void addComment(HashMap<String,Object> comment){
+    public void addComment(Comment comment){
         this.comments.add(comment);
     }
-    public void removeComment(HashMap<String,Object> comment){
+    public void removeComment(Comment comment){
         this.comments.remove(comment);
     }
 
@@ -185,4 +185,6 @@ public abstract class Post {
     }
     // [END post_to_map]*/
 }
+
+
 

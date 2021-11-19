@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,9 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.databinding.ActivityCreatePostBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CreatePostActivity extends Fragment {
     private ActivityCreatePostBinding binding;
@@ -102,7 +97,7 @@ public class CreatePostActivity extends Fragment {
         post.setLikedBy(likeList);
         ArrayList<String> repostList = new ArrayList<>();
         post.setRepostedBy(repostList);
-        ArrayList<HashMap<String,Object>> comments = new ArrayList<>();
+        ArrayList<Comment> comments = new ArrayList<>();
         post.setComments(comments);
         //PostActivity.postAdapter.addData(post);
 
