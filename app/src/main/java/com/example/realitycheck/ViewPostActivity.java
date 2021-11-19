@@ -1,5 +1,8 @@
 package com.example.realitycheck;
 
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,10 +27,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ViewPostActivity  extends Fragment {
     private ActivityViewPostBinding binding;
@@ -35,6 +41,8 @@ public class ViewPostActivity  extends Fragment {
     public CommentAdapter commentAdapter;
     public Post currPost;
     public static int savedPosition;
+    public static String previous;
+    public static Post savedPost;
 
 
 
@@ -44,7 +52,12 @@ public class ViewPostActivity  extends Fragment {
             Bundle savedInstanceState
     ) {
         binding  =  ActivityViewPostBinding.inflate(inflater, container, false);
-        currPost = PostAdapter.post;
+        if(previous == "otherprofile"){
+            currPost = savedPost;
+        }
+        else {
+            currPost = PostAdapter.post;
+        }
         binding.username.setText(currPost.getPostAuthor());
         binding.date.setText(currPost.getPostDate());
         binding.tvContent.setText(currPost.getContent());
@@ -52,10 +65,12 @@ public class ViewPostActivity  extends Fragment {
         binding.likeCount.setText(String.valueOf(currPost.getLikeCount()));
         binding.repostCount.setText(String.valueOf(currPost.getRepostCount()));
 
+
+
         list = new ArrayList<Comment>();
         commentAdapter = new CommentAdapter(this.getContext(),list);
 
-
+        setComments();
 
         binding.add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +88,9 @@ public class ViewPostActivity  extends Fragment {
                 document.update("comments",currPost.getComments());
                 commentAdapter.addData(newComment);
                 binding.commentCount.setText(String.valueOf(comments));
+                binding.createComment.clearFocus();
                 binding.comment.scrollToPosition(0);
+                commentNotifications(currPost.getPostId());
 
 
 
@@ -114,8 +131,6 @@ public class ViewPostActivity  extends Fragment {
                 });
             }
         });
-        setComments();
-
         return binding.getRoot();
     }
 
@@ -132,8 +147,8 @@ public class ViewPostActivity  extends Fragment {
                 for(HashMap comment :commentsMap){
                     Comment eachComment = new Comment(comment.get("commentAuthor").toString(),comment.get("commentContent").toString(),comment.get("commentDate").toString());
                     comments.add(eachComment);
+                    list.add(0, eachComment);
                 }
-                list.addAll(comments);
                 commentAdapter.notifyDataSetChanged();
             }
 
@@ -159,6 +174,7 @@ public class ViewPostActivity  extends Fragment {
             binding.repostCount.setText(Integer.toString(reposts));
             post.addToRepostedBy(LoginPage.currUser.username);
             document.update("repostedBy",post.getRepostedBy());
+            repostNotifications(post.getPostId());
         }
         //unlike
         else if(post.getRepostedBy().contains(LoginPage.currUser.username)){
@@ -203,6 +219,7 @@ public class ViewPostActivity  extends Fragment {
             binding.likeCount.setText(Integer.toString(likes));
             post.addToLikedBy(LoginPage.currUser.username);
             document.update("likedBy",post.getLikedBy());
+            likeNotifications(post.getPostId());
         }
         //unlike
         else if(post.getLikedBy().contains(LoginPage.currUser.username)){
@@ -217,6 +234,91 @@ public class ViewPostActivity  extends Fragment {
     }
 
 
+    public void likeNotifications(String postID){
+        Intent intent = new Intent(getContext(),ViewPostActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+        if(LoginPage.currUser.posts.contains(postID)){
+            DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
+            document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    ArrayList<String> likedBy = (ArrayList<String>) documentSnapshot.get("likedBy");
+                    String likee = likedBy.get(likedBy.size()-1);
+                    Notification likeNotification = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        LocalTime now = LocalTime.now();
+
+                        DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("hh:mm:ss a");
+                        likeNotification = new Notification.Builder(getContext(),"my_channel_01")
+                                .setContentTitle(likee+ " liked your post at "+ now.format(dtf3))
+                                .setContentText("Like Received")
+                                .setContentIntent(pendingIntent)
+                                .setSmallIcon(R.drawable.ic_like).build();
+                    }
+
+                    PostActivity.mNotificationManager.notify(getNotificationID(),likeNotification);
+                }
+            });
+
+        }
+    }
+
+    public int getNotificationID(){
+        return ThreadLocalRandom.current().nextInt();
+    }
+
+
+    public void repostNotifications(String postID){
+        if(LoginPage.currUser.posts.contains(postID)){
+            DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
+            document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    ArrayList<String> repostedBy = (ArrayList<String>) documentSnapshot.get("repostedBy");
+                    String repostee = repostedBy.get(repostedBy.size()-1);
+                    Notification repostNotification = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        LocalTime now = LocalTime.now();
+                        DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("hh:mm:ss a");
+                        repostNotification = new Notification.Builder(getContext(),"my_channel_01")
+                                .setContentTitle(repostee+ " reposted your post at "+ now.format(dtf3))
+                                .setContentText("Repost Received")
+                                .setSmallIcon(R.drawable.ic_cycle).build();
+                    }
+                    PostActivity.mNotificationManager.notify(getNotificationID(),repostNotification);
+                }
+            });
+
+        }
+    }
+    public void commentNotifications(String postID){
+        if(LoginPage.currUser.posts.contains(postID)){
+            DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
+            document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    ArrayList<HashMap<String,Object>> comments = (ArrayList<HashMap<String,Object>>) documentSnapshot.get("comments");
+                    HashMap mostRecentComment = comments.get(comments.size()-1);
+                    Notification repostNotification = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        LocalTime now = LocalTime.now();
+                        DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("hh:mm:ss a");
+                        repostNotification = new Notification.Builder(getContext(),"my_channel_01")
+                                .setContentTitle(mostRecentComment.get("commentAuthor") + " commented: "+ mostRecentComment.get("commentContent") + " at "+ mostRecentComment.get("commentDate"))
+                                .setContentText("Comment Received")
+                                .setSmallIcon(R.drawable.ic_review).build();
+                    }
+                    PostActivity.mNotificationManager.notify(getNotificationID(),repostNotification);
+                }
+            });
+
+        }
+    }
+
+
+
+
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -225,16 +327,13 @@ public class ViewPostActivity  extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        savedPost = currPost;
         binding = null;
     }
 
 
 
 }
-
-
-
-
 
 
 

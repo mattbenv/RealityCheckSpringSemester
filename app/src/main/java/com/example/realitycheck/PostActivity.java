@@ -1,5 +1,11 @@
 package com.example.realitycheck;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,16 +25,23 @@ import com.bumptech.glide.Glide;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.databinding.ActivityPostBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class PostActivity extends Fragment {
 
@@ -41,6 +54,9 @@ public class PostActivity extends Fragment {
     ActionBarDrawerToggle toggle;
 
     public ArrayList<Post> unsortedList;
+
+    public static String notificationChannelId;
+    public static NotificationManager mNotificationManager;
     public ArrayList<Post> list;
     public FirebaseFirestore fStorage;
     public PostAdapter getPostAdapter(){
@@ -86,6 +102,30 @@ public class PostActivity extends Fragment {
         setPosts();
         bottomNavigate(binding);
 
+        setUpNotifications();
+
+
+        DocumentReference docRef = fStorage.collection("Users").document(LoginPage.currUser.username);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String,Object> userMap = documentSnapshot.getData();
+                String profileImagePath = userMap.get("profileImagePath").toString();
+                // Reference to an image file in Cloud Storage
+                FirebaseStorage.getInstance().getReference().child("images/"+profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView imageView = binding.getRoot().findViewById(R.id.shapeableImageView);
+                        Glide.with(getContext())
+                                .load(uri)
+                                .into(imageView);
+                    }
+                });
+            }
+        });
+
+
+
 
         binding.getRoot().findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,12 +160,6 @@ public class PostActivity extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        ImageView imageView = this.getView().findViewById(R.id.shapeableImageView);
-        Glide.with(this.getContext())
-                .load(LoginPage.storageProfilePictureReference)
-                .into(imageView);
-
-
     }
 
     @Override
@@ -141,8 +175,9 @@ public class PostActivity extends Fragment {
         list = new ArrayList<Post>();
         PostAdapter postAdapter = new PostAdapter(this.getContext(),list);
         ArrayList<String> followersAndCurrent = new ArrayList<>();
-        followersAndCurrent.addAll(LoginPage.currUser.following);
         followersAndCurrent.add(LoginPage.currUser.username);
+        followersAndCurrent.addAll(LoginPage.currUser.following);
+
 
         if(LoginPage.currUser.following.size()>0) {
             for (int i = 0;i< followersAndCurrent.size();i++) {
@@ -216,6 +251,26 @@ public class PostActivity extends Fragment {
             }
         });
     }
+
+
+
+    public void setUpNotifications(){
+
+        mNotificationManager = (NotificationManager) getSystemService(getContext(),NotificationManager.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationChannelId = "my_channel_01";
+            CharSequence name = "name";
+            String description = "description";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(notificationChannelId, name,importance);
+            mChannel.setDescription(description);
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
+
+
+    }
+
+
 
 
 

@@ -4,17 +4,22 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.Comment;
+import com.example.realitycheck.R;
+import com.example.realitycheck.User;
 import com.example.realitycheck.databinding.ItemCommentBinding;
+import com.example.realitycheck.otherUserProfileActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -38,6 +43,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public String content;
     public String date;
 
+    public static User userToNavTo;
 
 
     public CommentAdapter(Context context, ArrayList<Comment> comments) {
@@ -85,6 +91,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
 
 
+        holder.binding.sivAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                comment = commentList.get(position);
+                navigateToUserProfile(holder);
+
+            }
+        });
+
 
         //gets the post authors profile photo and displays it on the posts
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(author);
@@ -115,6 +130,29 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         notifyItemInserted(0);
     }
 
+
+    public void navigateToUserProfile(CommentAdapter.CommentViewHolder holder){
+        FirebaseFirestore.getInstance().collection("Users").document(comment.getCommentAuthor()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot value) {
+                Map<String, Object> userMap = value.getData();
+                String uid = userMap.get("uid").toString();
+                String email = userMap.get("email").toString();
+                String username = userMap.get("username").toString();
+                String name = userMap.get("name").toString();
+                String bio = userMap.get("bio").toString();
+                String birthday = userMap.get("birthday").toString();
+                String profileImagePath = userMap.get("profileImagePath").toString();
+                ArrayList<String> posts = (ArrayList<String>) userMap.get("posts");
+                ArrayList<String> followers = (ArrayList<String>) userMap.get("followers");
+                ArrayList<String> following = (ArrayList<String>) userMap.get("following");
+                ArrayList<String> friends = (ArrayList<String>) userMap.get("friends");
+                userToNavTo = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends);
+                otherUserProfileActivity.previousActivty = "comment";
+                Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
+            }
+        });
+    }
 
 
 

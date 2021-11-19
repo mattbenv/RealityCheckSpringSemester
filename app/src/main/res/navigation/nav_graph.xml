@@ -195,6 +195,10 @@
             android:id="@+id/action_ViewPostActivity_to_PostActivity"
             app:destination="@+id/PostActivity"/>
 
+        <action
+            android:id="@+id/to_OtherUserProfileActivity"
+            app:destination="@+id/OtherUserProfileActivity"/>
+
     </fragment>
     <fragment
         android:id="@+id/CreateGroupActivity"

@@ -54,6 +54,7 @@ public class ProfileActivity extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding.username.setText(LoginPage.currUser.username);
         binding.UserBio.setText(LoginPage.currUser.bio);
+        binding.buttonfollow.setVisibility(View.GONE);
         binding.realName.setText(LoginPage.currUser.name);
         int numFollowers = LoginPage.currUser.followers.size();
         int numFollowing = LoginPage.currUser.following.size();
@@ -148,6 +149,7 @@ public class ProfileActivity extends Fragment {
 
 
     }
+
 
 
 

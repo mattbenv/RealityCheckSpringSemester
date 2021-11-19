@@ -25,6 +25,7 @@
     <EditText
 
         android:id="@+id/email"
+        android:textColorHint="@color/black"
         android:layout_width="363dp"
         android:layout_height="43dp"
         android:layout_marginTop="20dp"
@@ -33,6 +34,7 @@
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
         android:paddingLeft="20dp"
+        android:textColor="@color/black"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
@@ -41,10 +43,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+
     <EditText
         android:id="@+id/confirmpassword"
         android:layout_width="363dp"
         android:layout_height="43dp"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
         android:layout_marginTop="8dp"
         android:background="@drawable/roundable"
         android:hint="Confirm Password"
@@ -67,9 +72,11 @@
         android:layout_marginTop="4dp"
         android:background="@drawable/roundable"
         android:hint="Username"
+        android:textColorHint="@color/black"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
         android:paddingLeft="20dp"
+        android:textColor="@color/black"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
@@ -87,6 +94,8 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:minHeight="48dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
@@ -95,6 +104,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username" />
+    <ToggleButton
+        android:id="@+id/showPassowrd"
+        android:layout_width="55dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        style="@style/FirebaseUI.Button.AccountChooser.GitHubButton"
+        android:background="@drawable/roundable"
+        android:layout_height="0dp"
+        android:layout_marginEnd="5dp"
+        android:enabled="true"
+        app:layout_constraintEnd_toEndOf="@id/password"
+        app:layout_constraintBottom_toBottomOf="@id/password"
+        app:layout_constraintTop_toTopOf="@id/password"
+        />
+
+    <ToggleButton
+        android:id="@+id/showConfirmPassowrd"
+        android:layout_width="55dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/roundable"
+        android:layout_height="0dp"
+        android:layout_marginEnd="5dp"
+        style="@style/FirebaseUI.Button.AccountChooser.GitHubButton"
+        android:enabled="true"
+        app:layout_constraintEnd_toEndOf="@id/confirmpassword"
+        app:layout_constraintBottom_toBottomOf="@id/confirmpassword"
+        app:layout_constraintTop_toTopOf="@id/confirmpassword"
+        />
+
 
     <Button
         android:id="@+id/createAccount"

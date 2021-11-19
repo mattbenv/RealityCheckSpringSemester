@@ -2,11 +2,13 @@ package com.example.realitycheck;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -64,10 +66,12 @@ public class LoginPage extends Fragment {
         realitycheckbox.startAnimation(slideinAnimation);
         binding.resetPassword.startAnimation(slideinAnimation);
         binding.login.startAnimation(slideinAnimation);
+        binding.showPassowrd.startAnimation(slideinAnimation);
         getView().findViewById(R.id.username).startAnimation(slideinAnimation);
         getView().findViewById(R.id.password).startAnimation(slideinAnimation);
         //binding.login.startAnimation(slideinAnimation);
         getView().findViewById(R.id.resetPassword).startAnimation(slideinAnimation);
+        getView().findViewById(R.id.showPassowrd).startAnimation(slideinAnimation);
     }
 
 
@@ -107,6 +111,18 @@ public class LoginPage extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(LoginPage.this)
                         .navigate(R.id.action_LogInPage_to_ResetPasswordActivity);
+            }
+        });
+
+        binding.showPassowrd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!b){
+                    binding.password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+                if(b){
+                    binding.password.setInputType(129);
+                }
             }
         });
 

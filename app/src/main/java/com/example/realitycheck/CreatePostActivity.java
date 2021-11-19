@@ -84,7 +84,17 @@ public class CreatePostActivity extends Fragment {
         String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
         Post post = new TextPost(LoginPage.currUser.username,currentDateTimeString);
         int numposts = LoginPage.currUser.posts.size();
-        postId = LoginPage.currUser.username + "_Post_" + numposts;
+
+        if(numposts == 0) {
+            postId = LoginPage.currUser.username + "_Post_" + numposts;
+        }
+        else {
+            String lastNumberedPost = LoginPage.currUser.posts.get(numposts - 1);
+            String numberOfNewPost = lastNumberedPost.substring(lastNumberedPost.length() - 1);
+            postId = LoginPage.currUser.username + "_Post_" + (Integer.parseInt(numberOfNewPost) + 1);
+
+        }
+
         post.setPostId(postId);
         //Login.currUser stores the current user logged in
         post.setPostAuthor(LoginPage.currUser.username);

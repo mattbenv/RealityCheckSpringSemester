@@ -3,12 +3,14 @@ package com.example.realitycheck;
 import android.content.DialogInterface;
 import android.media.Image;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,6 +74,31 @@ public class SignUpPage extends Fragment {
                 }
                 if(testInformation()==true){
                     registerUser();
+                }
+            }
+        });
+
+
+        binding.showPassowrd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!b){
+                    password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+                if(b){
+                    password.setInputType(129);
+                }
+            }
+        });
+
+        binding.showConfirmPassowrd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!b){
+                    confirmpassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+                if(b){
+                    confirmpassword.setInputType(129);
                 }
             }
         });

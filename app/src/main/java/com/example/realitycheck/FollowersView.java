@@ -32,6 +32,7 @@ public class FollowersView extends Fragment {
     Query database;
     public static SearchAdapter searchAdapter;
     ArrayList<User> list;
+    public static boolean currUserProfile;
 
     //set to true means view followers false means view following
     public static boolean followersViewType;
@@ -52,18 +53,29 @@ public class FollowersView extends Fragment {
 
         list = new ArrayList<User>();
         searchAdapter = new SearchAdapter(this.getContext(),list);
-        setUserList(followersViewType,SearchAdapter.selectedUser);
+        User the = SearchAdapter.selectedUser;
+        setUserList(followersViewType,binding);
+
 
         return binding.getRoot();
     }
 
-    public void setUserList(Boolean type,User selectedUser){
+    public void setUserList(Boolean type,ActivityFollowersViewBinding binding){
+        User userToUse = new User();
+        if(currUserProfile == true){
+            userToUse = LoginPage.currUser;
+        }
+        if(currUserProfile == false){
+            //this is what causes the issue with going back
+            //the selected is getting updated to the last user to appear int he follower view
+            //could create own adapt for followers and then use Followadapter.selecteduser
+            userToUse = SearchAdapter.selectedUser;
+        }
         if(type== true) {
             binding.title.setText("Followers");
-            User userToUse = new User();
-            if (LoginPage.currUser.followers.size() > 0) {
-                for (int i = 0; i < LoginPage.currUser.followers.size(); i++) {
-                    database = FirebaseFirestore.getInstance().collection("Users").whereEqualTo("username", LoginPage.currUser.followers.get(i));
+            if (userToUse.followers.size() > 0) {
+                for (int i = 0; i < userToUse.followers.size(); i++) {
+                    database = FirebaseFirestore.getInstance().collection("Users").whereEqualTo("username", userToUse.followers.get(i));
                     database.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -96,9 +108,9 @@ public class FollowersView extends Fragment {
         }
         if(type== false) {
             binding.title.setText("Following");
-            if (LoginPage.currUser.following.size() > 0) {
-                for (int i = 0; i < LoginPage.currUser.following.size(); i++) {
-                    database = FirebaseFirestore.getInstance().collection("Users").whereEqualTo("username", LoginPage.currUser.following.get(i));
+            if (userToUse.following.size() > 0) {
+                for (int i = 0; i < userToUse.following.size(); i++) {
+                    database = FirebaseFirestore.getInstance().collection("Users").whereEqualTo("username",userToUse.following.get(i));
                     database.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

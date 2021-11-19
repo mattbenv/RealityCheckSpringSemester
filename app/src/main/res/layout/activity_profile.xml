@@ -207,6 +207,22 @@
                     app:layout_constraintTop_toBottomOf="@id/UserBio" />
 
 
+
+                <Button
+                    android:id="@+id/buttonfollow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Follow"
+                    android:enabled="true"
+                    android:clickable="true"
+                    android:background="#060707"
+                    android:textColor="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
