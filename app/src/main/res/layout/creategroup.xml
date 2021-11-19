@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".CreateGroup">
+
+    <TextView
+        android:id="@+id/createNewGroup"
+        android:layout_width="231dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="89dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="91dp"
+        android:text="Create New Group"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/groupname"

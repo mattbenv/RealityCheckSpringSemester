@@ -34,13 +34,15 @@ public class CreateGroup extends Fragment {
     private StorageReference storageReference;
     private FirebaseFirestore fStorage;
 
+    public static boolean CreateGroupType;
+
    /*@Override
    protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_create_group);
+       setContentView(R.layout.creategroup);
    }*/
 
-    /*@Override
+    @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
@@ -53,7 +55,7 @@ public class CreateGroup extends Fragment {
     }
 
     // binding connects the view to the class, and stores group-inputed information
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+    /*public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         groupname = binding.groupname;
         addmembers = binding.addmembers;
 
