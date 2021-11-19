@@ -11,30 +11,26 @@
         android:id="@+id/button_signup"
         android:layout_width="144dp"
         android:layout_height="78dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginEnd="39dp"
-        android:layout_marginBottom="37dp"
+        android:layout_marginBottom="32dp"
         android:text="Sign Up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_signin"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintHorizontal_bias="0.797"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_signin"
         android:layout_width="144dp"
         android:layout_height="78dp"
-        android:layout_marginStart="38dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="37dp"
+        android:layout_marginBottom="32dp"
         android:text="Log In"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_signup"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintHorizontal_bias="0.391"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/fakenews"
         android:layout_width="146dp"
         android:layout_height="258dp"
         android:layout_marginTop="72dp"
@@ -45,14 +41,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/computerweb"
         android:layout_width="334dp"
         android:layout_height="200dp"
+        android:layout_marginBottom="20dp"
         android:src="@drawable/fake_news_web"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.441"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView4" />
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/realityCheckLogo"
@@ -62,23 +59,20 @@
         android:src="@drawable/rx"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toEndOf="@+id/fakenews"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="152dp"
         android:text="Help the world understand how fake news spreads:"
         android:textAllCaps="false"
         android:textSize="16sp"
         android:textStyle="bold|italic"
-        app:layout_constraintTop_toBottomOf="@id/imageView5"
-        app:layout_constraintBottom_toTopOf="@id/button_signin"
-        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
