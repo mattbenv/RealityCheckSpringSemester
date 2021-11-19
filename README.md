@@ -5,7 +5,7 @@
 Go to: file/settings/gradle gradle jdk switch from 1.8 to 11, just to make sure that everything is setting up.
 Go to: local properties in the project manager and add your sdk path.
     -you will need to find the path in your file folder, but the format for other team memembers is shown. 
-       -Analoagous to sdk.dir=C\:\\Users\\mbenv\\AppData\\Local\\Android\\Sdk
+       -Analogous to sdk.dir=C\:\\Users\\mbenv\\AppData\\Local\\Android\\Sdk
     -comment out every other path except your newly added path.
 
 Go to: tools, avd manager, create virtual device
@@ -28,9 +28,9 @@ Each page in the application is called a fragment:
 
 Each fragment can be found as a .xml file
  --app/source/main/res/layout
- WelcomePage, Login,Signup, SignupContinue, ActivityResetPassword, Activity Post, Profile, comment, createpost, etc.
+ WelcomePage, Login, Signup, SignupContinue, ActivityResetPassword, Activity Post, Profile, comment, createpost, etc.
 
 Then we have our objects:
--app/source/main/java
-Users, otherUserProfile, WelcomePage, SignupPage, SignUpPageContinue, Posts,TextPost, Webpost, ImagePost, VideoPost, PostAdapter,SearchAdapter.
+--app/source/main/java
+Users, otherUserProfile, WelcomePage, SignupPage, SignUpPageContinue, Posts, TextPost, Webpost, ImagePost, VideoPost, PostAdapter, SearchAdapter.
 
