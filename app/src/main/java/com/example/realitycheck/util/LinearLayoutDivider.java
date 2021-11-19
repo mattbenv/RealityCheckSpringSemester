@@ -140,4 +140,3 @@ public class LinearLayoutDivider extends RecyclerView.ItemDecoration {
     }
 }
 
-
