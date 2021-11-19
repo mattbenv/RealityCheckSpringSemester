@@ -41,7 +41,7 @@ public class CreateGroupActivity extends Fragment {
     public String groupName, bio, profileImagePath;
     public boolean privacy; //true is private, false is public
     public int size; //number of members
-    public ArrayList<User> members = new ArrayList<>();
+    public ArrayList<String> members = new ArrayList<>();
     public ArrayList<Post> posts = new ArrayList<>();
     public ArrayList<Post> postLiked = new ArrayList<>();
     public ArrayList<Post> reposted = new ArrayList<>();
@@ -72,10 +72,10 @@ public class CreateGroupActivity extends Fragment {
             public void onClick(View view) {
                 groupName = binding.groupName.getText().toString().trim();
                 bio = binding.addBio.getText().toString().trim();
-                members.add(currUser);
-                //members.add(binding.addMembers.getText().toUser());
+                members.add(currUser.username);
+                members.add(binding.addMembers.getText().toString().trim()); // need to fix
                 //profileImagePath =;
-                privacy = binding.setSecurity.isActivated();
+                privacy = binding.setSecurity.isChecked();
                 if (!groupName.isEmpty() && !members.isEmpty() && !bio.isEmpty()) {
                     Group group = new Group(groupName, bio, profileImagePath, privacy, posts, members);
                     DocumentReference document = fStorage.collection("Groups").document(groupName);
@@ -86,16 +86,8 @@ public class CreateGroupActivity extends Fragment {
                     currGroup.put("privacy", group.privacy);
                     currGroup.put("profileImagePath", group.profileImagePath);
                     currGroup.put("size", group.members.size());
+                    document.set(currGroup);
                 }
-                //temporary working solution to demo
-                /*DocumentReference document = fStorage.collection("Groups").document(groupName);
-                Map<String, Object> currGroup = new HashMap<>();
-                currGroup.put("bio", bio);
-                currGroup.put("groupName", groupName);
-                currGroup.put("members", members);
-                currGroup.put("privacy", privacy);
-                currGroup.put("profileImagePath", "test");
-                currGroup.put("size", members.size());*/
             }
         });
 
