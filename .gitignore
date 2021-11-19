@@ -3,7 +3,7 @@
 /workspace.xml
 
 .gradle
-/build
+/app/build
 /.idea
 *.iml
 local.properties
