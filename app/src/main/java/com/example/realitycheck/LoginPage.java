@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +44,32 @@ public class LoginPage extends Fragment {
     public static User currUser;
     public static Uri storageProfilePictureReference;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    Animation slideinAnimation;
+    Animation fadeinAnimation;
+    Animation slideupAnimation;
+    ImageView realitycheckbox;
+
+    //List of functions of Animations
+    private void slideupAnimation(){
+        slideupAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.slideup);
+        binding.login.startAnimation(slideupAnimation);
+
+    }
+    public void fadeinAnimation(){
+        fadeinAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.fadein);
+        getView().findViewById(R.id.resetPassword).startAnimation(fadeinAnimation);
+    }
+    public void translateAnimation(){
+        slideinAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.slide_in);
+        realitycheckbox.startAnimation(slideinAnimation);
+        binding.resetPassword.startAnimation(slideinAnimation);
+        binding.login.startAnimation(slideinAnimation);
+        getView().findViewById(R.id.username).startAnimation(slideinAnimation);
+        getView().findViewById(R.id.password).startAnimation(slideinAnimation);
+        //binding.login.startAnimation(slideinAnimation);
+        getView().findViewById(R.id.resetPassword).startAnimation(slideinAnimation);
+    }
+
 
     @Override
     public View onCreateView(
@@ -61,6 +90,10 @@ public class LoginPage extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        realitycheckbox = (ImageView) view.findViewById(R.id.realitycheckLOGOBOX);
+        translateAnimation();
+        fadeinAnimation();
+        slideupAnimation();
         //click login to call userLogin()
         binding.login.setOnClickListener(new View.OnClickListener() {
             @Override

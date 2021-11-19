@@ -1,10 +1,13 @@
 package com.example.realitycheck;
 //https://firebase.google.com/docs/auth/android/google-signin?utm_source=studio
 import android.content.DialogInterface;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import android.widget.ImageView;
 // we are using firebase authentication to allow users to signup and collect their email/password
 public class SignUpPage extends Fragment {
 
