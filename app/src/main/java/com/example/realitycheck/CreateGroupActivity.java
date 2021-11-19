@@ -41,16 +41,16 @@ public class CreateGroupActivity extends Fragment {
     public String groupName, bio, profileImagePath;
     public boolean privacy; //true is private, false is public
     public int size; //number of members
-    public ArrayList<User> members;
-    public ArrayList<Post> posts;
-    public ArrayList<Post> postLiked;
-    public ArrayList<Post> reposted;
+    public ArrayList<User> members = new ArrayList<>();
+    public ArrayList<Post> posts = new ArrayList<>();
+    public ArrayList<Post> postLiked = new ArrayList<>();
+    public ArrayList<Post> reposted = new ArrayList<>();
 
     private CreateGroupBinding binding;
     private StorageReference storageReference;
     private FirebaseFirestore fStorage;
 
-    /*@Override
+    @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
@@ -66,17 +66,16 @@ public class CreateGroupActivity extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // this is to create an account
+        // this is to create a group
         binding.CreateGroupActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                groupName = binding.groupName.getText().toString();
-                bio = binding.addBio.getText().toString();
+                groupName = binding.groupName.getText().toString().trim();
+                bio = binding.addBio.getText().toString().trim();
                 members.add(currUser);
                 //members.add(binding.addMembers.getText().toUser());
                 //profileImagePath =;
                 privacy = binding.setSecurity.isActivated();
-
                 if (!groupName.isEmpty() && !members.isEmpty() && !bio.isEmpty()) {
                     Group group = new Group(groupName, bio, profileImagePath, privacy, posts, members);
                     DocumentReference document = fStorage.collection("Groups").document(groupName);
@@ -88,7 +87,15 @@ public class CreateGroupActivity extends Fragment {
                     currGroup.put("profileImagePath", group.profileImagePath);
                     currGroup.put("size", group.members.size());
                 }
-
+                //temporary working solution to demo
+                /*DocumentReference document = fStorage.collection("Groups").document(groupName);
+                Map<String, Object> currGroup = new HashMap<>();
+                currGroup.put("bio", bio);
+                currGroup.put("groupName", groupName);
+                currGroup.put("members", members);
+                currGroup.put("privacy", privacy);
+                currGroup.put("profileImagePath", "test");
+                currGroup.put("size", members.size());*/
             }
         });
 

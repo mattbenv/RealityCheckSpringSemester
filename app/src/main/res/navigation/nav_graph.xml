@@ -103,7 +103,7 @@
             android:id="@+id/to_OtherUserProfileActivity"
             app:destination="@+id/OtherUserProfileActivity"/>
         <action
-            android:id="@+id/action_ProfileActivity_to_CreateGroup"
+            android:id="@+id/action_ProfileActivity_to_CreateGroupActivity"
             app:destination="@id/CreateGroupActivity" />
 
 
@@ -199,7 +199,7 @@
     <fragment
         android:id="@+id/CreateGroupActivity"
         android:name="com.example.realitycheck.CreateGroupActivity"
-        android:label="CreateGroup"
+        android:label="CreateGroupActivity"
         tools:layout="@layout/create_group" />
 
 

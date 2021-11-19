@@ -101,7 +101,7 @@ public class ProfileActivity extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(ProfileActivity.this)
-                        .navigate(R.id.action_ProfileActivity_to_CreateGroup);
+                        .navigate(R.id.action_ProfileActivity_to_CreateGroupActivity);
 
             }
         });
