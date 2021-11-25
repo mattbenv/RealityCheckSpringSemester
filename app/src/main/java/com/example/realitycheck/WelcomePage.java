@@ -1,6 +1,7 @@
 package com.example.realitycheck;
 
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,16 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.realitycheck.databinding.WelcomeBinding;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class WelcomePage extends Fragment {
     //List of Animations objects used whenever you want to add a new animation
@@ -62,6 +73,43 @@ public class WelcomePage extends Fragment {
             Bundle savedInstanceState
     ) {
 
+        //This allows to bypass the Login process if a user has already been signed in
+        //basically saves the logged in user when app is closed
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null){
+            DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(user.getDisplayName());
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot value) {
+                    Map<String, Object> userMap = value.getData();
+                    String uid = userMap.get("uid").toString();
+                    String email = userMap.get("email").toString();
+                    String username = userMap.get("username").toString();
+                    String name = userMap.get("name").toString();
+                    String bio = userMap.get("bio").toString();
+                    String birthday = userMap.get("birthday").toString();
+                    String profileImagePath = userMap.get("profileImagePath").toString();
+                    ArrayList<String> posts = (ArrayList<String>) userMap.get("posts");
+                    ArrayList<String> followers = (ArrayList<String>) userMap.get("followers");
+                    ArrayList<String> following = (ArrayList<String>) userMap.get("following");
+                    ArrayList<String> friends = (ArrayList<String>) userMap.get("friends");
+                    LoginPage.currUser = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends);
+                    // Reference to an image file in Cloud Storage
+                    FirebaseStorage.getInstance().getReference().child("images/" + profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            LoginPage.storageProfilePictureReference = uri;
+                        }
+                    });
+
+                    NavHostFragment.findNavController(WelcomePage.this)
+                            .navigate(R.id.action_to_PostActivity);
+
+                }
+
+            });
+
+        }
         binding = WelcomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }

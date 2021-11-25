@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.adapter.CommentAdapter;
+import com.example.realitycheck.adapter.FollowerAdapter;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.adapter.SearchAdapter;
 import com.example.realitycheck.databinding.ActivityProfileBinding;
@@ -35,7 +36,8 @@ public class otherUserProfileActivity extends Fragment {
     public static PostAdapter postAdapter;
     public ListenerRegistration listenerRegistration;
     private RecyclerView recyclerView;
-    public User thisUser;
+    public static User thisUser;
+    public static User previousUser;
     public CollectionReference database;
     public ArrayList<Post> list;
     public static String previousActivty;
@@ -56,6 +58,14 @@ public class otherUserProfileActivity extends Fragment {
         if(previousActivty == "comment"){
             thisUser = CommentAdapter.userToNavTo;
         }
+        if(previousActivty == "follower"){
+            thisUser = FollowerAdapter.selectedUser;
+        }
+        if(previousActivty == "back"){
+            thisUser = previousUser;
+        }
+
+        FollowersView.previousActivity = "otherprofile";
 
         binding  =  ActivityProfileBinding.inflate(inflater, container, false);
         recyclerView = binding.getRoot().findViewById(R.id.rl_post_box);
@@ -106,6 +116,7 @@ public class otherUserProfileActivity extends Fragment {
         binding.following.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FollowersView.previousActivity = "";
                 FollowersView.followersViewType = false;
                 NavHostFragment.findNavController(otherUserProfileActivity.this)
                         .navigate(R.id.action_otherUserProfileActivity_to_ViewFollowersActivity);
@@ -115,6 +126,8 @@ public class otherUserProfileActivity extends Fragment {
         binding.followers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                FollowersView.previousActivity = "";
                 FollowersView.followersViewType = true;
                 NavHostFragment.findNavController(otherUserProfileActivity.this)
                         .navigate(R.id.action_otherUserProfileActivity_to_ViewFollowersActivity);
@@ -185,6 +198,9 @@ public class otherUserProfileActivity extends Fragment {
                     post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
                     post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
                     post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
+                    if(documentSnapshot.get("photo")!=null){
+                        post.setPhoto(documentSnapshot.get("photo").toString());
+                    }
                     list.add(0,post);
                     postAdapter.notifyDataSetChanged();
 
@@ -208,6 +224,7 @@ public class otherUserProfileActivity extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        previousUser = thisUser;
         binding = null;
     }
 

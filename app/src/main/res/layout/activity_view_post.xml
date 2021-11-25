@@ -108,6 +108,15 @@
             app:layout_constraintEnd_toStartOf="@id/iv_more"
             app:layout_constraintStart_toStartOf="@id/avatarCard"
             app:layout_constraintTop_toBottomOf="@id/avatarCard" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:background="@drawable/roundable"
+            android:src="@color/white"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/tv_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_content"/>
 
         <TextView
             android:id="@+id/date"
@@ -118,7 +127,7 @@
             android:text="Nov 12 2021 1:23pm"
             android:textColor="#707070"
             app:layout_constraintStart_toStartOf="@id/tv_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_content" />
+            app:layout_constraintTop_toBottomOf="@id/imageView" />
 
         <TextView
             android:id="@+id/commentCount"

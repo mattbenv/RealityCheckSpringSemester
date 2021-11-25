@@ -51,6 +51,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private Context context;
 
     public Uri postAuthorProfilePhoto;
+    public Uri postPhoto;
 
     private ArrayList<Post> postList;
     int[] likeCount;
@@ -59,9 +60,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public int comments;
     public static Post post;
     public static User userToNavTo;
-    public PostAdapter(Context context, ArrayList<Post> post) {
+    public PostAdapter(Context context, ArrayList<Post> posts) {
         this.context = context;
-        postList = post;
+        postList = posts;
     }
 
     @NonNull
@@ -97,7 +98,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         String currentDate = post.getPostDate();
         int commentCount = post.getCommentCount();
         String author = post.getPostAuthor();
+        String photo = post.getPhoto();
 
+        //sets the pictures within the post if that post has a picture
+        DocumentReference photoRef = FirebaseFirestore.getInstance().collection("Posts").document(postID);
+        photoRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> photoMap = documentSnapshot.getData();
+                if (photoMap.get("photo") != null) {
+                    String imagePath = photoMap.get("photo").toString();
+                    // Reference to an image file in Cloud Storage
+                    FirebaseStorage.getInstance().getReference().child("images/" + imagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            postPhoto = uri;
+                            post = postList.get(position);
+                            ImageView imageView = holder.binding.imageView;
+                            imageView.setVisibility(View.VISIBLE);
+                            post = postList.get(position);
+                            Glide.with(context)
+                                    .load(postPhoto)
+                                    .into(imageView);
+                        }
+                    });
+                }
+            }
+        });
         //gets the post authors profile photo and displays it on the posts
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(author);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -245,7 +272,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public int getItemCount() {
         return postList.size();
     }
-
 
     public void handleRepost(String postID,Post post, PostViewHolder holder){
 

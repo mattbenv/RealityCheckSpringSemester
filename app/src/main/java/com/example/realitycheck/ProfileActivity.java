@@ -71,6 +71,8 @@ public class ProfileActivity extends Fragment {
 
         });
 
+        FollowersView.currUserProfile = true;
+
         //sets profile picture
 
         ImageView imageView = this.getView().findViewById(R.id.profilePic);
@@ -133,6 +135,9 @@ public class ProfileActivity extends Fragment {
                     post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
                     post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
                     post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
+                    if(documentSnapshot.get("photo")!=null){
+                        post.setPhoto(documentSnapshot.get("photo").toString());
+                    }
                     list.add(0,post);
                     postAdapter.notifyDataSetChanged();
 

@@ -18,6 +18,7 @@ public abstract class Post {
     private ArrayList<String> likedBy;
     private String postId;
     private String content;
+    private String photo;
 
 
     private ArrayList<Comment> comments;
@@ -74,6 +75,13 @@ public abstract class Post {
         this.repostCount = repostCount;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
 
     public int getCommentCount() {

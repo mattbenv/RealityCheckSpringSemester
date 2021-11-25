@@ -66,6 +66,20 @@ public class ViewPostActivity  extends Fragment {
         binding.repostCount.setText(String.valueOf(currPost.getRepostCount()));
 
 
+        //if the post has an image or gif than it gets loaded here
+        if(currPost.getPhoto()!=null){
+            FirebaseStorage.getInstance().getReference().child("images/" + currPost.getPhoto()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    ImageView imageView = binding.imageView;
+                    imageView.setVisibility(View.VISIBLE);
+                    Glide.with(getContext())
+                            .load(uri)
+                            .into(imageView);
+                }
+            });
+        }
+
 
         list = new ArrayList<Comment>();
         commentAdapter = new CommentAdapter(this.getContext(),list);

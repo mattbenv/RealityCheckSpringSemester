@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
@@ -30,9 +31,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -83,10 +87,16 @@ public class PostActivity extends Fragment {
         binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Toast.makeText(getContext(),item.toString(),Toast.LENGTH_SHORT).show();
+
                 if(item.toString().equals("Profile")){
                     NavHostFragment.findNavController(PostActivity.this)
                             .navigate(R.id.action_PostActivity_to_ProfileActivity);
+                }
+                if(item.toString().equals("Log out")){
+                    FirebaseAuth.getInstance().signOut();
+                    Toast.makeText(getContext(),"Logged Out",Toast.LENGTH_SHORT).show();
+                    NavHostFragment.findNavController(PostActivity.this)
+                            .navigate(R.id.action_PostActivity_to_WelcomePage);
                 }
                 return true;
 
@@ -198,6 +208,9 @@ public class PostActivity extends Fragment {
                             post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
                             post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
                             post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
+                            if(documentSnapshot.get("photo")!=null){
+                                post.setPhoto(documentSnapshot.get("photo").toString());
+                            }
                             list.add(0, post);
                             postAdapter.notifyDataSetChanged();
                         }
@@ -215,6 +228,7 @@ public class PostActivity extends Fragment {
         //the savedPosition value is correct but not scrolling to the index in tnhe recycleview for some reason
         recyclerView.getLayoutManager().scrollToPosition(ViewPostActivity.savedPosition);
         System.out.println(ViewPostActivity.savedPosition);
+
 
 
 
@@ -255,6 +269,7 @@ public class PostActivity extends Fragment {
 
 
     public void setUpNotifications(){
+
 
         mNotificationManager = (NotificationManager) getSystemService(getContext(),NotificationManager.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

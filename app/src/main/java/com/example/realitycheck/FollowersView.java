@@ -3,6 +3,7 @@
 package com.example.realitycheck;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.realitycheck.adapter.FollowerAdapter;
 import com.example.realitycheck.adapter.SearchAdapter;
 import com.example.realitycheck.databinding.ActivityFollowersViewBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
@@ -30,9 +32,13 @@ public class FollowersView extends Fragment {
     private ActivityFollowersViewBinding binding;
     private RecyclerView recyclerView;
     Query database;
-    public static SearchAdapter searchAdapter;
+    public static FollowerAdapter followerAdapter;
     ArrayList<User> list;
+    public static String previousActivity;
     public static boolean currUserProfile;
+    public static User userToUse;
+    public static User previousUser;
+
 
     //set to true means view followers false means view following
     public static boolean followersViewType;
@@ -49,11 +55,9 @@ public class FollowersView extends Fragment {
 
         recyclerView = binding.rlSearchBox;
 
-
-
         list = new ArrayList<User>();
-        searchAdapter = new SearchAdapter(this.getContext(),list);
-        User the = SearchAdapter.selectedUser;
+
+        followerAdapter = new FollowerAdapter(this.getContext(),list);
         setUserList(followersViewType,binding);
 
 
@@ -61,7 +65,6 @@ public class FollowersView extends Fragment {
     }
 
     public void setUserList(Boolean type,ActivityFollowersViewBinding binding){
-        User userToUse = new User();
         if(currUserProfile == true){
             userToUse = LoginPage.currUser;
         }
@@ -69,8 +72,15 @@ public class FollowersView extends Fragment {
             //this is what causes the issue with going back
             //the selected is getting updated to the last user to appear int he follower view
             //could create own adapt for followers and then use Followadapter.selecteduser
-            userToUse = SearchAdapter.selectedUser;
+            //userToUse = SearchAdapter.selectedUser;
+            if(previousActivity == "otherprofile"){
+                userToUse = previousUser;
+            }
+            else {
+                userToUse = FollowerAdapter.selectedUser;
+            }
         }
+
         if(type== true) {
             binding.title.setText("Followers");
             if (userToUse.followers.size() > 0) {
@@ -99,7 +109,7 @@ public class FollowersView extends Fragment {
 
 
                             }
-                            searchAdapter.notifyDataSetChanged();
+                            followerAdapter.notifyDataSetChanged();
 
                         }
                     });
@@ -134,7 +144,7 @@ public class FollowersView extends Fragment {
 
 
                             }
-                            searchAdapter.notifyDataSetChanged();
+                            followerAdapter.notifyDataSetChanged();
 
                         }
                     });
@@ -145,11 +155,12 @@ public class FollowersView extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
 
-        recyclerView.setAdapter(searchAdapter);
+        recyclerView.setAdapter(followerAdapter);
 
 
 
     }
+
 
 
 
@@ -163,6 +174,7 @@ public class FollowersView extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        previousUser = userToUse;
         binding = null;
     }
 }

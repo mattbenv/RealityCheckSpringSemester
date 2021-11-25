@@ -84,24 +84,24 @@
         android:textColor="#fff"
         android:padding="6dp"
         android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/tv_watched_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_content"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:background="@drawable/roundable"
+        android:src="@color/white"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/tv_content"
-        android:text="27.3view"
-        android:paddingBottom="6dp"
-        android:paddingStart="6dp"
-        android:textColor="#707070"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_content"/>
+
 
     <ImageView
         android:id="@+id/iv_review"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_watched_time"
-        app:layout_constraintStart_toStartOf="@id/tv_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintStart_toStartOf="@id/imageView"
         android:layout_marginStart="6dp"
         android:src="@drawable/ic_review"
         />
@@ -110,6 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/iv_review"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="@id/iv_review"
         app:layout_constraintStart_toEndOf="@id/iv_review"
         android:text="0"
@@ -118,8 +119,9 @@
     <ImageView
         android:id="@+id/iv_cycle"
         android:layout_width="24dp"
+        android:layout_marginTop="5dp"
         android:layout_height="24dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_watched_time"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
         app:layout_constraintStart_toEndOf="@id/tv_review"
         android:src="@drawable/ic_cycle"
         android:layout_marginStart="24dp"
@@ -127,6 +129,7 @@
     <TextView
         android:id="@+id/tv_cycle"
         android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/iv_cycle"
         app:layout_constraintBottom_toBottomOf="@id/iv_cycle"
@@ -137,9 +140,10 @@
     <ImageView
         android:id="@+id/iv_like"
         android:layout_width="25dp"
+        android:layout_marginTop="5dp"
         android:clickable="true"
         android:layout_height="25dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_watched_time"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
         app:layout_constraintStart_toEndOf="@id/tv_cycle"
         android:layout_marginStart="24dp"
         android:src="@drawable/ic_like"
@@ -149,10 +153,10 @@
         android:id="@+id/heart1"
         android:layout_width="40.5dp"
         android:layout_height="40.5dp"
-        android:layout_marginStart="15.5dp"
-        android:layout_marginTop="18dp"
-        app:layout_constraintStart_toEndOf="@id/tv_cycle"
-        app:layout_constraintTop_toBottomOf="@+id/tv_content"
+        app:layout_constraintStart_toStartOf="@id/iv_like"
+        app:layout_constraintEnd_toEndOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_like"
+        app:layout_constraintTop_toTopOf="@id/iv_like"
         app:lottie_autoPlay="false"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/heart1" />
@@ -161,6 +165,7 @@
         android:id="@+id/tv_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         app:layout_constraintTop_toTopOf="@id/iv_like"
         app:layout_constraintBottom_toBottomOf="@id/iv_like"
         app:layout_constraintStart_toEndOf="@id/iv_like"
@@ -170,10 +175,14 @@
     <ImageView
         android:id="@+id/iv_share"
         android:layout_width="25dp"
+        android:layout_marginTop="5dp"
         android:layout_height="25dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_watched_time"
-        app:layout_constraintEnd_toEndOf="@id/tv_content"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintStart_toEndOf="@id/tv_like"
+        android:layout_marginStart="60dp"
         android:src="@drawable/ic_share"
         />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
