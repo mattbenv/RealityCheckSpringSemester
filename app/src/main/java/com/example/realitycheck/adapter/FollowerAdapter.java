@@ -1,0 +1,138 @@
+package com.example.realitycheck.adapter;
+
+import android.content.Context;
+import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
+import com.example.realitycheck.LoginPage;
+import com.example.realitycheck.R;
+import com.example.realitycheck.User;
+import com.example.realitycheck.databinding.ItemSearchUserBinding;
+import com.example.realitycheck.otherUserProfileActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.FollowerViewHolder>{
+
+    private Context context;
+    public ArrayList<User> users;
+    public static User selectedUser;
+
+
+    public FollowerAdapter(Context context, ArrayList<User> user) {
+        this.context = context;
+        users = user;
+
+    }
+
+    @NonNull
+    @Override
+    public FollowerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemSearchUserBinding binding = ItemSearchUserBinding.inflate(LayoutInflater.from(context), parent, false);
+        FollowerViewHolder followerViewHolder = new FollowerViewHolder(binding);
+        return followerViewHolder;
+
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull FollowerViewHolder holder, int position) {
+
+        otherUserProfileActivity.previousActivty = "back";
+        holder.binding.sivAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedUser = users.get(position);
+                otherUserProfileActivity.previousActivty = ("follower");
+                Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
+            }
+        });
+
+        holder.userName.setText(users.get(position).username);
+        holder.realName.setText(users.get(position).name);
+
+        //follow user button
+        holder.binding.ivMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedUser = users.get(position);
+                LottieAnimationView animationView  = holder.binding.blackcheck;
+                if (!LoginPage.currUser.following.contains(selectedUser.username)) {
+                    LoginPage.currUser.following.add(selectedUser.username);
+                    FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username).update("following", LoginPage.currUser.following);
+                    selectedUser.followers.add(LoginPage.currUser.username);
+                    FirebaseFirestore.getInstance().collection("Users").document(selectedUser.username).update("followers", selectedUser.followers);
+                    // Declaring the animation view
+                    animationView
+                            .addAnimatorUpdateListener(
+                                    (animation) -> {
+                                        // Do something.
+                                    });
+                    animationView
+                            .playAnimation();
+
+                    if (animationView.isAnimating()) {
+                        // Do something.
+                    }
+                    Toast.makeText(FollowerAdapter.this.context, ("Followed " + selectedUser.username), Toast.LENGTH_SHORT).show();
+                }
+                else if(LoginPage.currUser.following.contains(selectedUser.username)){
+                    LoginPage.currUser.following.remove(selectedUser.username);
+                    FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username).update("following", LoginPage.currUser.following);
+                    selectedUser.followers.remove(LoginPage.currUser.username);
+                    FirebaseFirestore.getInstance().collection("Users").document(selectedUser.username).update("followers", selectedUser.followers);
+                    Toast.makeText(FollowerAdapter.this.context, ("Unfollowed " + selectedUser.username), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        ImageView imageView = holder.profilePicture;
+
+        FirebaseStorage.getInstance().getReference().child("images/"+users.get(position).profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(holder.binding.getRoot().getContext())
+                        .load(uri)
+                        .into(imageView);
+            }
+        });
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return users.size();
+    }
+
+    public static class FollowerViewHolder extends RecyclerView.ViewHolder {
+        ItemSearchUserBinding binding;
+        TextView userName;
+        TextView realName;
+        ImageView profilePicture;
+        public FollowerViewHolder(ItemSearchUserBinding binding){
+            super(binding.getRoot());
+            this.binding = binding;
+            userName = this.binding.tvTitle;
+            realName = this.binding.tvDescription;
+            profilePicture = this.binding.sivAvatar;
+        }
+
+    }
+}
