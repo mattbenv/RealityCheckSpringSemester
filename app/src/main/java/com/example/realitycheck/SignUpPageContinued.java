@@ -118,7 +118,7 @@ public class SignUpPageContinued extends Fragment{
 
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        User user = new User(uid,emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>());
+        User user = new User(uid,emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>(),false,true,new ArrayList<String>());
         //test puposes adding foloowers and following
 
         //ran
@@ -136,6 +136,9 @@ public class SignUpPageContinued extends Fragment{
         currUser.put("followers",user.followers);
         currUser.put("following",user.following);
         currUser.put("friends",user.friends);
+        currUser.put("private",user.privateMode);
+        currUser.put("notificationsEnabled",user.notificationsEnabled);
+        currUser.put("taggedIn",user.taggedIn);
         // on success of user added to database: message to take you to login page appears
         document.set(currUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

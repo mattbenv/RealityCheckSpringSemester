@@ -190,7 +190,10 @@ public class LoginPage extends Fragment {
                 ArrayList<String> followers = (ArrayList<String>) userMap.get("followers");
                 ArrayList<String> following = (ArrayList<String>) userMap.get("following");
                 ArrayList<String> friends = (ArrayList<String>) userMap.get("friends");
-                currUser = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends);
+                Boolean privateMode = (Boolean) userMap.get("private");
+                Boolean notificationsEnabled = (Boolean) userMap.get("notificationsEnabled");
+                ArrayList<String> taggedIn = (ArrayList<String>) userMap.get("taggedIn");
+                currUser = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends,privateMode,notificationsEnabled,taggedIn);
                 // Reference to an image file in Cloud Storage
                 FirebaseStorage.getInstance().getReference().child("images/" + profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override

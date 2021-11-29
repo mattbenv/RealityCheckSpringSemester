@@ -93,6 +93,7 @@ public class SearchPage extends Fragment {
                     selectedUser.following = (ArrayList<String>) val.get("following");
                     selectedUser.followers = (ArrayList<String>) val.get("followers");
                     selectedUser.friends  = (ArrayList<String>) val.get("friends");
+                    selectedUser.privateMode = (Boolean) val.get("private");
                     //User user = val.toObject(User.class);
                     list.add(selectedUser);
 
@@ -113,6 +114,40 @@ public class SearchPage extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        simpleSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                database.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for(DocumentSnapshot val : queryDocumentSnapshots.getDocuments()){
+
+                            User selectedUser = new User();
+                            selectedUser.email = val.get("email").toString();
+                            selectedUser.username = val.get("username").toString();
+                            selectedUser.name = val.get("name").toString();
+                            selectedUser.bio = val.get("bio").toString();
+                            selectedUser.birthday = val.get("birthday").toString();
+                            if(!(val.get("profileImagePath") == null)) {
+                                selectedUser.profileImagePath = val.get("profileImagePath").toString();
+                            }
+                            selectedUser.posts = (ArrayList<String>)  val.get("posts");
+                            selectedUser.following = (ArrayList<String>) val.get("following");
+                            selectedUser.followers = (ArrayList<String>) val.get("followers");
+                            selectedUser.friends  = (ArrayList<String>) val.get("friends");
+                            selectedUser.privateMode = (Boolean) val.get("private");
+                            //User user = val.toObject(User.class);
+                            list.add(selectedUser);
+
+
+                        }
+                        searchAdapter.notifyDataSetChanged();
+
+                    }
+                });
                 return false;
             }
         });

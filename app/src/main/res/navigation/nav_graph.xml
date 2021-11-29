@@ -79,6 +79,9 @@
         <action
             android:id="@+id/action_PostActivity_to_CreatePostActivity"
             app:destination="@+id/CreatePostActivity"/>
+        <action
+            android:id="@+id/action_PostActivity_to_SettingsPage"
+            app:destination="@+id/SettingsPage"/>
 
         <action
             android:id="@+id/to_ViewPostActivity"
@@ -113,6 +116,9 @@
         <action
             android:id="@+id/action_ProfileActivity_to_CreateGroupActivity"
             app:destination="@id/CreateGroupActivity" />
+        <action
+            android:id="@+id/action_ProfileActivity_to_SettingsPage"
+            app:destination="@+id/SettingsPage"/>
 
 
     </fragment>
@@ -213,6 +219,21 @@
         android:name="com.example.realitycheck.CreateGroupActivity"
         android:label="CreateGroupActivity"
         tools:layout="@layout/create_group" />
+
+
+    <fragment
+        android:id="@+id/SettingsPage"
+        android:name="com.example.realitycheck.SettingsPage"
+        android:label="SettingsPage"
+        tools:layout="@layout/settings_page">
+    <action
+        android:id="@+id/action_SettingsPage_to_WelcomePage"
+        app:destination="@+id/WelcomePage"/>
+
+        <action
+            android:id="@+id/action_SettingsPage_to_ResetPasswordActivity"
+            app:destination="@id/ResetPasswordActivity" />
+    </fragment>
 
 
 </navigation>

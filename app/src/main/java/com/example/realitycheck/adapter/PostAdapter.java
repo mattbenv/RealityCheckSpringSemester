@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
+
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +30,11 @@ import com.example.realitycheck.User;
 import com.example.realitycheck.ViewPostActivity;
 import com.example.realitycheck.databinding.ItemPostBinding;
 import com.example.realitycheck.otherUserProfileActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,6 +46,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -54,6 +60,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public Uri postPhoto;
 
     private ArrayList<Post> postList;
+    public String userToken;
     int[] likeCount;
     public int likes;
     public int reposts;
@@ -91,7 +98,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         //gets current post from the recycler view list based its position
         post = postList.get(position);
-
         //gets post values
         String content = post.getContent();
         String postID = post.getPostId();
@@ -99,32 +105,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         int commentCount = post.getCommentCount();
         String author = post.getPostAuthor();
         String photo = post.getPhoto();
+        //loads photos and gifs on corresponding post
+        loadPostPhotosGifs(holder,post.getPostId());
 
-        //sets the pictures within the post if that post has a picture
-        DocumentReference photoRef = FirebaseFirestore.getInstance().collection("Posts").document(postID);
-        photoRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Map<String, Object> photoMap = documentSnapshot.getData();
-                if (photoMap.get("photo") != null) {
-                    String imagePath = photoMap.get("photo").toString();
-                    // Reference to an image file in Cloud Storage
-                    FirebaseStorage.getInstance().getReference().child("images/" + imagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            postPhoto = uri;
-                            post = postList.get(position);
-                            ImageView imageView = holder.binding.imageView;
-                            imageView.setVisibility(View.VISIBLE);
-                            post = postList.get(position);
-                            Glide.with(context)
-                                    .load(postPhoto)
-                                    .into(imageView);
-                        }
-                    });
-                }
-            }
-        });
+
+
+
+
+
         //gets the post authors profile photo and displays it on the posts
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(author);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -161,6 +149,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         ViewPostActivity.savedPosition = 0;
 
+        //click the users username on a post to navigate to their profile page
         holder.binding.tvTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,6 +158,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
+        //click the users profile photo on a post to navigate to their profile page
         holder.binding.sivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,33 +167,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
+        //button to open dialog to delete post
         holder.binding.ivMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 post = postList.get(position);
-                if(post.getPostAuthor().contains(LoginPage.currUser.username)){
-                    new AlertDialog.Builder(context)
-                            .setTitle("Delete Post")
-                            .setMessage("Are you sure you want to delete this post?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Users").document(post.getPostAuthor());
-                                    LoginPage.currUser.posts.remove(post.getPostId());
-                                    documentReference.update("posts",LoginPage.currUser.posts);
-                                    DocumentReference docRef = FirebaseFirestore.getInstance().collection("Posts").document(post.getPostId());
-                                    docRef.delete();
-                                    removeData(post);
-                                }
-                            }).setNegativeButton(android.R.string.no, null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-
-                }
-
+                deletePost(holder,post.getPostId());
 
             }
         });
 
+        //on clicking the posts it moves to a more in depth view of just that post
         holder.binding.post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -216,8 +190,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
-
-
+        //like button clicked on post
         holder.binding.ivLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,6 +198,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 handleLike(postID,post,holder);
             }
         });
+        //repost button clicked on post
         holder.binding.ivCycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,6 +219,59 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
 
+    public void loadPostPhotosGifs(PostViewHolder holder, String postID){
+        DocumentReference photoRef = FirebaseFirestore.getInstance().collection("Posts").document(postID);
+        photoRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> photoMap = documentSnapshot.getData();
+                if (photoMap.get("photo") != null) {
+                    String imagePath = photoMap.get("photo").toString();
+                    // Reference to an image file in Cloud Storage
+                    FirebaseStorage.getInstance().getReference().child("images/" + imagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            postPhoto = uri;
+                            ImageView imageView = holder.binding.imageView;
+                            imageView.setVisibility(View.VISIBLE);
+                            Glide.with(context)
+                                    .load(postPhoto)
+                                    .into(imageView);
+                        }
+                    });
+                }
+            }
+        });
+        //fixes errors where post photos show up on wrong post
+        for(Post p:postList){
+            if(p.getPhoto()==null||!p.getPhoto().toString().contains(p.getPostAuthor())){
+                holder.binding.imageView.setVisibility(View.GONE);
+            }
+        }
+
+    }
+
+    public void deletePost(PostViewHolder holder, String postID){
+        if(post.getPostAuthor().contains(LoginPage.currUser.username)){
+            new AlertDialog.Builder(context)
+                    .setTitle("Delete Post")
+                    .setMessage("Are you sure you want to delete this post?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Users").document(post.getPostAuthor());
+                            LoginPage.currUser.posts.remove(post.getPostId());
+                            documentReference.update("posts",LoginPage.currUser.posts);
+                            DocumentReference docRef = FirebaseFirestore.getInstance().collection("Posts").document(post.getPostId());
+                            docRef.delete();
+                            removeData(post);
+                        }
+                    }).setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
+        }
+    }
+
     public void navigateToUserProfile(PostViewHolder holder){
         FirebaseFirestore.getInstance().collection("Users").document(post.getPostAuthor()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -261,7 +288,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 ArrayList<String> followers = (ArrayList<String>) userMap.get("followers");
                 ArrayList<String> following = (ArrayList<String>) userMap.get("following");
                 ArrayList<String> friends = (ArrayList<String>) userMap.get("friends");
-                userToNavTo = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends);
+                Boolean privateMode = (Boolean) userMap.get("private");
+                Boolean notificationsEnabled = (Boolean) userMap.get("notificationsEnabled");
+                ArrayList<String> taggedIn = (ArrayList<String>) userMap.get("taggedIn");
+                userToNavTo = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends,privateMode,notificationsEnabled,taggedIn);
                 otherUserProfileActivity.previousActivty = "post";
                 Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
             }
@@ -355,15 +385,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     ArrayList<String> likedBy = (ArrayList<String>) documentSnapshot.get("likedBy");
                     String likee = likedBy.get(likedBy.size()-1);
                     Notification likeNotification = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         LocalTime now = LocalTime.now();
-
                         DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("hh:mm:ss a");
                         likeNotification = new Notification.Builder(holder.itemView.getContext(),"my_channel_01")
                                 .setContentTitle(likee+ " liked your post at "+ now.format(dtf3))
                                 .setContentText("Like Received")
                                 .setContentIntent(pendingIntent)
                                 .setSmallIcon(R.drawable.ic_like).build();
+
                     }
 
                     PostActivity.mNotificationManager.notify(getNotificationID(),likeNotification);
@@ -423,6 +453,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         TextView postDate;
         TextView likeCount;
         ImageView postAuhtorProfileImage;
+        ImageView postPhoto;
+
 
 
 
@@ -434,6 +466,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postDate = this.binding.date;
             likeCount = this.binding.tvLike;
             postAuhtorProfileImage = this.binding.sivAvatar;
+            postPhoto = this.binding.imageView;
 
 
         }

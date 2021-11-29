@@ -34,54 +34,15 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> implements Filterable {
 
     private Context context;
-    public List<String> userList;
-    public List<String> allUsers;
     public List<String> names;
     public ArrayList<User> users;
     public static User selectedUser;
     public static Uri storageProfilePictureReference;
 
-    public List<String> getUserList() {
-        //test values
-        userList = new ArrayList<>();
-        userList.add("AlexUsername");
-        userList.add("AdamUser");
-        userList.add("Brian123123");
-        userList.add("Tomtom123");
-        userList.add("UserMatt");
-        userList.add("EmilytheOG");
-        userList.add("Sam1");
-        userList.add("Samantha2");
-        userList.add("Alexander_the_great");
-        userList.add("Ralph344");
-        userList.add("Noah1222");
-        userList.add("Xaiver");
-        userList.add("Ryan333");
-        userList.add("James");
-        userList.add("GusBus11");
-        names = new ArrayList<>();
-        names.add("Alex");
-        names.add("Adam");
-        names.add("Brian");
-        names.add("Tom");
-        names.add("Matt");
-        names.add("Emily");
-        names.add("Sam");
-        names.add("Samantha");
-        names.add("Alexander");
-        names.add("Ralph");
-        names.add("Noah");
-        names.add("Xaiver");
-        names.add("Ryan");
-        names.add("James");
-        names.add("Gus");
-        return userList;
-    }
+
 
     public SearchAdapter(Context context, ArrayList<User> user) {
         this.context = context;
-        userList = getUserList();
-        allUsers = getUserList();
         users = user;
 
     }

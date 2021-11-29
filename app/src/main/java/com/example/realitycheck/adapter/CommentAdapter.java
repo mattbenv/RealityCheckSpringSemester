@@ -147,7 +147,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 ArrayList<String> followers = (ArrayList<String>) userMap.get("followers");
                 ArrayList<String> following = (ArrayList<String>) userMap.get("following");
                 ArrayList<String> friends = (ArrayList<String>) userMap.get("friends");
-                userToNavTo = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends);
+                Boolean privateMode = (Boolean) userMap.get("private");
+                Boolean notificationsEnabled = (Boolean) userMap.get("notificationsEnabled");
+                ArrayList<String> taggedIn = (ArrayList<String>) userMap.get("taggedIn");
+                userToNavTo = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends,privateMode,notificationsEnabled,taggedIn);
                 otherUserProfileActivity.previousActivty = "comment";
                 Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
             }

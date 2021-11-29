@@ -76,7 +76,7 @@
         android:layout_width="300dp"
         android:layout_height="200dp"
         android:background="@drawable/roundable"
-        android:src="@color/white"
+        android:src="@color/black"
         android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/tv_content"/>
 

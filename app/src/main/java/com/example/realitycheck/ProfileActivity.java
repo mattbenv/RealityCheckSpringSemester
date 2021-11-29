@@ -80,6 +80,14 @@ public class ProfileActivity extends Fragment {
                 .load(LoginPage.storageProfilePictureReference)
                 .into(imageView);
 
+        binding.settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(ProfileActivity.this)
+                        .navigate(R.id.action_ProfileActivity_to_SettingsPage);
+            }
+        });
+
 
 
         binding.following.setOnClickListener(new View.OnClickListener() {

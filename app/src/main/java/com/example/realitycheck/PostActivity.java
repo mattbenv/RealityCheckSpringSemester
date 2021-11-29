@@ -83,6 +83,13 @@ public class PostActivity extends Fragment {
         toggle.syncState();
 
 
+        binding.imageView8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setPosts();
+            }
+        });
+
 
         binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -97,6 +104,10 @@ public class PostActivity extends Fragment {
                     Toast.makeText(getContext(),"Logged Out",Toast.LENGTH_SHORT).show();
                     NavHostFragment.findNavController(PostActivity.this)
                             .navigate(R.id.action_PostActivity_to_WelcomePage);
+                }
+                if(item.toString().equals("Settings")){
+                    NavHostFragment.findNavController(PostActivity.this)
+                            .navigate(R.id.action_PostActivity_to_SettingsPage);
                 }
                 return true;
 

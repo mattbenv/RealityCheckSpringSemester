@@ -9,6 +9,8 @@ public class User {
     public String name;
     public String bio;
     public String birthday;
+    public boolean privateMode;
+    public boolean notificationsEnabled;
     public String uid;
     public String profileImagePath;
 
@@ -23,6 +25,7 @@ public class User {
     public ArrayList<String> followers;
     public ArrayList<String> following;
     public ArrayList<String> posts;
+    public ArrayList<String> taggedIn;
     public ArrayList<String> friends;
     public ArrayList<Post> postLiked;
     public ArrayList<Post> reposted;
@@ -32,7 +35,7 @@ public class User {
 
     }
 
-    public User(String uid,String email, String username, String name, String bio, String birthday, String profileImagePath, ArrayList<String>  posts, ArrayList<String> followers, ArrayList<String> following, ArrayList<String> friends){
+    public User(String uid,String email, String username, String name, String bio, String birthday, String profileImagePath, ArrayList<String>  posts, ArrayList<String> followers, ArrayList<String> following, ArrayList<String> friends,Boolean privateMode, Boolean notificationsEnabled,ArrayList<String> taggedIn){
         this.uid = uid;
         this.email=email;
         this.username  = username;
@@ -51,6 +54,10 @@ public class User {
         this.numfriends = returnNumfriends(followers, following);
 
         this.posts = posts;
+
+        this.privateMode = privateMode;
+        this.notificationsEnabled = notificationsEnabled;
+        this.taggedIn = taggedIn;
 
     }
 

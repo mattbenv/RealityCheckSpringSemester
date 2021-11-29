@@ -20,11 +20,16 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.databinding.ActivityCreatePostBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -32,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,7 +94,9 @@ public class CreatePostActivity extends Fragment {
         binding.ivMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //sets up the name of the new posts to be created
+
                 int numposts = LoginPage.currUser.posts.size();
                 if(numposts == 0) {
                     postId = LoginPage.currUser.username + "_Post_" + numposts;
@@ -138,6 +146,32 @@ public class CreatePostActivity extends Fragment {
 
 
         post.setPostDate(currentDateTimeString);
+        ArrayList<String> allUsers = new ArrayList<>();
+        FirebaseFirestore.getInstance().collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(QueryDocumentSnapshot snapshot:task.getResult()){
+                    allUsers.add(snapshot.get("username").toString());
+                    for(String user:allUsers){
+                        if(post.getContent().contains("@"+user)){
+                            ArrayList<String> taggedIn = new ArrayList<>();
+                            FirebaseFirestore.getInstance().collection("Users").document(user).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    taggedIn.addAll((Collection<? extends String>) documentSnapshot.get("taggedIn"));
+                                }
+                            });
+                            taggedIn.add(post.getPostId());
+                            FirebaseFirestore.getInstance().collection("Users").document(user).update("taggedIn",taggedIn);
+
+                        }
+
+                    }
+                }
+            }
+        });
+
+
 
         ArrayList<String> likeList = new ArrayList<>();
         post.setLikedBy(likeList);

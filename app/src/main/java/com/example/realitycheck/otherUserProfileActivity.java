@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -148,6 +150,11 @@ public class otherUserProfileActivity extends Fragment {
         }
         else{
             binding.buttonfollow.setText("Follow");
+            if(thisUser.privateMode == true){
+                binding.personalinfo.setVisibility(LinearLayout.GONE);
+                binding.rlPostBox.setVisibility(RecyclerView.GONE);
+                binding.privateMessage.setVisibility(TextView.VISIBLE);
+            }
         }
 
     }
