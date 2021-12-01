@@ -139,6 +139,7 @@ public class SignUpPageContinued extends Fragment{
         currUser.put("private",user.privateMode);
         currUser.put("notificationsEnabled",user.notificationsEnabled);
         currUser.put("taggedIn",user.taggedIn);
+        currUser.put("reposted",user.reposted);
         // on success of user added to database: message to take you to login page appears
         document.set(currUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

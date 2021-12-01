@@ -30,6 +30,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -132,6 +134,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.binding.date.setText(currentDate);
         holder.binding.tvReview.setText(String.valueOf(commentCount));
 
+        if(post.getLikedBy().contains(LoginPage.currUser.username)){
+            // Declaring the animation view
+
+            holder.binding.heart1.setVisibility(View.VISIBLE);
+            holder.binding.heart1
+                    .addAnimatorUpdateListener(
+                            (animation) -> {
+                                // Do something.
+                            });
+            holder.binding.heart1
+                    .playAnimation();
+
+
+        }
+        else if (!post.getLikedBy().contains(LoginPage.currUser.username)){
+            // Declaring the animation view
+            holder.binding.heart1.setVisibility(View.GONE);
+        }
+
+
+
 
 
         //sets up reposts on the users profile page
@@ -159,6 +182,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
         if(postPage == "postActivity"){
             // TODO: 11/30/2021 need to implement reposts in postactivity
+        }
+        if(postPage == "taggedIn"){
+            holder.binding.repost.setVisibility(View.GONE);
+            holder.binding.repostimage.setVisibility(View.GONE);
         }
 
 
@@ -280,13 +307,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         public void onClick(DialogInterface dialog, int which) {
                             DocumentReference documentReference = fStore.collection("Users").document(post.getPostAuthor());
                             LoginPage.currUser.posts.remove(post.getPostId());
-                            documentReference.update("posts",LoginPage.currUser.posts);
+                            documentReference.update("posts", LoginPage.currUser.posts);
                             DocumentReference docRef = fStore.collection("Posts").document(post.getPostId());
                             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     ArrayList<String> repostedBy = (ArrayList<String>) documentSnapshot.get("repostedBy");
-                                    if(repostedBy!=null) {
+                                    if (repostedBy != null) {
                                         for (String s : repostedBy) {
                                             DocumentReference doc = fStore.collection("Users").document(s);
                                             doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -299,6 +326,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                                 }
                                             });
                                         }
+                                    }
+                                }
+                            });
+                            Query query = FirebaseFirestore.getInstance().collection("Users").whereArrayContains("taggedIn",postID);
+                            query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot documentSnapshots) {
+                                    ArrayList<String> users = new ArrayList<>();
+                                    for (DocumentSnapshot d : documentSnapshots) {
+                                        users.add((String) d.get("username"));
+                                    }
+                                    System.out.println(users);
+                                    if (users != null) {
+                                        for (String s : users) {
+                                            DocumentReference doc = fStore.collection("Users").document(s);
+                                            doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    ArrayList<String> taggedIn = (ArrayList<String>) documentSnapshot.get("taggedIn");
+                                                    taggedIn.remove(postID);
+                                                    doc.update("taggedIn", taggedIn);
+
+                                                }
+                                            });
+
+                                        }
+
                                     }
                                 }
                             });
@@ -360,7 +414,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             reposts = post.getRepostCount()+1;
             post.setRepostCount(reposts);
             document.update("repostCount",reposts);
-            LoginPage.currUser.reposted.add(post.getPostId());
+            if(LoginPage.currUser.reposted != null){
+                LoginPage.currUser.reposted.add(post.getPostId());
+            }
             fStore.collection("Users").document(LoginPage.currUser.username).update("reposted",LoginPage.currUser.reposted);
 
             holder.binding.tvCycle.setText(Integer.toString(reposts));
@@ -388,6 +444,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     //adds like to post in database and on the view
     public void handleLike(String postID,Post post, PostViewHolder holder){
         LottieAnimationView animationView  = holder.binding.heart1;
+        animationView.setVisibility(View.VISIBLE);
         DocumentReference document = fStore.collection("Posts").document(postID.toString());
         //commented out for now but limits to one like per user
         if(!post.getLikedBy().contains(LoginPage.currUser.username)){
@@ -417,6 +474,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         //unlike
         else if(post.getLikedBy().contains(LoginPage.currUser.username)){
             //need to remove like animation in here
+            holder.binding.heart1.setVisibility(View.GONE);
             likes = post.getLikeCount()-1;
             post.setLikeCount(likes);
             post.removeFromLikedBy(LoginPage.currUser.username);

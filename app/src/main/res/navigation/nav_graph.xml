@@ -119,6 +119,9 @@
         <action
             android:id="@+id/action_ProfileActivity_to_SettingsPage"
             app:destination="@+id/SettingsPage"/>
+        <action
+            android:id="@+id/action_ProfileActivity_to_TaggedIn"
+            app:destination="@+id/TaggedIn"/>
 
 
     </fragment>
@@ -170,6 +173,10 @@
         <action
             android:id="@+id/to_OtherUserProfileActivity"
             app:destination="@+id/OtherUserProfileActivity"/>
+
+        <action
+            android:id="@+id/action_otherUserProfileActivity_to_TaggedIn"
+            app:destination="@id/TaggedIn"/>
 
     </fragment>
 
@@ -233,6 +240,20 @@
         <action
             android:id="@+id/action_SettingsPage_to_ResetPasswordActivity"
             app:destination="@id/ResetPasswordActivity" />
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/TaggedIn"
+        android:name="com.example.realitycheck.TaggedInView"
+        android:label="TaggedIn"
+        tools:layout="@layout/activity_tagged_in">
+
+        <action
+            android:id="@+id/action_TaggedIn_to_ProfileActivity"
+            app:destination="@+id/ProfileActivity"/>
+
     </fragment>
 
 

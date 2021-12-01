@@ -94,6 +94,8 @@ public class SearchPage extends Fragment {
                     selectedUser.followers = (ArrayList<String>) val.get("followers");
                     selectedUser.friends  = (ArrayList<String>) val.get("friends");
                     selectedUser.privateMode = (Boolean) val.get("private");
+                    selectedUser.taggedIn = (ArrayList<String>) val.get("taggedIn");
+                    selectedUser.reposted = (ArrayList<String>) val.get("reposted");
                     //User user = val.toObject(User.class);
                     list.add(selectedUser);
 

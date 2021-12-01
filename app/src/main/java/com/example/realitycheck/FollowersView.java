@@ -74,7 +74,7 @@ public class FollowersView extends Fragment {
             //could create own adapt for followers and then use Followadapter.selecteduser
             //userToUse = SearchAdapter.selectedUser;
             if(previousActivity == "otherprofile"){
-                userToUse = previousUser;
+                userToUse = otherUserProfileActivity.thisUser;
             }
             else {
                 userToUse = FollowerAdapter.selectedUser;
@@ -83,7 +83,7 @@ public class FollowersView extends Fragment {
 
         if(type== true) {
             binding.title.setText("Followers");
-            if (userToUse.followers.size() > 0) {
+            if (userToUse.followers != null) {
                 for (int i = 0; i < userToUse.followers.size(); i++) {
                     database = FirebaseFirestore.getInstance().collection("Users").whereEqualTo("username", userToUse.followers.get(i));
                     database.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -104,6 +104,8 @@ public class FollowersView extends Fragment {
                                 selectedUser.following = (ArrayList<String>) val.get("following");
                                 selectedUser.followers = (ArrayList<String>) val.get("followers");
                                 selectedUser.friends = (ArrayList<String>) val.get("friends");
+                                selectedUser.taggedIn = (ArrayList<String>) val.get("taggedIn");
+                                selectedUser.reposted = (ArrayList<String>) val.get("reposted");
                                 //User user = val.toObject(User.class);
                                 list.add(selectedUser);
 
@@ -139,6 +141,8 @@ public class FollowersView extends Fragment {
                                 selectedUser.following = (ArrayList<String>) val.get("following");
                                 selectedUser.followers = (ArrayList<String>) val.get("followers");
                                 selectedUser.friends = (ArrayList<String>) val.get("friends");
+                                selectedUser.taggedIn = (ArrayList<String>) val.get("taggedIn");
+                                selectedUser.reposted = (ArrayList<String>) val.get("reposted");
                                 //User user = val.toObject(User.class);
                                 list.add(selectedUser);
 

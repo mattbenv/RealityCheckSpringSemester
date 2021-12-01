@@ -79,6 +79,8 @@ public class SignUpPage extends Fragment {
         });
 
 
+
+        binding.showPassowrd.setChecked(true);
         binding.showPassowrd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -91,6 +93,7 @@ public class SignUpPage extends Fragment {
             }
         });
 
+        binding.showConfirmPassowrd.setChecked(true);
         binding.showConfirmPassowrd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

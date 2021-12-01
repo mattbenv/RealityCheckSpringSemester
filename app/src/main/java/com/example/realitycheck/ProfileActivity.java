@@ -59,7 +59,6 @@ public class ProfileActivity extends Fragment {
         binding.realName.setText(LoginPage.currUser.name);
         int numFollowers = LoginPage.currUser.followers.size();
         int numFollowing = LoginPage.currUser.following.size();
-        binding.followerCount.setText(String.valueOf(numFollowers));
         binding.followingCount.setText(String.valueOf(numFollowing));
         binding.imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +72,30 @@ public class ProfileActivity extends Fragment {
         });
 
 
-
         FollowersView.currUserProfile = true;
+        TaggedInView.taggedInType = true;
+
+        DocumentReference docReff = FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username);
+        docReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                LoginPage.currUser.followers = (ArrayList<String>) documentSnapshot.get("followers");
+            }
+
+        });
+        binding.followerCount.setText(String.valueOf(LoginPage.currUser.followers.size()));
+
+
+
+        DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                LoginPage.currUser.taggedIn = (ArrayList<String>) documentSnapshot.get("taggedIn");
+            }
+        });
+
+        binding.tagCount.setText(String.valueOf(LoginPage.currUser.taggedIn.size()));
 
 
 
@@ -93,7 +114,14 @@ public class ProfileActivity extends Fragment {
             }
         });
 
+        binding.taggedin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(ProfileActivity.this)
+                        .navigate(R.id.action_ProfileActivity_to_TaggedIn);
 
+            }
+        });
 
         binding.following.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +159,7 @@ public class ProfileActivity extends Fragment {
         database = FirebaseFirestore.getInstance().collection("Posts");
         list = new ArrayList<Post>();
         PostAdapter postAdapter = new PostAdapter(this.getContext(),list);
+
 
         for(int i= 0;i<LoginPage.currUser.posts.size();i++) {
             DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Posts").document(LoginPage.currUser.posts.get(i));

@@ -159,10 +159,11 @@ public class CreatePostActivity extends Fragment {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     taggedIn.addAll((Collection<? extends String>) documentSnapshot.get("taggedIn"));
+                                    taggedIn.add(post.getPostId());
+                                    FirebaseFirestore.getInstance().collection("Users").document(user).update("taggedIn",taggedIn);
                                 }
                             });
-                            taggedIn.add(post.getPostId());
-                            FirebaseFirestore.getInstance().collection("Users").document(user).update("taggedIn",taggedIn);
+
 
                         }
 

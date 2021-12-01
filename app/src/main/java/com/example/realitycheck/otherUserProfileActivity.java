@@ -75,6 +75,7 @@ public class otherUserProfileActivity extends Fragment {
         recyclerView = binding.getRoot().findViewById(R.id.rl_post_box);
         setPosts();
         FollowersView.currUserProfile = false;
+        TaggedInView.taggedInType = false;
         MainActivity.toolbar.hide();
         return binding.getRoot();
     }
@@ -113,6 +114,21 @@ public class otherUserProfileActivity extends Fragment {
                 Glide.with(binding.getRoot().getContext())
                         .load(uri)
                         .into(imageView);
+            }
+        });
+
+
+        if(thisUser.taggedIn!=null) {
+            binding.tagCount.setText(String.valueOf(thisUser.taggedIn.size()));
+
+
+        }
+        binding.taggedin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(otherUserProfileActivity.this)
+                        .navigate(R.id.action_otherUserProfileActivity_to_TaggedIn);
+
             }
         });
 

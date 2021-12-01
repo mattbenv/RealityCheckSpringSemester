@@ -114,6 +114,7 @@ public class LoginPage extends Fragment {
             }
         });
 
+        binding.showPassowrd.setChecked(true);
         binding.showPassowrd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
