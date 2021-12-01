@@ -42,6 +42,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public String author;
     public String content;
     public String date;
+    public FirebaseFirestore fStore;
 
     public static User userToNavTo;
 
@@ -75,11 +76,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         //sets in order of most recent
         Collections.reverse(commentList);
 
+        //initialize Firebase Firestore database instance
+        fStore = FirebaseFirestore.getInstance();
+
 
         //gets current post from the recycler view list based its position
         comment = commentList.get(position);
-
-
 
         //gets comment values and sets them on screen
         content = comment.getCommentContent();
@@ -89,8 +91,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         holder.binding.tvContent.setText(content);
         holder.binding.date.setText(date);
 
-
-
+        //click profile photo to navigate to the user's profile
         holder.binding.sivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,9 +101,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             }
         });
 
+        //gets the post authors profile photo and displays it on the comment
+        loadProfilePhotos(author,holder);
 
-        //gets the post authors profile photo and displays it on the posts
-        DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(author);
+    }
+
+
+    //gets the post authors profile photo and displays it on the comment
+    public void loadProfilePhotos(String author,CommentViewHolder holder){
+        DocumentReference docRef = fStore.collection("Users").document(author);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -121,7 +128,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 });
             }
         });
-
     }
 
     //adds new comment
@@ -131,8 +137,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
 
 
+    //gets the information for the user to navigate to, and then loads that navigate to that user's profile page
     public void navigateToUserProfile(CommentAdapter.CommentViewHolder holder){
-        FirebaseFirestore.getInstance().collection("Users").document(comment.getCommentAuthor()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        fStore.collection("Users").document(comment.getCommentAuthor()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot value) {
                 Map<String, Object> userMap = value.getData();
@@ -150,7 +157,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 Boolean privateMode = (Boolean) userMap.get("private");
                 Boolean notificationsEnabled = (Boolean) userMap.get("notificationsEnabled");
                 ArrayList<String> taggedIn = (ArrayList<String>) userMap.get("taggedIn");
-                userToNavTo = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends,privateMode,notificationsEnabled,taggedIn);
+                ArrayList<String> reposted = (ArrayList<String>) userMap.get("reposted");
+                userToNavTo = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends,privateMode,notificationsEnabled,taggedIn,reposted);
                 otherUserProfileActivity.previousActivty = "comment";
                 Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
             }

@@ -85,6 +85,13 @@ public class ViewPostActivity  extends Fragment {
         commentAdapter = new CommentAdapter(this.getContext(),list);
 
         setComments();
+        binding.imageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(ViewPostActivity.this)
+                        .navigate(R.id.action_ViewPostActivity_to_PostActivity);
+            }
+        });
 
         binding.add.setOnClickListener(new View.OnClickListener() {
             @Override

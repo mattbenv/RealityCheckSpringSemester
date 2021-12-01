@@ -1,5 +1,4 @@
 package com.example.realitycheck.adapter;
-
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -10,16 +9,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
-
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.LoginPage;
@@ -30,28 +26,20 @@ import com.example.realitycheck.User;
 import com.example.realitycheck.ViewPostActivity;
 import com.example.realitycheck.databinding.ItemPostBinding;
 import com.example.realitycheck.otherUserProfileActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-
-import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-//todo: understand how homepage works which is related to post adapter/viewholder/activity. if we can, design new one
+
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
     private Context context;
@@ -60,12 +48,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public Uri postPhoto;
 
     private ArrayList<Post> postList;
-    public String userToken;
     int[] likeCount;
     public int likes;
     public int reposts;
-    public int comments;
     public static Post post;
+    public FirebaseFirestore fStore;
+    public static String postPage;
     public static User userToNavTo;
     public PostAdapter(Context context, ArrayList<Post> posts) {
         this.context = context;
@@ -93,8 +81,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             }
         });
+        //sets most recent posts to start of list
         Collections.reverse(postList);
 
+        //initialize database
+        fStore = FirebaseFirestore.getInstance();
 
         //gets current post from the recycler view list based its position
         post = postList.get(position);
@@ -108,13 +99,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         //loads photos and gifs on corresponding post
         loadPostPhotosGifs(holder,post.getPostId());
 
-
-
-
-
-
         //gets the post authors profile photo and displays it on the posts
-        DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(author);
+        DocumentReference docRef = fStore.collection("Users").document(author);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -134,7 +120,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
         likes = post.getLikeCount();
-        ArrayList<String> likedBy = post.getLikedBy();
         //initialize
         likeCount = new int[1];
         likeCount[0] = likes;
@@ -147,7 +132,38 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.binding.date.setText(currentDate);
         holder.binding.tvReview.setText(String.valueOf(commentCount));
 
-        ViewPostActivity.savedPosition = 0;
+
+
+        //sets up reposts on the users profile page
+        if(postPage=="profile") {
+            if (!post.getPostAuthor().contains(LoginPage.currUser.username)) {
+                holder.binding.repost.setVisibility(View.VISIBLE);
+                holder.binding.repostimage.setVisibility(View.VISIBLE);
+                holder.binding.repost.setText(LoginPage.currUser.username + " reposted");
+            } else if (post.getPostAuthor().contains(LoginPage.currUser.username)) {
+                holder.binding.repost.setVisibility(View.GONE);
+                holder.binding.repostimage.setVisibility(View.GONE);
+            }
+        }
+        //sets up reposts on other users profile page
+        if(postPage=="otherProfile"){
+            if (!post.getPostAuthor().contains(otherUserProfileActivity.thisUser.username)) {
+                holder.binding.repost.setVisibility(View.VISIBLE);
+                holder.binding.repostimage.setVisibility(View.VISIBLE);
+                holder.binding.repost.setText(otherUserProfileActivity.thisUser.username+ " reposted");
+            } else if (post.getPostAuthor().contains(LoginPage.currUser.username)) {
+                holder.binding.repost.setVisibility(View.GONE);
+                holder.binding.repostimage.setVisibility(View.GONE);
+            }
+
+        }
+        if(postPage == "postActivity"){
+            // TODO: 11/30/2021 need to implement reposts in postactivity
+        }
+
+
+
+
 
         //click the users username on a post to navigate to their profile page
         holder.binding.tvTitle.setOnClickListener(new View.OnClickListener() {
@@ -219,8 +235,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
 
+    //loads the relevant pictures/gifs from storage onto the corresponding post
     public void loadPostPhotosGifs(PostViewHolder holder, String postID){
-        DocumentReference photoRef = FirebaseFirestore.getInstance().collection("Posts").document(postID);
+        DocumentReference photoRef = fStore.collection("Posts").document(postID);
         photoRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -251,6 +268,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     }
 
+    //removes post from recyclerview, from the current user's list of posts, and from the database
+    //removes post from reposts for all users who reposted the post to be deleted
+    //removes post image from storage
     public void deletePost(PostViewHolder holder, String postID){
         if(post.getPostAuthor().contains(LoginPage.currUser.username)){
             new AlertDialog.Builder(context)
@@ -258,22 +278,48 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     .setMessage("Are you sure you want to delete this post?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Users").document(post.getPostAuthor());
+                            DocumentReference documentReference = fStore.collection("Users").document(post.getPostAuthor());
                             LoginPage.currUser.posts.remove(post.getPostId());
                             documentReference.update("posts",LoginPage.currUser.posts);
-                            DocumentReference docRef = FirebaseFirestore.getInstance().collection("Posts").document(post.getPostId());
+                            DocumentReference docRef = fStore.collection("Posts").document(post.getPostId());
+                            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    ArrayList<String> repostedBy = (ArrayList<String>) documentSnapshot.get("repostedBy");
+                                    if(repostedBy!=null) {
+                                        for (String s : repostedBy) {
+                                            DocumentReference doc = fStore.collection("Users").document(s);
+                                            doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    ArrayList<String> reposts = (ArrayList<String>) documentSnapshot.get("reposted");
+                                                    reposts.remove(postID);
+                                                    doc.update("reposted", reposts);
+
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            });
                             docRef.delete();
+
                             removeData(post);
+
+                            FirebaseStorage.getInstance().getReference().child("images").child(postID+"_image").delete();
                         }
                     }).setNegativeButton(android.R.string.no, null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
+
+
         }
     }
 
+    //get's the users information and navigates to their profile page
     public void navigateToUserProfile(PostViewHolder holder){
-        FirebaseFirestore.getInstance().collection("Users").document(post.getPostAuthor()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        fStore.collection("Users").document(post.getPostAuthor()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot value) {
                 Map<String, Object> userMap = value.getData();
@@ -291,7 +337,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 Boolean privateMode = (Boolean) userMap.get("private");
                 Boolean notificationsEnabled = (Boolean) userMap.get("notificationsEnabled");
                 ArrayList<String> taggedIn = (ArrayList<String>) userMap.get("taggedIn");
-                userToNavTo = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends,privateMode,notificationsEnabled,taggedIn);
+                ArrayList<String> reposted = (ArrayList<String>) userMap.get("reposted");
+                userToNavTo = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends,privateMode,notificationsEnabled,taggedIn,reposted);
                 otherUserProfileActivity.previousActivty = "post";
                 Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
             }
@@ -303,24 +350,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return postList.size();
     }
 
+
+    //updates counts and list of reposts and reposted by
+    // TODO: include reposts on user's list of posts as a repost
     public void handleRepost(String postID,Post post, PostViewHolder holder){
 
-        DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
+        DocumentReference document = fStore.collection("Posts").document(postID.toString());
         if(!post.getRepostedBy().contains(LoginPage.currUser.username)){
             reposts = post.getRepostCount()+1;
             post.setRepostCount(reposts);
             document.update("repostCount",reposts);
+            LoginPage.currUser.reposted.add(post.getPostId());
+            fStore.collection("Users").document(LoginPage.currUser.username).update("reposted",LoginPage.currUser.reposted);
 
             holder.binding.tvCycle.setText(Integer.toString(reposts));
             post.addToRepostedBy(LoginPage.currUser.username);
             document.update("repostedBy",post.getRepostedBy());
             repostNotifications(postID,holder);
         }
-        //unlike
+        //undo
         else if(post.getRepostedBy().contains(LoginPage.currUser.username)){
             reposts = post.getRepostCount()-1;
             post.setRepostCount(reposts);
             post.removeFromRepostedBy(LoginPage.currUser.username);
+
+            LoginPage.currUser.reposted.remove(post.getPostId());
+            fStore.collection("Users").document(LoginPage.currUser.username).update("reposted",LoginPage.currUser.reposted);
             document.update("repostedBy",post.getRepostedBy());
             document.update("repostCount",reposts);
             holder.binding.tvCycle.setText(Integer.toString(reposts));
@@ -330,12 +385,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
 
 
-
-
     //adds like to post in database and on the view
     public void handleLike(String postID,Post post, PostViewHolder holder){
         LottieAnimationView animationView  = holder.binding.heart1;
-        DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
+        DocumentReference document = fStore.collection("Posts").document(postID.toString());
         //commented out for now but limits to one like per user
         if(!post.getLikedBy().contains(LoginPage.currUser.username)){
             likes = post.getLikeCount()+1;
@@ -373,12 +426,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
     }
 
+    // TODO: 11/30/2021 notifications are only working on each specific device need to research Firebase Cloud Messaging for notifications across devices
+    //
     public void likeNotifications(String postID, PostViewHolder holder){
         Intent intent = new Intent(context,PostAdapter.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         if(LoginPage.currUser.posts.contains(postID)){
-            DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
+            DocumentReference document = fStore.collection("Posts").document(postID.toString());
             document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -410,7 +465,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     public void repostNotifications(String postID, PostViewHolder holder){
         if(LoginPage.currUser.posts.contains(postID)){
-            DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(postID.toString());
+            DocumentReference document = fStore.collection("Posts").document(postID.toString());
             document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -431,12 +486,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         }
     }
+    //adds post to the recyclerview
     public void addData(Post newItem) {
         postList.add(0, newItem);
         notifyItemInserted(0);
         notifyItemInserted(postList.size());
         notifyItemChanged(postList.size());
     }
+
+    //removes post from the recyclerview
     public void removeData(Post item){
         int position = postList.indexOf(item);
         postList.remove(item);

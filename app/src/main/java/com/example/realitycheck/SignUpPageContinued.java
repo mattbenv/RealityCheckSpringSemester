@@ -118,7 +118,7 @@ public class SignUpPageContinued extends Fragment{
 
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        User user = new User(uid,emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>(),false,true,new ArrayList<String>());
+        User user = new User(uid,emailValue,usernameValue,nameValue,bioValue,birthdateValue,profileImagePath,new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>(),new ArrayList<String>(),false,true,new ArrayList<String>(),new ArrayList<String>());
         //test puposes adding foloowers and following
 
         //ran

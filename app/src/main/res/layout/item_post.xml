@@ -5,7 +5,7 @@
     android:id="@+id/post"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="12dp"
+    android:padding="5dp"
     android:background="#000">
 
     <TextView
@@ -22,14 +22,15 @@
     <TextView
         android:id="@+id/date"
         android:textSize="12sp"
-        android:layout_width="175dp"
-        android:layout_height="22dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:textAlignment="viewEnd"
         android:textColor="#fff"
-        app:layout_constraintBottom_toTopOf="@id/iv_more"
+        android:text="date of the post"
+        app:layout_constraintBottom_toTopOf="@id/tv_content"
         app:layout_constraintEnd_toEndOf="@+id/iv_more"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/repost"/>
 
 
     <androidx.cardview.widget.CardView
@@ -52,13 +53,37 @@
             android:layout_gravity="center"
             app:shapeAppearanceOverlay="@style/circleImageStyle" />
     </androidx.cardview.widget.CardView>
+    <ImageView
+        android:id="@+id/repostimage"
+        android:layout_width="20dp"
+        android:visibility="gone"
+        android:layout_marginTop="5dp"
+        android:layout_height="20dp"
+        app:layout_constraintBottom_toTopOf="@id/tv_title"
+        app:layout_constraintEnd_toStartOf="@id/repost"
+        app:layout_constraintStart_toEndOf="@id/avatarCard"
+        android:src="@drawable/ic_cycle"
+        android:layout_marginStart="5dp"
+        />
 
+    <TextView
+        android:id="@+id/repost"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="6dp"
+        android:visibility="gone"
+        android:textSize="14dp"
+        android:text="username reposted"
+        android:textColor="#707070"
+        app:layout_constraintBottom_toTopOf="@id/tv_title"
+        app:layout_constraintStart_toEndOf="@id/repostimage" />
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/avatarCard"
-        app:layout_constraintTop_toTopOf="@id/avatarCard"
+        app:layout_constraintTop_toBottomOf="@id/repost"
+        app:layout_constraintBottom_toTopOf="@id/tv_content"
         android:text="DERAGAYA_"
         android:textColor="#fff"
         android:layout_marginStart="6dp"
@@ -69,8 +94,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date"
-        android:layout_marginEnd="6dp"
+        app:layout_constraintTop_toTopOf="@id/tv_content"
         android:src="@drawable/ic_more_horiz"
         />
     <TextView
@@ -78,16 +102,18 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
-        app:layout_constraintEnd_toStartOf="@id/iv_more"
+        app:layout_constraintEnd_toStartOf="@+id/iv_more"
         app:layout_constraintStart_toStartOf="@id/tv_title"
         android:text="11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
         android:textColor="#fff"
-        android:padding="6dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingRight="6dp"
         android:textSize="18sp"/>
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_height="400dp"
         android:background="@drawable/roundable"
         android:src="@color/white"
         android:visibility="gone"
@@ -102,7 +128,6 @@
         android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@id/imageView"
         app:layout_constraintStart_toStartOf="@id/imageView"
-        android:layout_marginStart="6dp"
         android:src="@drawable/ic_review"
         />
     <TextView

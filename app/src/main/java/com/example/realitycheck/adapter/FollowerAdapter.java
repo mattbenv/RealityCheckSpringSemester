@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,14 +25,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.FollowerViewHolder>{
 
     private Context context;
     public ArrayList<User> users;
     public static User selectedUser;
+    public FirebaseFirestore fStore;
 
 
     public FollowerAdapter(Context context, ArrayList<User> user) {
@@ -55,7 +52,10 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.Follow
     @Override
     public void onBindViewHolder(@NonNull FollowerViewHolder holder, int position) {
 
+        //sets this variable up for navigation purposes on otherUserProfileActivity
         otherUserProfileActivity.previousActivty = "back";
+
+       //click profile photo to navigate to the user's profile
         holder.binding.sivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,6 +65,7 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.Follow
             }
         });
 
+        //set username and real name
         holder.userName.setText(users.get(position).username);
         holder.realName.setText(users.get(position).name);
 
@@ -73,33 +74,8 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.Follow
             @Override
             public void onClick(View view) {
                 selectedUser = users.get(position);
-                LottieAnimationView animationView  = holder.binding.blackcheck;
-                if (!LoginPage.currUser.following.contains(selectedUser.username)) {
-                    LoginPage.currUser.following.add(selectedUser.username);
-                    FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username).update("following", LoginPage.currUser.following);
-                    selectedUser.followers.add(LoginPage.currUser.username);
-                    FirebaseFirestore.getInstance().collection("Users").document(selectedUser.username).update("followers", selectedUser.followers);
-                    // Declaring the animation view
-                    animationView
-                            .addAnimatorUpdateListener(
-                                    (animation) -> {
-                                        // Do something.
-                                    });
-                    animationView
-                            .playAnimation();
+                handleFollow(holder);
 
-                    if (animationView.isAnimating()) {
-                        // Do something.
-                    }
-                    Toast.makeText(FollowerAdapter.this.context, ("Followed " + selectedUser.username), Toast.LENGTH_SHORT).show();
-                }
-                else if(LoginPage.currUser.following.contains(selectedUser.username)){
-                    LoginPage.currUser.following.remove(selectedUser.username);
-                    FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username).update("following", LoginPage.currUser.following);
-                    selectedUser.followers.remove(LoginPage.currUser.username);
-                    FirebaseFirestore.getInstance().collection("Users").document(selectedUser.username).update("followers", selectedUser.followers);
-                    Toast.makeText(FollowerAdapter.this.context, ("Unfollowed " + selectedUser.username), Toast.LENGTH_SHORT).show();
-                }
             }
         });
         ImageView imageView = holder.profilePicture;
@@ -115,6 +91,38 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.Follow
 
 
     }
+
+    //follows or unfollows the user and updates the relevant fields in the database
+    public void handleFollow(FollowerViewHolder holder){
+        fStore = FirebaseFirestore.getInstance();
+        LottieAnimationView animationView  = holder.binding.blackcheck;
+        if (!LoginPage.currUser.following.contains(selectedUser.username)) {
+            LoginPage.currUser.following.add(selectedUser.username);
+            fStore.collection("Users").document(LoginPage.currUser.username).update("following", LoginPage.currUser.following);
+            selectedUser.followers.add(LoginPage.currUser.username);
+            fStore.collection("Users").document(selectedUser.username).update("followers", selectedUser.followers);
+            // Declaring the animation view
+            animationView
+                    .addAnimatorUpdateListener(
+                            (animation) -> {
+                                // Do something.
+                            });
+            animationView
+                    .playAnimation();
+            if (animationView.isAnimating()) {
+                // Do something.
+            }
+            Toast.makeText(FollowerAdapter.this.context, ("Followed " + selectedUser.username), Toast.LENGTH_SHORT).show();
+        }
+        else if(LoginPage.currUser.following.contains(selectedUser.username)){
+            LoginPage.currUser.following.remove(selectedUser.username);
+            fStore.collection("Users").document(LoginPage.currUser.username).update("following", LoginPage.currUser.following);
+            selectedUser.followers.remove(LoginPage.currUser.username);
+            fStore.collection("Users").document(selectedUser.username).update("followers", selectedUser.followers);
+            Toast.makeText(FollowerAdapter.this.context, ("Unfollowed " + selectedUser.username), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     public int getItemCount() {

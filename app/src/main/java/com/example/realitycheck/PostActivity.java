@@ -76,7 +76,7 @@ public class PostActivity extends Fragment {
     ) {
         binding  =  ActivityPostBinding.inflate(inflater, container, false);
         recyclerView = binding.rlPostBox;
-
+        PostAdapter.postPage = "postActivity";
         postIDFeed = new ArrayList<>();
         toggle = new ActionBarDrawerToggle(this.getActivity(),binding.drawerLayout,R.string.Open,R.string.Close);
         binding.drawerLayout.addDrawerListener(toggle);
@@ -230,7 +230,11 @@ public class PostActivity extends Fragment {
 
                 });
             }
+
         }
+
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
@@ -280,19 +284,16 @@ public class PostActivity extends Fragment {
 
 
     public void setUpNotifications(){
-
-
         mNotificationManager = (NotificationManager) getSystemService(getContext(),NotificationManager.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannelId = "my_channel_01";
             CharSequence name = "name";
             String description = "description";
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(notificationChannelId, name,importance);
+            NotificationChannel mChannel = new NotificationChannel(notificationChannelId, name, importance);
             mChannel.setDescription(description);
             mNotificationManager.createNotificationChannel(mChannel);
         }
-
 
     }
 

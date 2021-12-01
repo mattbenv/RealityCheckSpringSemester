@@ -97,7 +97,8 @@ public class WelcomePage extends Fragment {
                     Boolean notificationsEnabled = (Boolean) userMap.get("notificationsEnabled");
 
                     ArrayList<String> taggedIn = (ArrayList<String>) userMap.get("taggedIn");
-                    LoginPage.currUser = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends,privateMode,notificationsEnabled,taggedIn);
+                    ArrayList<String> reposted = (ArrayList<String>) userMap.get("reposted");
+                    LoginPage.currUser = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends,privateMode,notificationsEnabled,taggedIn,reposted);
 
                   // Reference to an image file in Cloud Storage
                     FirebaseStorage.getInstance().getReference().child("images/" + profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

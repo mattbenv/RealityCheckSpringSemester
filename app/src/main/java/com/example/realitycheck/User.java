@@ -28,14 +28,14 @@ public class User {
     public ArrayList<String> taggedIn;
     public ArrayList<String> friends;
     public ArrayList<Post> postLiked;
-    public ArrayList<Post> reposted;
+    public ArrayList<String> reposted;
 
     //more information to track
     public User(){
 
     }
 
-    public User(String uid,String email, String username, String name, String bio, String birthday, String profileImagePath, ArrayList<String>  posts, ArrayList<String> followers, ArrayList<String> following, ArrayList<String> friends,Boolean privateMode, Boolean notificationsEnabled,ArrayList<String> taggedIn){
+    public User(String uid,String email, String username, String name, String bio, String birthday, String profileImagePath, ArrayList<String>  posts, ArrayList<String> followers, ArrayList<String> following, ArrayList<String> friends,Boolean privateMode, Boolean notificationsEnabled,ArrayList<String> taggedIn,ArrayList<String> reposted){
         this.uid = uid;
         this.email=email;
         this.username  = username;
@@ -58,6 +58,7 @@ public class User {
         this.privateMode = privateMode;
         this.notificationsEnabled = notificationsEnabled;
         this.taggedIn = taggedIn;
+        this.reposted = reposted;
 
     }
 

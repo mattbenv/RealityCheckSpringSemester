@@ -67,6 +67,8 @@ public class otherUserProfileActivity extends Fragment {
             thisUser = previousUser;
         }
 
+
+        PostAdapter.postPage = "otherProfile";
         FollowersView.previousActivity = "otherprofile";
 
         binding  =  ActivityProfileBinding.inflate(inflater, container, false);
@@ -215,6 +217,34 @@ public class otherUserProfileActivity extends Fragment {
 
             });
 
+        }
+
+        if(thisUser.reposted!=null) {
+            for (int j = 0; j < thisUser.reposted.size(); j++) {
+                DocumentReference docReference = FirebaseFirestore.getInstance().collection("Posts").document(thisUser.reposted.get(j));
+                docReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Post post = new TextPost();
+                        post.setPostAuthor(documentSnapshot.get("postAuthor").toString());
+                        post.setPostDate(documentSnapshot.get("postDate").toString());
+                        post.setContent(documentSnapshot.get("content").toString());
+                        post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
+                        post.setPostId(documentSnapshot.get("postId").toString());
+                        post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
+                        post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
+                        post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
+                        post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
+                        post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
+                        if (documentSnapshot.get("photo") != null) {
+                            post.setPhoto(documentSnapshot.get("photo").toString());
+                        }
+                        list.add(0, post);
+                        postAdapter.notifyDataSetChanged();
+                    }
+
+                });
+            }
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setHasFixedSize(true);
