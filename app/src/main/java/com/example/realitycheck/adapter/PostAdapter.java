@@ -33,11 +33,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.type.DateTime;
+
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -79,8 +84,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public int compare(Post post, Post t1) {
+                DateFormat format = DateFormat.getDateTimeInstance();
+                try {
+                    Date a = format.parse(post.getPostDate());
+                    Date b = format.parse(t1.getPostDate());
+                    return(a.compareTo(b));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 return(post.getPostDate().compareTo(t1.getPostDate()));
-
             }
         });
         //sets most recent posts to start of list
@@ -99,7 +111,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         String author = post.getPostAuthor();
         String photo = post.getPhoto();
         //loads photos and gifs on corresponding post
-        loadPostPhotosGifs(holder,post.getPostId());
 
         //gets the post authors profile photo and displays it on the posts
         DocumentReference docRef = fStore.collection("Users").document(author);
@@ -258,6 +269,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
+        loadPostPhotosGifs(holder,post.getPostId());
+
 
     }
 
@@ -288,7 +301,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
         //fixes errors where post photos show up on wrong post
         for(Post p:postList){
-            if(p.getPhoto()==null||!p.getPhoto().toString().contains(p.getPostAuthor())){
+            if(p.getPhoto()==null){
                 holder.binding.imageView.setVisibility(View.GONE);
             }
         }

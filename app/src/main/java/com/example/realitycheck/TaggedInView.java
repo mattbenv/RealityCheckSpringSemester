@@ -47,6 +47,7 @@ public class TaggedInView extends Fragment {
         binding  =  ActivityTaggedInBinding.inflate(inflater, container, false);
 
         PostAdapter.postPage = "taggedIn";
+        otherUserProfileActivity.previousActivty =  "taggedIn";
         recyclerView = binding.rlSearchBox;
 
         list = new ArrayList<Post>();

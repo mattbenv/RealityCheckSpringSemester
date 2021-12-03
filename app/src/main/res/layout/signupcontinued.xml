@@ -60,7 +60,7 @@
     <EditText
         android:id="@+id/name"
         android:layout_width="350dp"
-
+        android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:layout_height="45dp"
         android:layout_marginStart="31dp"
@@ -131,7 +131,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
+        app:layout_constraintTop_toTopOf="@id/imageView">
 
         <ScrollView
             android:id="@+id/SCROLLER_ID"

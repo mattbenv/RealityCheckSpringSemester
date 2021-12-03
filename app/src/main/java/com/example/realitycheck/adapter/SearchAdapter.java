@@ -91,6 +91,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         holder.binding.ivMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                selectedUser = users.get(position);
                 handleFollow(holder);
             }
         });

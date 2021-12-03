@@ -51,7 +51,7 @@ public class otherUserProfileActivity extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        if(previousActivty == "post"){
+        if(previousActivty == "post" || previousActivty == "taggedIn"){
             thisUser = PostAdapter.userToNavTo;
         }
         if(previousActivty == "search"){
@@ -186,6 +186,11 @@ public class otherUserProfileActivity extends Fragment {
             int numFollowers = thisUser.followers.size();
             binding.followerCount.setText(String.valueOf(numFollowers));
             binding.buttonfollow.setText("Unfollow");
+            if(thisUser.privateMode == true){
+                binding.personalinfo.setVisibility(View.VISIBLE);
+                binding.rlPostBox.setVisibility(View.VISIBLE);
+                binding.privateMessage.setVisibility(View.GONE);
+            }
         }
         else if(LoginPage.currUser.following.contains(thisUser.username)){
             LoginPage.currUser.following.remove(thisUser.username);
@@ -195,6 +200,11 @@ public class otherUserProfileActivity extends Fragment {
             int numFollowers = thisUser.followers.size();
             binding.followerCount.setText(String.valueOf(numFollowers));
             binding.buttonfollow.setText("Follow");
+            if(thisUser.privateMode == true){
+                binding.personalinfo.setVisibility(View.GONE);
+                binding.rlPostBox.setVisibility(View.GONE);
+                binding.privateMessage.setVisibility(View.VISIBLE);
+            }
         }
     }
 

@@ -35,6 +35,7 @@
         android:scrollbars="none">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constrain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="@id/scrollview"
@@ -276,50 +277,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#000"
-                app:layout_constraintBottom_toTopOf="@id/bottomComment"
+                android:paddingBottom="50dp"
+                app:layout_constraintBottom_toBottomOf="@id/constrain"
                 app:layout_constraintTop_toBottomOf="@id/interactionBar" />
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/bottomComment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#000"
-                android:padding="6dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/comment">
-
-                <EditText
-                    android:id="@+id/createComment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:enabled="true"
-                    android:hint="Create your comment"
-                    android:padding="6dp"
-                    android:text=""
-                    android:textColor="@color/white"
-                    android:textColorHint="#707070"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toStartOf="@id/add"
-                    app:layout_constraintStart_toStartOf="@id/bottomComment"
-                    app:layout_constraintTop_toTopOf="@id/bottomComment" />
-
-                <ImageView
-                    android:id="@+id/add"
-                    android:layout_width="82dp"
-                    android:layout_height="29dp"
-                    android:layout_marginEnd="6dp"
-                    android:clickable="true"
-                    android:src="@drawable/ic_add_24"
-                    app:layout_constraintBottom_toBottomOf="@id/bottomComment"
-                    app:layout_constraintEnd_toEndOf="@id/bottomComment"
-                    app:layout_constraintTop_toTopOf="@id/bottomComment" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000"
+        android:layout_alignBottom="@id/scrollview"
+        android:padding="6dp">
+
+        <EditText
+            android:id="@+id/createComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:enabled="true"
+            android:hint="Create your comment"
+            android:padding="6dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textColorHint="#707070"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@id/add"
+            app:layout_constraintStart_toStartOf="@id/bottomComment"
+            app:layout_constraintTop_toTopOf="@id/bottomComment" />
+
+        <ImageView
+            android:id="@+id/add"
+            android:layout_width="82dp"
+            android:layout_height="29dp"
+            android:layout_marginEnd="6dp"
+            android:clickable="true"
+            android:src="@drawable/ic_add_24"
+            app:layout_constraintBottom_toBottomOf="@id/bottomComment"
+            app:layout_constraintEnd_toEndOf="@id/bottomComment"
+            app:layout_constraintTop_toTopOf="@id/bottomComment" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </RelativeLayout>

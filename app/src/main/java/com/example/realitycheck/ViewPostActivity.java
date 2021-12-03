@@ -109,7 +109,7 @@ public class ViewPostActivity  extends Fragment {
                 document.update("comments",currPost.getComments());
                 commentAdapter.addData(newComment);
                 binding.commentCount.setText(String.valueOf(comments));
-                binding.createComment.clearFocus();
+                binding.createComment.setText("");
                 binding.comment.scrollToPosition(0);
                 commentNotifications(currPost.getPostId());
 

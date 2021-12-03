@@ -254,6 +254,10 @@
             android:id="@+id/action_TaggedIn_to_ProfileActivity"
             app:destination="@+id/ProfileActivity"/>
 
+        <action
+            android:id="@+id/to_OtherUserProfileActivity"
+            app:destination="@+id/OtherUserProfileActivity"/>
+
     </fragment>
 
 
