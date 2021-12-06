@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.adapter.CommentAdapter;
 import com.example.realitycheck.adapter.FollowerAdapter;
+import com.example.realitycheck.adapter.GroupAdapter;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.adapter.SearchAdapter;
 import com.example.realitycheck.databinding.ActivityProfileBinding;
@@ -29,6 +30,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
@@ -74,6 +76,7 @@ public class otherUserProfileActivity extends Fragment {
         binding  =  ActivityProfileBinding.inflate(inflater, container, false);
         recyclerView = binding.getRoot().findViewById(R.id.rl_post_box);
         setPosts();
+        setGroups();
         FollowersView.currUserProfile = false;
         TaggedInView.taggedInType = false;
         MainActivity.toolbar.hide();
@@ -206,6 +209,36 @@ public class otherUserProfileActivity extends Fragment {
                 binding.privateMessage.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    public void setGroups(){
+        ArrayList<Group> groupList= new ArrayList<Group>();
+        GroupAdapter groupAdapter = new GroupAdapter(this.getContext(),groupList);
+        FirebaseFirestore.getInstance().collection("Groups").whereArrayContains("members",thisUser.username).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot documentSnapshots) {
+                for(DocumentSnapshot documentSnapshot:documentSnapshots){
+                    Group group = new Group();
+                    group.groupName = (String) documentSnapshot.get("groupName");
+                    group.bio = (String) documentSnapshot.get("bio");
+                    group.members = (ArrayList<String>)documentSnapshot.get("members");
+                    group.size = group.members.size();
+                    group.privacy = (boolean) documentSnapshot.get("privacy");
+                    group.profileImagePath = (String) documentSnapshot.get("profileImagePath");
+                    group.posts = (ArrayList<String>)documentSnapshot.get("posts");
+                    groupList.add(0,group);
+                    System.out.println(group.groupName);
+                    groupAdapter.notifyDataSetChanged();
+
+
+                }
+            }
+        });
+        binding.rlGroupBox.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        binding.rlGroupBox.setHasFixedSize(true);
+        binding.rlGroupBox.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
+        binding.rlGroupBox.setAdapter(groupAdapter);
+
     }
 
 

@@ -215,9 +215,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Follow"
+                    android:background="@drawable/roundable"
                     android:enabled="true"
                     android:clickable="true"
-                    android:background="#060707"
                     android:textColor="@color/white"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -259,9 +259,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@color/white"
+                    android:background="@color/black"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -270,7 +270,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Your Groups"
+                            android:text="Groups"
+                            android:textColor="@color/white"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
@@ -297,78 +298,13 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rl_group_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="285dp"
-                            android:layout_height="30dp"
-                            android:gravity="center_vertical"
-                            android:paddingRight="8dp">
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:padding="10dp"
-                                android:src="@drawable/ava_test"></ImageView>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:text="Group 1"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="284dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:paddingRight="8dp">
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:padding="10dp"
-                                android:src="@drawable/ava_test"></ImageView>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:text="Group 2"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="286dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:paddingRight="8dp">
-
-                            <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:padding="10dp"
-                                android:src="@drawable/ava_test"></ImageView>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:text="Group 3"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
+                        android:padding="0dp"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:layout_editor_absoluteX="0dp" />
                 </LinearLayout>
 
                 <!--Skills Details-->
@@ -521,6 +457,24 @@
                     android:orientation="horizontal">
 
 
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Posts"
+                            android:textColor="@color/white"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <android.widget.Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+
+                    </LinearLayout>
+
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rl_post_box"
                         android:layout_width="match_parent"
@@ -530,7 +484,7 @@
                         tools:layout_editor_absoluteX="0dp" />
 
                 </LinearLayout>
-            </LinearLayout>
+
 
         </LinearLayout>
 

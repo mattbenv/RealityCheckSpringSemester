@@ -122,6 +122,9 @@
         <action
             android:id="@+id/action_ProfileActivity_to_TaggedIn"
             app:destination="@+id/TaggedIn"/>
+        <action
+            android:id="@+id/action_ProfileActivity_to_SearchPage"
+            app:destination="@+id/SearchPage"/>
 
 
     </fragment>
@@ -225,7 +228,12 @@
         android:id="@+id/CreateGroupActivity"
         android:name="com.example.realitycheck.CreateGroupActivity"
         android:label="CreateGroupActivity"
-        tools:layout="@layout/create_group" />
+        tools:layout="@layout/create_group">
+
+        <action
+            android:id="@+id/action_CreateGroupActivity_to_AddGroupMembers"
+            app:destination="@+id/AddGroupMembers"/>
+    </fragment>
 
 
     <fragment
@@ -257,6 +265,19 @@
         <action
             android:id="@+id/to_OtherUserProfileActivity"
             app:destination="@+id/OtherUserProfileActivity"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddGroupMembers"
+        android:name="com.example.realitycheck.AddGroupMembers"
+        android:label="AddGroupMembers"
+        tools:layout="@layout/add_group_members">
+
+        <action
+            android:id="@+id/action_AddGroupMembers_to_ProfileActivity"
+            app:destination="@+id/ProfileActivity"/>
+
 
     </fragment>
 

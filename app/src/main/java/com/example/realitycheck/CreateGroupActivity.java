@@ -1,28 +1,17 @@
 package com.example.realitycheck;
 
-import static com.example.realitycheck.LoginPage.currUser;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.CompoundButton;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.realitycheck.databinding.CreateGroupBinding;
-import com.example.realitycheck.databinding.SignupcontinuedBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -31,7 +20,6 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 public class CreateGroupActivity extends Fragment {
 
@@ -42,11 +30,12 @@ public class CreateGroupActivity extends Fragment {
     public boolean privacy; //true is private, false is public
     public int size; //number of members
     public ArrayList<String> members = new ArrayList<>();
-    public ArrayList<Post> posts = new ArrayList<>();
+    public ArrayList<String> posts = new ArrayList<>();
     public ArrayList<Post> postLiked = new ArrayList<>();
     public ArrayList<Post> reposted = new ArrayList<>();
 
     private CreateGroupBinding binding;
+    public static String newGroupName;
     private StorageReference storageReference;
     private FirebaseFirestore fStorage;
 
@@ -72,21 +61,45 @@ public class CreateGroupActivity extends Fragment {
             public void onClick(View view) {
                 groupName = binding.groupName.getText().toString().trim();
                 bio = binding.addBio.getText().toString().trim();
-                members.add(currUser.username);
-                members.add(binding.addMembers.getText().toString().trim()); // need to fix
+                newGroupName = groupName;
+             //   members.add(binding.addMembers.getText().toString().trim()); // need to fix
                 //profileImagePath =;
                 privacy = binding.setSecurity.isChecked();
-                if (!groupName.isEmpty() && !members.isEmpty() && !bio.isEmpty()) {
+                if(groupName.isEmpty()){
+                    binding.groupName.setError("Group name cannot be empty");
+                    binding.groupName.requestFocus();
+                }
+                if(bio.isEmpty()){
+                    binding.addBio.setError("Group bio cannot be empty");
+                    binding.groupName.requestFocus();
+                }
+                if (!groupName.isEmpty() && !bio.isEmpty()) {
                     Group group = new Group(groupName, bio, profileImagePath, privacy, posts, members);
                     DocumentReference document = fStorage.collection("Groups").document(groupName);
                     Map<String, Object> currGroup = new HashMap<>();
                     currGroup.put("bio", group.bio);
                     currGroup.put("groupName", group.groupName);
                     currGroup.put("members", group.members);
+                    currGroup.put("posts",group.posts);
                     currGroup.put("privacy", group.privacy);
                     currGroup.put("profileImagePath", group.profileImagePath);
-                    currGroup.put("size", group.members.size());
+                    currGroup.put("size", 0);
                     document.set(currGroup);
+                    NavHostFragment.findNavController(CreateGroupActivity.this)
+                            .navigate(R.id.action_CreateGroupActivity_to_AddGroupMembers);
+                }
+
+              
+            }
+        });
+
+        binding.setSecurity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    binding.setSecurity.setText("Private Group On");
+                } else {
+                    binding.setSecurity.setText("Private Group Off");
+
                 }
             }
         });

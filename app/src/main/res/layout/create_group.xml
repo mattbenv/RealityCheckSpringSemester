@@ -1,96 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#060707"
     android:layout_height="match_parent"
     tools:context=".CreateGroupActivity">
 
     <EditText
         android:id="@+id/addBio"
         android:layout_width="367dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:layout_marginTop="40dp"
         android:layout_height="44dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="240dp"
-        android:layout_weight="1"
+        app:layout_constraintTop_toBottomOf="@id/groupName"
+        app:layout_constraintStart_toStartOf="@id/groupName"
         android:background="@drawable/roundable"
-        android:hint="Add Bio"
+        android:hint="Add Group Bio"
         android:textSize="20dp" />
 
     <TextView
         android:id="@+id/createNewGroup"
         android:layout_width="231dp"
         android:layout_height="53dp"
-        android:layout_marginStart="89dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="91dp"
-        android:text="Create New Group"
-        android:textSize="25dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+        android:text="Create New Group"
+        android:textSize="25dp" />
 
     <EditText
         android:id="@+id/groupName"
         android:layout_width="367dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:layout_height="44dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="125dp"
-        android:layout_weight="1"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/createNewGroup"
+        app:layout_constraintStart_toStartOf="parent"
         android:background="@drawable/roundable"
-        android:hint="  Group Name"
+        android:hint="Group Name"
         android:textSize="20dp" />
 
-    <EditText
-        android:id="@+id/addMembers"
-        android:layout_width="365dp"
-        android:layout_height="46dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="183dp"
-        android:layout_weight="1"
-        android:background="@drawable/roundable"
-        android:hint="  Add Members"
-        android:textSize="20dp" />
 
-    <ToggleButton
+
+
+    <Switch
         android:id="@+id/setSecurity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="314dp"
-        android:layout_marginEnd="287dp"
-        android:checked="false"
-        android:text="setSecurity"
-        android:textOff="Public"
-        android:textOn="Private" />
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="40dp"
+        android:text="Private Group Off"
+        android:textColor="@color/white"
+        android:textSize="23dp"
+        app:layout_constraintStart_toStartOf="@id/addBio"
+        app:layout_constraintTop_toBottomOf="@id/addBio" />
 
     <Button
         android:id="@+id/CreateGroupActivity"
         android:layout_width="173dp"
+        android:background="@drawable/roundable"
         android:layout_height="75dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="start"
-        android:layout_marginStart="216dp"
-        android:layout_marginTop="452dp"
-        android:clickable="true"
-        android:enabled="true"
-        android:text="Create Group"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.899"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.629" />
+        android:clickable="true"
+        android:enabled="true"
+        android:text="Add Members"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

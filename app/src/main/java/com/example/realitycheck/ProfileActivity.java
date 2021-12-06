@@ -2,6 +2,8 @@
 
 package com.example.realitycheck;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.realitycheck.adapter.GroupAdapter;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.databinding.ActivityProfileBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
@@ -24,6 +27,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -47,6 +51,7 @@ public class ProfileActivity extends Fragment {
         recyclerView = binding.getRoot().findViewById(R.id.rl_post_box);
         PostAdapter.postPage = "profile";
         setPosts();
+        setGroups();
         MainActivity.toolbar.hide();
         return binding.getRoot();
     }
@@ -74,6 +79,7 @@ public class ProfileActivity extends Fragment {
 
         FollowersView.currUserProfile = true;
         TaggedInView.taggedInType = true;
+        GroupAdapter.thisPage = "profile";
 
         DocumentReference docReff = FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username);
         docReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -144,12 +150,57 @@ public class ProfileActivity extends Fragment {
         binding.addgroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(ProfileActivity.this)
-                        .navigate(R.id.action_ProfileActivity_to_CreateGroupActivity);
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Add group")
+                        .setMessage("Create new group or join existing group?")
+                        .setPositiveButton("Create New Group", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                NavHostFragment.findNavController(ProfileActivity.this)
+                                        .navigate(R.id.action_ProfileActivity_to_CreateGroupActivity);
+                            }
+                        }).setNegativeButton("Join A Group", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SearchPage.previous = "profile";
+                        NavHostFragment.findNavController(ProfileActivity.this)
+                                .navigate(R.id.action_ProfileActivity_to_SearchPage);
+
+                    }
+                }).setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
 
             }
         });
 
+
+    }
+
+    public void setGroups(){
+        ArrayList<Group> groupList= new ArrayList<Group>();
+        GroupAdapter groupAdapter = new GroupAdapter(this.getContext(),groupList);
+        FirebaseFirestore.getInstance().collection("Groups").whereArrayContains("members",LoginPage.currUser.username).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot documentSnapshots) {
+                for(DocumentSnapshot documentSnapshot:documentSnapshots){
+                    Group group = new Group();
+                    group.groupName = (String) documentSnapshot.get("groupName");
+                    group.bio = (String) documentSnapshot.get("bio");
+                    group.members = (ArrayList<String>)documentSnapshot.get("members");
+                    group.size = group.members.size();
+                    group.privacy = (boolean) documentSnapshot.get("privacy");
+                    group.profileImagePath = (String) documentSnapshot.get("profileImagePath");
+                    group.posts = (ArrayList<String>)documentSnapshot.get("posts");
+                    groupList.add(0,group);
+                    groupAdapter.notifyDataSetChanged();
+
+
+                }
+            }
+        });
+        binding.rlGroupBox.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        binding.rlGroupBox.setHasFixedSize(true);
+        binding.rlGroupBox.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
+        binding.rlGroupBox.setAdapter(groupAdapter);
 
     }
 
@@ -233,6 +284,7 @@ public class ProfileActivity extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        GroupAdapter.thisPage = "";
         binding = null;
     }
 

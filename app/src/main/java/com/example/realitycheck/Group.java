@@ -11,7 +11,7 @@ public class Group {
 
     public int size; //number of members
     public ArrayList<String> members;
-    public ArrayList<Post> posts;
+    public ArrayList<String> posts;
     public ArrayList<Post> postLiked;
     public ArrayList<Post> reposted;
 
@@ -19,7 +19,7 @@ public class Group {
     }
 
     public Group(String groupName, String bio, String profileImagePath, boolean privacy,
-                 ArrayList<Post> posts, ArrayList<String> members) {
+                 ArrayList<String> posts, ArrayList<String> members) {
         this.groupName = groupName;
         this.bio = bio;
         this.profileImagePath = profileImagePath;
@@ -77,11 +77,11 @@ public class Group {
         this.members = members;
     }
 
-    public ArrayList<Post> getPosts() {
+    public ArrayList<String> getPosts() {
         return posts;
     }
 
-    public void setPosts(ArrayList<Post> posts) {
+    public void setPosts(ArrayList<String> posts) {
         this.posts = posts;
     }
 

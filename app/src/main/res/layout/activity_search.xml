@@ -30,6 +30,22 @@
         app:layout_constraintTop_toBottomOf="@id/toptab"
         app:layout_constraintVertical_bias="0.0" />
 
+    <TextView
+        android:id="@+id/updateMessage"
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:text="Topic feature to be included in future update"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="276dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </TextView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnav_post_bottom"
