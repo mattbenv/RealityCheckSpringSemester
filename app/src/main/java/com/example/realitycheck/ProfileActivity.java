@@ -4,6 +4,7 @@ package com.example.realitycheck;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +29,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileActivity extends Fragment {
     private ActivityProfileBinding binding;
@@ -108,10 +111,32 @@ public class ProfileActivity extends Fragment {
 
         //sets profile picture
 
+        /*
         ImageView imageView = this.getView().findViewById(R.id.profilePic);
         Glide.with(this.getContext())
                 .load(LoginPage.storageProfilePictureReference)
                 .into(imageView);
+
+         */
+
+        DocumentReference dRef = FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username);
+        dRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String,Object> userMap = documentSnapshot.getData();
+                String profileImagePath = userMap.get("profileImagePath").toString();
+                // Reference to an image file in Cloud Storage
+                FirebaseStorage.getInstance().getReference().child("images/"+profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView imageView = binding.profilePic;
+                        Glide.with(getContext())
+                                .load(uri)
+                                .into(imageView);
+                    }
+                });
+            }
+        });
 
         binding.settings.setOnClickListener(new View.OnClickListener() {
             @Override

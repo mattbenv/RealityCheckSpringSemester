@@ -244,10 +244,19 @@
     <action
         android:id="@+id/action_SettingsPage_to_WelcomePage"
         app:destination="@+id/WelcomePage"/>
-
         <action
             android:id="@+id/action_SettingsPage_to_ResetPasswordActivity"
             app:destination="@id/ResetPasswordActivity" />
+
+        <action
+            android:id="@+id/action_SettingsPage_to_EditProfile"
+            app:destination="@id/EditProfileActivity" />
+        <action
+            android:id="@+id/action_SettingsPage_to_ProfileActivity"
+            app:destination="@id/ProfileActivity" />
+
+
+
     </fragment>
 
 
@@ -277,6 +286,20 @@
         <action
             android:id="@+id/action_AddGroupMembers_to_ProfileActivity"
             app:destination="@+id/ProfileActivity"/>
+
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/EditProfileActivity"
+        android:name="com.example.realitycheck.EditProfileActivity"
+        android:label="EditProfileActivity"
+        tools:layout="@layout/activity_edit_profile">
+
+        <action
+            android:id="@+id/action_EditProfile_to_SettingsPage"
+            app:destination="@+id/SettingsPage"/>
 
 
     </fragment>

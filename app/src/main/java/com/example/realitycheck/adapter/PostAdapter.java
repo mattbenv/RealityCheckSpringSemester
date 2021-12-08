@@ -453,7 +453,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.binding.tvCycle.setText(Integer.toString(reposts));
 
 
-
         }
 
 

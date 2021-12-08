@@ -87,7 +87,8 @@
                         android:layout_width="96dp"
                         android:layout_height="77dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ava_test" />
+                        android:background="@color/white"
+                         />
 
 
                 </androidx.cardview.widget.CardView>

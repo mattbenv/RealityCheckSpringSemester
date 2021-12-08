@@ -13,16 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.realitycheck.adapter.SearchAdapter;
 import com.example.realitycheck.databinding.SettingsPageBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SettingsPage extends Fragment {
     private SettingsPageBinding binding;
@@ -68,9 +61,19 @@ public class SettingsPage extends Fragment {
             @Override
             public void onClick(View view) {
                 //make a new layout to navigate to to edit profile
-                Toast.makeText(getContext(), "Edit Profile page to be implemented", Toast.LENGTH_SHORT).show();
+                NavHostFragment.findNavController(SettingsPage.this)
+                        .navigate(R.id.action_SettingsPage_to_EditProfile);
             }
         });
+
+        binding.imageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(SettingsPage.this)
+                        .navigate(R.id.action_SettingsPage_to_ProfileActivity);
+            }
+        });
+
 
 
 
