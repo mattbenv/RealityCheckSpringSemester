@@ -74,4 +74,59 @@
         android:enabled="true"
         android:text="Add Members"/>
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="91dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="180dp"
+        android:background="@drawable/roundable"
+        android:src="@color/white"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintStart_toEndOf="@+id/selectPicture"
+        app:layout_constraintTop_toBottomOf="@+id/setSecurity" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="231dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="75dp"
+        android:layout_marginBottom="1dp"
+        android:text="Choose A Group Picture"
+        android:textColor="@color/white"
+        android:textSize="21dp"
+        app:layout_constraintBottom_toTopOf="@+id/takePicture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setSecurity" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/takePicture"
+        android:layout_width="161dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="1dp"
+        android:text="Take Picture"
+        app:layout_constraintBottom_toTopOf="@+id/selectPicture"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/selectPicture"
+        android:layout_width="161dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:text="Select Picture"
+        app:layout_constraintBottom_toTopOf="@+id/CreateGroupActivity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/takePicture" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
