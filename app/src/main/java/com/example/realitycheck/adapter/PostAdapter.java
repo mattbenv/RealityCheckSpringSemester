@@ -1,4 +1,5 @@
 package com.example.realitycheck.adapter;
+
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -12,10 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.LoginPage;
@@ -33,7 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.type.DateTime;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -43,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -165,6 +168,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
 
 
+        //loads the pictures/gifs onto posts
+        FirebaseStorage.getInstance().getReference().child("images/" + post.getPhoto()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                postPhoto = uri;
+                ImageView iV = holder.binding.imageView;
+                iV.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(postPhoto)
+                        .into(iV);
+            }
+        });
+
+        if(postList.get(position).getPhoto()==null){
+            holder.binding.imageView.setVisibility(View.GONE);
+        }
+
 
 
 
@@ -269,44 +289,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
-        loadPostPhotosGifs(holder,post.getPostId());
-
 
     }
 
-
-    //loads the relevant pictures/gifs from storage onto the corresponding post
-    public void loadPostPhotosGifs(PostViewHolder holder, String postID){
-        DocumentReference photoRef = fStore.collection("Posts").document(postID);
-        photoRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Map<String, Object> photoMap = documentSnapshot.getData();
-                if (photoMap.get("photo") != null) {
-                    String imagePath = photoMap.get("photo").toString();
-                    // Reference to an image file in Cloud Storage
-                    FirebaseStorage.getInstance().getReference().child("images/" + imagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            postPhoto = uri;
-                            ImageView imageView = holder.binding.imageView;
-                            imageView.setVisibility(View.VISIBLE);
-                            Glide.with(context)
-                                    .load(postPhoto)
-                                    .into(imageView);
-                        }
-                    });
-                }
-            }
-        });
-        //fixes errors where post photos show up on wrong post
-        for(Post p:postList){
-            if(p.getPhoto()==null){
-                holder.binding.imageView.setVisibility(View.GONE);
-            }
-        }
-
-    }
 
     //removes post from recyclerview, from the current user's list of posts, and from the database
     //removes post from reposts for all users who reposted the post to be deleted
@@ -322,19 +307,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             LoginPage.currUser.posts.remove(post.getPostId());
                             documentReference.update("posts", LoginPage.currUser.posts);
                             DocumentReference docRef = fStore.collection("Posts").document(post.getPostId());
-                            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            Query queryRepost = FirebaseFirestore.getInstance().collection("Users").whereArrayContains("reposted",postID);
+                            queryRepost.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    ArrayList<String> repostedBy = (ArrayList<String>) documentSnapshot.get("repostedBy");
-                                    if (repostedBy != null) {
-                                        for (String s : repostedBy) {
+                                public void onSuccess(QuerySnapshot documentSnapshots) {
+                                    ArrayList<String> users = new ArrayList<>();
+                                    for (DocumentSnapshot d : documentSnapshots) {
+                                        users.add((String) d.get("username"));
+                                    }
+                                    if (users != null) {
+                                        for (String s : users) {
                                             DocumentReference doc = fStore.collection("Users").document(s);
                                             doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                                 @Override
                                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                    ArrayList<String> reposts = (ArrayList<String>) documentSnapshot.get("reposted");
-                                                    reposts.remove(postID);
-                                                    doc.update("reposted", reposts);
+                                                    ArrayList<String> reposted = (ArrayList<String>) documentSnapshot.get("reposted");
+                                                    reposted.remove(postID);
+                                                    doc.update("reposted", reposted);
 
                                                 }
                                             });
@@ -423,32 +412,50 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void handleRepost(String postID,Post post, PostViewHolder holder){
 
         DocumentReference document = fStore.collection("Posts").document(postID.toString());
-        if(!post.getRepostedBy().contains(LoginPage.currUser.username)){
+
+        ArrayList<String> repostNames = new ArrayList<>();
+        for(HashMap a :post.getRepostedBy()){
+            repostNames.add((String) a.get("username"));
+        }
+        System.out.println(repostNames);
+        if (!repostNames.contains(LoginPage.currUser.username)){
             reposts = post.getRepostCount()+1;
             post.setRepostCount(reposts);
             document.update("repostCount",reposts);
             if(LoginPage.currUser.reposted != null){
                 LoginPage.currUser.reposted.add(post.getPostId());
+
             }
             fStore.collection("Users").document(LoginPage.currUser.username).update("reposted",LoginPage.currUser.reposted);
 
             holder.binding.tvCycle.setText(Integer.toString(reposts));
-            post.addToRepostedBy(LoginPage.currUser.username);
+            HashMap<String,String> repost = new HashMap();
+            repost.put("username",LoginPage.currUser.username);
+            repost.put("time",java.text.DateFormat.getDateTimeInstance().format(new Date()));
+            post.addToRepostedBy(repost);
             document.update("repostedBy",post.getRepostedBy());
             repostNotifications(postID,holder);
+
+
         }
-        //undo
-        else if(post.getRepostedBy().contains(LoginPage.currUser.username)){
+        if(repostNames.contains(LoginPage.currUser.username)){
             reposts = post.getRepostCount()-1;
+            if(reposts<=0){
+                reposts = 0;
+                post.setRepostedBy(new ArrayList<HashMap<String,String>>());
+            }
             post.setRepostCount(reposts);
             post.removeFromRepostedBy(LoginPage.currUser.username);
-
             LoginPage.currUser.reposted.remove(post.getPostId());
             fStore.collection("Users").document(LoginPage.currUser.username).update("reposted",LoginPage.currUser.reposted);
             document.update("repostedBy",post.getRepostedBy());
             document.update("repostCount",reposts);
             holder.binding.tvCycle.setText(Integer.toString(reposts));
+
+
+
         }
+
 
     }
 
@@ -540,8 +547,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    ArrayList<String> repostedBy = (ArrayList<String>) documentSnapshot.get("repostedBy");
-                    String repostee = repostedBy.get(repostedBy.size()-1);
+                    ArrayList<HashMap<String,String>> repostedBy = (ArrayList<HashMap<String,String>>) documentSnapshot.get("repostedBy");
+                    HashMap mostRecent = repostedBy.get(repostedBy.size()-1);
+                    String repostee = mostRecent.toString();
                     Notification repostNotification = null;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                         LocalTime now = LocalTime.now();

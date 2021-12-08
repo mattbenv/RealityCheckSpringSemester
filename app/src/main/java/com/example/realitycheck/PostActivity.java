@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
@@ -26,7 +25,6 @@ import com.bumptech.glide.Glide;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.databinding.ActivityPostBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,17 +32,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class PostActivity extends Fragment {
@@ -215,7 +209,7 @@ public class PostActivity extends Fragment {
                             post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
                             post.setPostId(documentSnapshot.get("postId").toString());
                             post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
-                            post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
+                            post.setRepostedBy((ArrayList<HashMap<String, String>>) documentSnapshot.get("repostedBy"));
                             post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
                             post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
                             post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));

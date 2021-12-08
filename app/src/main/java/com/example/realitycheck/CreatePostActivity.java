@@ -49,6 +49,9 @@ public class CreatePostActivity extends Fragment {
 
     private String imagePath;
     private Uri image;
+    static final int REQUEST_TAKE_PHOTO = 123;
+    private static final int CAMERA_PIC_REQUEST = 1337;
+
     private static final int PICK_IMAGE_REQUEST = 22;
 
 
@@ -116,6 +119,14 @@ public class CreatePostActivity extends Fragment {
             }
         });
 
+        binding.takeimageButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                binding.imageView.setVisibility(View.VISIBLE);
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+            }
+        });
+
         //sets profile picture
 
         ImageView imageView = binding.sivAvatar;
@@ -176,7 +187,7 @@ public class CreatePostActivity extends Fragment {
 
         ArrayList<String> likeList = new ArrayList<>();
         post.setLikedBy(likeList);
-        ArrayList<String> repostList = new ArrayList<>();
+        ArrayList<HashMap<String,String>> repostList = new ArrayList<HashMap<String,String>>();
         post.setRepostedBy(repostList);
         ArrayList<Comment> comments = new ArrayList<>();
         post.setComments(comments);
@@ -228,6 +239,17 @@ public class CreatePostActivity extends Fragment {
     {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Bitmap newImage = (Bitmap) data.getExtras().get("data");
+            binding.imageView.setImageBitmap(newImage);
+            Uri filePath = data.getData();
+            image = filePath;
+            imagePath = filePath.toString();
+
+
+
+        }
+
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri filePath = data.getData();
             image = filePath;
@@ -253,7 +275,9 @@ public class CreatePostActivity extends Fragment {
     // this uploads image to the database
     private void uploadImage(String postId) {
         //creates a profile image path for the newly uploaded image
-        imagePath = postId + "_image" ;
+        if(image!=null) {
+            imagePath = postId + "_image";
+        }
         final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle("Uploading...");
         if(image!= null) {

@@ -30,6 +30,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProfileActivity extends Fragment {
     private ActivityProfileBinding binding;
@@ -224,7 +225,7 @@ public class ProfileActivity extends Fragment {
                     post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
                     post.setPostId(documentSnapshot.get("postId").toString());
                     post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
-                    post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
+                    post.setRepostedBy((ArrayList<HashMap<String, String>>) documentSnapshot.get("repostedBy"));
                     post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
                     post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
                     post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
@@ -251,7 +252,7 @@ public class ProfileActivity extends Fragment {
                         post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
                         post.setPostId(documentSnapshot.get("postId").toString());
                         post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
-                        post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
+                        post.setRepostedBy((ArrayList<HashMap<String, String>>)documentSnapshot.get("repostedBy"));
                         post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
                         post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
                         post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));

@@ -41,6 +41,7 @@ public class ViewPostActivity  extends Fragment {
     public CommentAdapter commentAdapter;
     public Post currPost;
     public static int savedPosition;
+    public int reposts;
     public static String previous;
     public static Post savedPost;
 
@@ -182,33 +183,54 @@ public class ViewPostActivity  extends Fragment {
 
     }
 
-
     public void handleRepost(Post post){
 
-        DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(post.getPostId());
-        int reposts;
-        if(!post.getRepostedBy().contains(LoginPage.currUser.username)){
+        DocumentReference document = FirebaseFirestore.getInstance().collection("Posts").document(post.getPostId().toString());
+
+        ArrayList<String> repostNames = new ArrayList<>();
+        for(HashMap a :post.getRepostedBy()){
+            repostNames.add((String) a.get("username"));
+        }
+        System.out.println(repostNames);
+        if (!repostNames.contains(LoginPage.currUser.username)){
             reposts = post.getRepostCount()+1;
             post.setRepostCount(reposts);
             document.update("repostCount",reposts);
+            if(LoginPage.currUser.reposted != null){
+                LoginPage.currUser.reposted.add(post.getPostId());
+
+            }
+            FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username).update("reposted",LoginPage.currUser.reposted);
 
             binding.repostCount.setText(Integer.toString(reposts));
-            post.addToRepostedBy(LoginPage.currUser.username);
+            HashMap<String,String> repost = new HashMap();
+            repost.put("username",LoginPage.currUser.username);
+            repost.put("time",java.text.DateFormat.getDateTimeInstance().format(new Date()));
+            post.addToRepostedBy(repost);
             document.update("repostedBy",post.getRepostedBy());
             repostNotifications(post.getPostId());
+
+
         }
-        //unlike
-        else if(post.getRepostedBy().contains(LoginPage.currUser.username)){
+        if(repostNames.contains(LoginPage.currUser.username)){
             reposts = post.getRepostCount()-1;
+            if(reposts<=0){
+                reposts = 0;
+                post.setRepostedBy(new ArrayList<HashMap<String,String>>());
+            }
             post.setRepostCount(reposts);
             post.removeFromRepostedBy(LoginPage.currUser.username);
+            LoginPage.currUser.reposted.remove(post.getPostId());
+            FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.username).update("reposted",LoginPage.currUser.reposted);
             document.update("repostedBy",post.getRepostedBy());
             document.update("repostCount",reposts);
             binding.repostCount.setText(Integer.toString(reposts));
+
+
+
         }
 
     }
-
 
 
 

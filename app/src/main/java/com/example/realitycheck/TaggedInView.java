@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.realitycheck.adapter.FollowerAdapter;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.databinding.ActivityTaggedInBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
@@ -19,9 +18,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TaggedInView extends Fragment {
     private ActivityTaggedInBinding binding;
@@ -79,7 +78,7 @@ public class TaggedInView extends Fragment {
                                     post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
                                     post.setPostId(documentSnapshot.get("postId").toString());
                                     post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
-                                    post.setRepostedBy((ArrayList<String>) documentSnapshot.get("repostedBy"));
+                                    post.setRepostedBy((ArrayList<HashMap<String, String>>) documentSnapshot.get("repostedBy"));
                                     post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
                                     post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
                                     post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));

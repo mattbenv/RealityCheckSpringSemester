@@ -8,39 +8,27 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.realitycheck.Comment;
 import com.example.realitycheck.Group;
 import com.example.realitycheck.LoginPage;
-import com.example.realitycheck.R;
-import com.example.realitycheck.SettingsPage;
 import com.example.realitycheck.User;
-import com.example.realitycheck.databinding.ItemCommentBinding;
 import com.example.realitycheck.databinding.ItemGroupBinding;
-import com.example.realitycheck.otherUserProfileActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Map;
+import java.util.List;
 
-public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> {
+public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> implements Filterable {
 
     private Context context;
 
@@ -86,6 +74,34 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         //sets in order of most recent
         Collections.reverse(groupList);
 
+        //sets up filter for filtering lists that gets displayed
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                List<Group> resultList = new ArrayList<>();
+                if (!charSequence.toString().isEmpty()) {
+                    for (Group group : groupList) {
+                        if (group.groupName.toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            resultList.add(group);
+                        }
+                    }
+                } else {
+                    //resultList.addAll(allUsers);
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = resultList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                groupList.clear();
+                groupList.addAll((Collection<? extends Group>) filterResults.values);
+                notifyDataSetChanged();
+
+            }
+        };
+
 
 
         //gets current post from the recycler view list based its position
@@ -121,8 +137,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
                                     if(thisPage == "profile"){
                                         groupList.remove(group);
-                                        notifyDataSetChanged();
                                     }
+                                    notifyDataSetChanged();
                                 }
                             }).setNegativeButton(android.R.string.no, null)
                             .setIcon(android.R.drawable.ic_dialog_alert)
@@ -142,6 +158,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
                     Toast.makeText(GroupAdapter.this.context, ("Joined" + group.groupName), Toast.LENGTH_SHORT).show();
                     FirebaseFirestore.getInstance().collection("Groups").document(group.groupName).update("members", group.members);
                     FirebaseFirestore.getInstance().collection("Groups").document(group.groupName).update("size", group.size);
+                    notifyDataSetChanged();
                 }
             });
 
@@ -151,6 +168,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
 
     }
+
+
 
 
 
@@ -169,6 +188,11 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     @Override
     public int getItemCount() {
         return groupList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 
 

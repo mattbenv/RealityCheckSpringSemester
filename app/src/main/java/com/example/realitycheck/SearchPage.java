@@ -223,6 +223,44 @@ public class SearchPage extends Fragment {
                     groupAdapter.notifyDataSetChanged();
                 }
             });
+
+            //The bar where you can
+            simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    groupAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+            simpleSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    database.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot documentSnapshots) {
+                            for(DocumentSnapshot documentSnapshot:documentSnapshots){
+                                Group group = new Group();
+                                group.groupName = (String) documentSnapshot.get("groupName");
+                                group.bio = (String) documentSnapshot.get("bio");
+                                group.members = (ArrayList<String>)documentSnapshot.get("members");
+                                group.size = group.members.size();
+                                group.privacy = (boolean) documentSnapshot.get("privacy");
+                                group.profileImagePath = (String) documentSnapshot.get("profileImagePath");
+                                group.posts = (ArrayList<String>)documentSnapshot.get("posts");
+                                groupList.add(0,group);
+                            }
+                            groupAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    return false;
+                }
+            });
         }
 
         if(binding.toptab.getTabAt(0).isSelected()){

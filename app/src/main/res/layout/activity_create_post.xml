@@ -78,6 +78,7 @@
         android:background="@drawable/roundable"
         android:src="@color/black"
         android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_content"/>
 
     <ImageButton
@@ -85,17 +86,38 @@
         android:layout_width="wrap_content"
         android:background="@color/black"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_camera"
+        app:srcCompat="@android:drawable/ic_menu_gallery"
         app:layout_constraintStart_toStartOf="@id/siv_avatar"
         app:layout_constraintTop_toBottomOf="@id/textView2"
-       />
+        />
+
+    <ImageButton
+        android:id="@+id/takeimageButton"
+        android:layout_width="wrap_content"
+        android:background="@color/black"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        app:layout_constraintStart_toStartOf="@id/siv_avatar"
+        app:layout_constraintTop_toBottomOf="@id/textView3"
+        />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take Picture"
+        android:layout_marginTop="25dp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/takeimageButton"
+        app:layout_constraintTop_toBottomOf="@id/imageButton"
+        app:layout_constraintBottom_toTopOf="@id/takeimageButton"/>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Image/Gif"
+        android:text="Select Image/Gif"
         android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="@+id/imageButton"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/imageView"
         app:layout_constraintBottom_toTopOf="@id/imageButton"/>

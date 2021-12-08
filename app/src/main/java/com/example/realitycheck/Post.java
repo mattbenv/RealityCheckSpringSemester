@@ -28,7 +28,7 @@ public abstract class Post {
     private int commentCount;
 
     private int repostCount;
-    private ArrayList<String> repostedBy;
+    private ArrayList<HashMap<String,String>> repostedBy;
     public FirebaseAuth mAuth;
     public DatabaseReference ref;
     public FirebaseFirestore fStorage;
@@ -49,22 +49,6 @@ public abstract class Post {
         this.postDate = postDate;
 
     }
-
-
-
-
-
-
-
-    public ArrayList<String> getRepostedBy() {
-        return repostedBy;
-    }
-
-    public void setRepostedBy(ArrayList<String> repostedBy) {
-        this.repostedBy = repostedBy;
-    }
-
-
 
 
     public int getRepostCount() {
@@ -105,15 +89,29 @@ public abstract class Post {
     public void setLikedBy(ArrayList<String> likedBY) {
         this.likedBy = likedBY;
     }
-    public void addToRepostedBy(String username){
-        this.repostedBy.add(username);
+
+
+
+
+    public void addToRepostedBy(HashMap<String,String> repost){
+        this.repostedBy.add(repost);
     }
 
-    public void removeFromRepostedBy(String username){
-        this.repostedBy.remove(username);
+    public void removeFromRepostedBy(String name) {
+        for(HashMap a: this.repostedBy){
+            if(a.get("username")==name){
+                this.repostedBy.remove(a);
+            }
+        }
     }
 
+    public ArrayList<HashMap<String,String>> getRepostedBy() {
+        return repostedBy;
+    }
 
+    public void setRepostedBy(ArrayList<HashMap<String,String>> repostedBy) {
+        this.repostedBy = repostedBy;
+    }
 
     public String getPostId() {
         return postId;
