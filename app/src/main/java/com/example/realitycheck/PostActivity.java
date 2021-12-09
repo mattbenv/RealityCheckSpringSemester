@@ -38,6 +38,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -223,9 +224,50 @@ public class PostActivity extends Fragment {
                     }
 
                 });
+
+            }
+
+            //loads reposts need to add repost message
+            for(int j = 0;j<LoginPage.currUser.following.size();j++){
+                DocumentReference dRef = FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.following.get(j));
+                dRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        ArrayList<String> reposts = new ArrayList<>();
+                        reposts.addAll((Collection<? extends String>) documentSnapshot.get("reposted"));
+                        for(String p: reposts){
+                            DocumentReference doc = FirebaseFirestore.getInstance().collection("Posts").document(p);
+                            doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    Post post = new TextPost();
+                                    post.setPostAuthor(documentSnapshot.get("postAuthor").toString());
+                                    post.setPostDate(documentSnapshot.get("postDate").toString());
+                                    post.setContent(documentSnapshot.get("content").toString());
+                                    post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
+                                    post.setPostId(documentSnapshot.get("postId").toString());
+                                    post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
+                                    post.setRepostedBy((ArrayList<HashMap<String, String>>) documentSnapshot.get("repostedBy"));
+                                    post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
+                                    post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
+                                    post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
+                                    if (documentSnapshot.get("photo") != null) {
+                                        post.setPhoto(documentSnapshot.get("photo").toString());
+                                    }
+                                    list.add(0, post);
+                                    postAdapter.notifyDataSetChanged();
+
+                                }
+
+                            });
+                        }
+                    }
+                });
             }
 
         }
+
+
 
 
 

@@ -44,7 +44,6 @@ public class SettingsPage extends Fragment {
                                         .navigate(R.id.action_SettingsPage_to_WelcomePage);
                             }
                         }).setNegativeButton(android.R.string.no, null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }
         });

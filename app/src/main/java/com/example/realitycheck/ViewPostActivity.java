@@ -36,10 +36,12 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ViewPostActivity  extends Fragment {
-    private ActivityViewPostBinding binding;
+
+
+    public static ActivityViewPostBinding binding;
     public ArrayList<Comment> list;
     public CommentAdapter commentAdapter;
-    public Post currPost;
+    public static Post currPost;
     public static int savedPosition;
     public int reposts;
     public static String previous;
@@ -65,6 +67,7 @@ public class ViewPostActivity  extends Fragment {
         binding.commentCount.setText(String.valueOf(currPost.getCommentCount()));
         binding.likeCount.setText(String.valueOf(currPost.getLikeCount()));
         binding.repostCount.setText(String.valueOf(currPost.getRepostCount()));
+
 
 
         //if the post has an image or gif than it gets loaded here
@@ -182,6 +185,7 @@ public class ViewPostActivity  extends Fragment {
 
 
     }
+
 
     public void handleRepost(Post post){
 

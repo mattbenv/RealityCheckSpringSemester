@@ -1,6 +1,8 @@
 package com.example.realitycheck.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -16,8 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.Comment;
+import com.example.realitycheck.LoginPage;
+import com.example.realitycheck.Post;
 import com.example.realitycheck.R;
+import com.example.realitycheck.TextPost;
 import com.example.realitycheck.User;
+import com.example.realitycheck.ViewPostActivity;
 import com.example.realitycheck.databinding.ItemCommentBinding;
 import com.example.realitycheck.otherUserProfileActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
@@ -100,7 +107,26 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
             }
         });
+        //click profile photo to navigate to the user's profile
+        holder.binding.tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                comment = commentList.get(position);
+                navigateToUserProfile(holder);
 
+            }
+        });
+
+
+
+        holder.binding.ivMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                comment = commentList.get(position);
+                deleteComment(holder,comment);
+
+            }
+        });
         //gets the post authors profile photo and displays it on the comment
         loadProfilePhotos(author,holder);
 
@@ -134,6 +160,58 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public void addData(Comment newItem) {
         commentList.add(0,newItem);
         notifyItemInserted(0);
+    }
+
+
+    //removes post from the recyclerview
+    public void removeData(Comment item){
+        int position = commentList.indexOf(item);
+        commentList.remove(item);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
+
+    }
+
+    public void deleteComment(CommentViewHolder holder, Comment comment){
+        if(comment.getCommentAuthor().contains(LoginPage.currUser.username)){
+            new AlertDialog.Builder(context)
+                    .setTitle("Delete Comment")
+                    .setMessage("Are you sure you want to delete this comment?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            String postID = ViewPostActivity.currPost.getPostId();
+                            ArrayList<Comment> comments;
+                            DocumentReference postDoc = FirebaseFirestore.getInstance().collection("Posts").document(postID);
+                            postDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot querySnapshot) {
+                                    ArrayList<HashMap<String,Object>> commentsMap = (ArrayList<HashMap<String, Object>>) querySnapshot.get("comments");
+                                    ArrayList<Comment> comments = new ArrayList<>();
+                                    for(HashMap commentMap :commentsMap){
+                                        Comment eachComment = new Comment(commentMap.get("commentAuthor").toString(),commentMap.get("commentContent").toString(),commentMap.get("commentDate").toString());
+                                        comments.add(eachComment);
+                                    }
+                                    for(int i = 0;i<comments.size();i++){
+                                        if(comments.get(i).getCommentDate().compareTo(comment.getCommentDate())==0){
+                                            comments.remove(i);
+                                        }
+                                    }
+                                    ViewPostActivity.currPost.setComments(comments);
+                                    ViewPostActivity.currPost.setCommentCount(comments.size());
+                                    ViewPostActivity.binding.commentCount.setText(String.valueOf(comments.size()));
+                                    FirebaseFirestore.getInstance().collection("Posts").document(postID).update("comments",comments);
+                                    FirebaseFirestore.getInstance().collection("Posts").document(postID).update("commentCount",comments.size());
+
+                                }
+
+                            });
+                            removeData(comment);
+                        }
+                    }).setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
+        }
     }
 
 
