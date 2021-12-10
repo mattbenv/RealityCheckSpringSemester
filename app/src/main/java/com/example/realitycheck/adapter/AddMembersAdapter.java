@@ -122,13 +122,14 @@ public class AddMembersAdapter extends RecyclerView.Adapter<AddMembersAdapter.Ad
         FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String owner = (String) documentSnapshot.get("owner");
                 String groupName = (String) documentSnapshot.get("groupName");
               String bio = (String) documentSnapshot.get("bio");
                 ArrayList<String> members = (ArrayList<String>)documentSnapshot.get("members");
                 Boolean privacy = (boolean) documentSnapshot.get("privacy");
                 String profileImagePath = (String) documentSnapshot.get("profileImagePath");
                 ArrayList<String> posts = (ArrayList<String>)documentSnapshot.get("posts");
-                currGroup = new Group(groupName,bio,profileImagePath,privacy,posts,members);
+                currGroup = new Group(owner,groupName,bio,profileImagePath,privacy,posts,members);
 
                 if(currGroup.members == null){
                     currGroup.members = new ArrayList<String>();
@@ -144,6 +145,7 @@ public class AddMembersAdapter extends RecyclerView.Adapter<AddMembersAdapter.Ad
 
                  */
                 if(!currGroup.members.contains(selectedUser.username)){
+                    animationView.setVisibility(View.VISIBLE);
                     currGroup.members.add(selectedUser.username);
 
                     //update user list of groups
@@ -159,11 +161,19 @@ public class AddMembersAdapter extends RecyclerView.Adapter<AddMembersAdapter.Ad
                     if (animationView.isAnimating()) {
                         // Do something.
                     }
-
+                    FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).update("members",AddMembersAdapter.currGroup.members);
+                    FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).update("size",AddMembersAdapter.currGroup.members.size());
                     Toast.makeText(AddMembersAdapter.this.context, ("Added " + selectedUser.username +" to your group"), Toast.LENGTH_SHORT).show();
                 }
-                FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).update("members",AddMembersAdapter.currGroup.members);
-                FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).update("size",AddMembersAdapter.currGroup.members.size());
+                else if(currGroup.members.contains(selectedUser.username)){
+                    animationView.setVisibility(View.GONE);
+                    currGroup.members.remove(selectedUser.username);
+                    FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).update("members",AddMembersAdapter.currGroup.members);
+                    FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).update("size",AddMembersAdapter.currGroup.members.size());
+                    Toast.makeText(AddMembersAdapter.this.context, ("Removed " + selectedUser.username +" from your group"), Toast.LENGTH_SHORT).show();
+
+                }
+
 
             }
         });

@@ -74,6 +74,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
 
         //on click of user profile photo navigates to their profile page
+        holder.binding.user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedUser = users.get(position);
+                otherUserProfileActivity.previousActivty= "search";
+                Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
+            }
+        });
         holder.binding.sivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,6 +90,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                 Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
             }
         });
+        holder.binding.tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedUser = users.get(position);
+                otherUserProfileActivity.previousActivty= "search";
+                Navigation.createNavigateOnClickListener(R.id.to_OtherUserProfileActivity).onClick(holder.binding.sivAvatar);
+            }
+        });
+
+
 
         //sets real name and username
         holder.userName.setText(selectedUser.username);

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/groupitem"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="0dp"
     android:background="#000">
@@ -11,12 +12,11 @@
         android:id="@+id/tv_description"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:textColor="#707070"
-        app:layout_constraintStart_toEndOf="@id/tv_title"
-        app:layout_constraintTop_toTopOf="@id/tv_title"
-        app:layout_constraintBottom_toTopOf="@id/buttonJoin"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/avatarCard"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
         android:paddingStart="5dp"
         android:text="group bio"
         android:textSize="16sp"
@@ -54,17 +54,21 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/avatarCard"
         android:text="group name"
         android:layout_marginTop="5dp"
-        android:paddingStart="5dp"
+        android:paddingStart="10dp"
         android:textColor="#fff"
         android:clickable="true"
         android:textStyle="bold"
-        android:textSize="21sp"/>
+        android:textSize="25sp"/>
 
     <TextView
         android:id="@+id/iv_more"
         android:layout_width="110dp"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/avatarCard"
         android:textSize="16sp"
         android:layout_marginTop="5dp"
         android:layout_height="wrap_content"
@@ -72,24 +76,48 @@
         android:layout_marginStart="6dp"
         android:clickable="true"
         android:text="# members"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+        app:layout_constraintStart_toEndOf="@id/tv_title"
+        />
 
 
-    <Button
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/avatarCard"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="50dp"
+        app:elevation="12dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintStart_toStartOf="@id/tv_title">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_avatar"
+            android:layout_width="50dp"
+            android:layout_height="46dp"
+            android:scaleType="centerCrop"
+            android:src="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_gravity="center"
+            app:shapeAppearanceOverlay="@style/circleImageStyle" />
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
         android:id="@+id/buttonJoin"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/roundable"
+        android:layout_marginEnd="10dp"
         android:clickable="true"
         android:enabled="true"
+        android:background="@drawable/roundable"
         android:text="Join"
         android:textColor="@color/white"
-        android:textSize="10sp"
+        android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_description" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 

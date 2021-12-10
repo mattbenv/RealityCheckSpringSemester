@@ -131,7 +131,7 @@ public class PostActivity extends Fragment {
                 FirebaseStorage.getInstance().getReference().child("images/"+profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        ImageView imageView = binding.getRoot().findViewById(R.id.shapeableImageView);
+                        ImageView imageView = binding.getRoot().findViewById(R.id.siv_avatar);
                         Glide.with(getContext())
                                 .load(uri)
                                 .into(imageView);
@@ -151,7 +151,7 @@ public class PostActivity extends Fragment {
                 NavHostFragment.findNavController(PostActivity.this).navigate(R.id.action_PostActivity_to_CreatePostActivity);
             }
         });
-        binding.getRoot().findViewById(R.id.shapeableImageView).setOnClickListener(new View.OnClickListener() {
+        binding.getRoot().findViewById(R.id.siv_avatar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(PostActivity.this)

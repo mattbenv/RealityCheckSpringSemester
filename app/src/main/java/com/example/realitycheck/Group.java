@@ -11,6 +11,8 @@ public class Group {
 
     public int size; //number of members
     public ArrayList<String> members;
+
+     public String owner;
     public ArrayList<String> posts;
     public ArrayList<Post> postLiked;
     public ArrayList<Post> reposted;
@@ -18,7 +20,7 @@ public class Group {
     public Group() {
     }
 
-    public Group(String groupName, String bio, String profileImagePath, boolean privacy,
+    public Group(String owner,String groupName, String bio, String profileImagePath, boolean privacy,
                  ArrayList<String> posts, ArrayList<String> members) {
         this.groupName = groupName;
         this.bio = bio;
@@ -29,6 +31,7 @@ public class Group {
         this.members = members;
         this.size = members.size();
 
+        this.owner = owner;
         this.posts = posts;
 
     }
@@ -85,6 +88,14 @@ public class Group {
         this.posts = posts;
     }
 
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
     public ArrayList<Post> getPostLiked() {
         return postLiked;
     }

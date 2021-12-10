@@ -211,6 +211,7 @@ public class SearchPage extends Fragment {
                 public void onSuccess(QuerySnapshot documentSnapshots) {
                     for(DocumentSnapshot documentSnapshot:documentSnapshots){
                         Group group = new Group();
+                        group.owner = (String) documentSnapshot.get("owner");
                         group.groupName = (String) documentSnapshot.get("groupName");
                         group.bio = (String) documentSnapshot.get("bio");
                         group.members = (ArrayList<String>)documentSnapshot.get("members");

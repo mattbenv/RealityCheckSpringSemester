@@ -40,7 +40,7 @@ public class CreateGroupActivity extends Fragment {
     private FirebaseAuth mAuth;
     //public static EditText groupName, addMembers;
 
-    public String groupName, bio, profileImagePath;
+    public String groupName, bio, profileImagePath, owner;
     private Uri profileImage;
     public boolean privacy; //true is private, false is public
     public int size; //number of members
@@ -92,8 +92,10 @@ public class CreateGroupActivity extends Fragment {
                 groupName = binding.groupName.getText().toString().trim();
                 bio = binding.addBio.getText().toString().trim();
                 newGroupName = groupName;
-                uploadImage();
-             //   members.add(binding.addMembers.getText().toString().trim()); // need to fix
+                if(profileImagePath!=null){
+                    uploadImage();
+                }
+                //   members.add(binding.addMembers.getText().toString().trim()); // need to fix
                 //profileImagePath =;
                 privacy = binding.setSecurity.isChecked();
                 if(groupName.isEmpty()){
@@ -105,9 +107,12 @@ public class CreateGroupActivity extends Fragment {
                     binding.groupName.requestFocus();
                 }
                 if (!groupName.isEmpty() && !bio.isEmpty()) {
-                    Group group = new Group(groupName, bio, profileImagePath, privacy, posts, members);
+                    owner = LoginPage.currUser.username;
+                    members.add(owner);
+                    Group group = new Group(owner, groupName, bio, profileImagePath, privacy, posts, members);
                     DocumentReference document = fStorage.collection("Groups").document(groupName);
                     Map<String, Object> currGroup = new HashMap<>();
+                    currGroup.put("owner", group.owner);
                     currGroup.put("bio", group.bio);
                     currGroup.put("groupName", group.groupName);
                     currGroup.put("members", group.members);

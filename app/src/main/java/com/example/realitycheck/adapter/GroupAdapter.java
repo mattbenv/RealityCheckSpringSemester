@@ -10,23 +10,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.realitycheck.Group;
 import com.example.realitycheck.LoginPage;
+import com.example.realitycheck.R;
 import com.example.realitycheck.User;
+import com.example.realitycheck.ViewPostActivity;
 import com.example.realitycheck.databinding.ItemGroupBinding;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> implements Filterable {
 
@@ -103,6 +113,47 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         };
 
 
+
+        //on clicking the posts it moves to a more in depth view of just that post
+        holder.binding.groupitem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                group = groupList.get(position);
+                Navigation.createNavigateOnClickListener(R.id.to_ViewGroupActivity).onClick(holder.binding.groupitem);
+            }
+        });
+
+
+
+
+        //loads group photo if exists if not it hides the imageview
+        group = groupList.get(position);
+        DocumentReference docRef = FirebaseFirestore.getInstance().collection("Groups").document(group.groupName);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String,Object> userMap = documentSnapshot.getData();
+                if(userMap.get("profileImagePath")!= null){
+                    String profileImagePath = userMap.get("profileImagePath").toString();
+                    holder.binding.sivAvatar.setVisibility(View.VISIBLE);
+                    holder.binding.avatarCard.setVisibility(View.VISIBLE);
+                    // Reference to an image file in Cloud Storage
+                    FirebaseStorage.getInstance().getReference().child("images/"+profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            ImageView imageView = holder.binding.sivAvatar;
+                            Glide.with(context)
+                                    .load(uri)
+                                    .into(imageView);
+                        }
+                    });
+                }
+                if(userMap.get("profileImagePath")== null){
+                    holder.binding.sivAvatar.setVisibility(View.GONE);
+                    holder.binding.avatarCard.setVisibility(View.GONE);
+                }
+            }
+        });
 
         //gets current post from the recycler view list based its position
         group = groupList.get(position);

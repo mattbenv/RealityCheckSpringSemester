@@ -192,8 +192,7 @@ public class ProfileActivity extends Fragment {
                                 .navigate(R.id.action_ProfileActivity_to_SearchPage);
 
                     }
-                }).setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                }).show();
 
             }
         });
@@ -210,6 +209,7 @@ public class ProfileActivity extends Fragment {
                 for(DocumentSnapshot documentSnapshot:documentSnapshots){
                     Group group = new Group();
                     group.groupName = (String) documentSnapshot.get("groupName");
+                    group.owner = (String) documentSnapshot.get("owner");
                     group.bio = (String) documentSnapshot.get("bio");
                     group.members = (ArrayList<String>)documentSnapshot.get("members");
                     group.size = group.members.size();

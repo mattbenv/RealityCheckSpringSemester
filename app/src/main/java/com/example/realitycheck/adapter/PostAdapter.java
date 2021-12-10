@@ -26,6 +26,7 @@ import com.example.realitycheck.Post;
 import com.example.realitycheck.PostActivity;
 import com.example.realitycheck.R;
 import com.example.realitycheck.User;
+import com.example.realitycheck.ViewGroupActivity;
 import com.example.realitycheck.ViewPostActivity;
 import com.example.realitycheck.databinding.ItemPostBinding;
 import com.example.realitycheck.otherUserProfileActivity;
@@ -214,6 +215,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         if(postPage == "postActivity"){
             // TODO: 11/30/2021 need to implement reposts in postactivity
         }
+
+        if(postPage == "groupView"){
+
+        }
         if(postPage == "taggedIn"){
             holder.binding.repost.setVisibility(View.GONE);
             holder.binding.repostimage.setVisibility(View.GONE);
@@ -303,6 +308,68 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     .setMessage("Are you sure you want to delete this post?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            if(postPage == "groupView"){
+                                DocumentReference dRef = fStore.collection("Groups").document(ViewGroupActivity.group.groupName);
+                                ViewGroupActivity.group.posts.remove(post.getPostId());
+                                dRef.update("posts",ViewGroupActivity.group.posts);
+                                DocumentReference docRef = fStore.collection("Posts").document(post.getPostId());
+                                Query queryRepost = FirebaseFirestore.getInstance().collection("Users").whereArrayContains("reposted",postID);
+                                queryRepost.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                                        ArrayList<String> users = new ArrayList<>();
+                                        for (DocumentSnapshot d : documentSnapshots) {
+                                            users.add((String) d.get("username"));
+                                        }
+                                        if (users != null) {
+                                            for (String s : users) {
+                                                DocumentReference doc = fStore.collection("Users").document(s);
+                                                doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                        ArrayList<String> reposted = (ArrayList<String>) documentSnapshot.get("reposted");
+                                                        reposted.remove(postID);
+                                                        doc.update("reposted", reposted);
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                });
+                                Query query = FirebaseFirestore.getInstance().collection("Users").whereArrayContains("taggedIn",postID);
+                                query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                                        ArrayList<String> users = new ArrayList<>();
+                                        for (DocumentSnapshot d : documentSnapshots) {
+                                            users.add((String) d.get("username"));
+                                        }
+                                        System.out.println(users);
+                                        if (users != null) {
+                                            for (String s : users) {
+                                                DocumentReference doc = fStore.collection("Users").document(s);
+                                                doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                        ArrayList<String> taggedIn = (ArrayList<String>) documentSnapshot.get("taggedIn");
+                                                        taggedIn.remove(postID);
+                                                        doc.update("taggedIn", taggedIn);
+
+                                                    }
+                                                });
+
+                                            }
+
+                                        }
+                                    }
+                                });
+                                docRef.delete();
+
+                                removeData(post);
+
+                                FirebaseStorage.getInstance().getReference().child("images").child(postID+"_image").delete();
+                            }
                             DocumentReference documentReference = fStore.collection("Users").document(post.getPostAuthor());
                             LoginPage.currUser.posts.remove(post.getPostId());
                             documentReference.update("posts", LoginPage.currUser.posts);

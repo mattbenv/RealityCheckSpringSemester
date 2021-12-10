@@ -101,6 +101,11 @@
         android:name="com.example.realitycheck.ProfileActivity"
         tools:layout="@layout/activity_profile">
 
+
+        <action
+            android:id="@+id/to_ViewGroupActivity"
+            app:destination="@+id/ViewGroupActivity"/>
+
         <action
             android:id="@+id/action_ProfileActivity_to_PostActivity"
             app:destination="@+id/PostActivity"/>
@@ -125,6 +130,9 @@
         <action
             android:id="@+id/action_ProfileActivity_to_SearchPage"
             app:destination="@+id/SearchPage"/>
+        <action
+            android:id="@+id/action_ProfileActivity_to_ViewGroupActivity"
+            app:destination="@id/ViewGroupActivity"/>
 
 
     </fragment>
@@ -146,6 +154,10 @@
         android:name="com.example.realitycheck.SearchPage"
         tools:layout="@layout/activity_search">
 
+
+        <action
+            android:id="@+id/to_ViewGroupActivity"
+            app:destination="@+id/ViewGroupActivity"/>
         <action
             android:id="@+id/action_SearchPage_to_PostActivity"
             app:destination="@+id/PostActivity"/>
@@ -153,6 +165,10 @@
         <action
             android:id="@+id/to_OtherUserProfileActivity"
             app:destination="@+id/OtherUserProfileActivity"/>
+
+        <action
+            android:id="@+id/action_SearchPage_to_ViewGroupActivity"
+            app:destination="@id/ViewGroupActivity"/>
 
     </fragment>
 
@@ -165,6 +181,9 @@
             android:id="@+id/action_OtherUserProfileActivity_to_SearchActivity"
             app:destination="@+id/SearchPage"/>
 
+        <action
+            android:id="@+id/to_ViewGroupActivity"
+            app:destination="@+id/ViewGroupActivity"/>
 
         <action
             android:id="@+id/action_otherUserProfileActivity_to_ViewFollowersActivity"
@@ -180,6 +199,11 @@
         <action
             android:id="@+id/action_otherUserProfileActivity_to_TaggedIn"
             app:destination="@id/TaggedIn"/>
+
+        <action
+            android:id="@+id/action_otherUserProfileActivity_to_ViewGroupActivity"
+            app:destination="@id/ViewGroupActivity"/>
+
 
     </fragment>
 
@@ -301,6 +325,43 @@
             android:id="@+id/action_EditProfile_to_SettingsPage"
             app:destination="@+id/SettingsPage"/>
 
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/ViewGroupActivity"
+        android:name="com.example.realitycheck.ViewGroupActivity"
+        android:label="ViewGroupActivity"
+        tools:layout="@layout/activity_view_group">
+
+        <action
+            android:id="@+id/action_ViewGroupActivity_to_ProfileActivity"
+            app:destination="@+id/ProfileActivity"/>
+
+        <action
+            android:id="@+id/to_OtherUserProfileActivity"
+            app:destination="@+id/OtherUserProfileActivity"/>
+        <action
+            android:id="@+id/action_ViewGroupActivity_to_CreateGroupPost"
+            app:destination="@+id/CreateGroupPostActivity"/>
+
+        <action
+            android:id="@+id/to_ViewPostActivity"
+            app:destination="@+id/ViewPostActivity"/>
+
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/CreateGroupPostActivity"
+        android:name="com.example.realitycheck.CreateGroupPostActivity"
+        tools:layout="@layout/activity_create_group_post">
+
+        <action
+            android:id="@+id/action_CreateGroupPostActivity_to_ViewGroup"
+            app:destination="@+id/ViewGroupActivity"/>
 
     </fragment>
 

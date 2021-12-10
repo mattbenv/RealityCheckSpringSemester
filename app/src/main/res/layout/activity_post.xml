@@ -29,19 +29,33 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-33dp">
 
-            <com.google.android.material.imageview.ShapeableImageView
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/shapeableImageView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="12dp"
-                android:background="@android:color/transparent"
-                android:scaleType="centerCrop"
-                android:src="@color/white"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                app:cardCornerRadius="50dp"
+                android:clickable="true"
+                app:elevation="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:clickable="true"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/circleImageStyle" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/siv_avatar"
+                    android:layout_width="50dp"
+                    android:clickable="true"
+
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    android:src="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_gravity="center"
+                    app:shapeAppearanceOverlay="@style/circleImageStyle" />
+            </androidx.cardview.widget.CardView>
+
+
 
             <ImageView
                 android:id="@+id/imageView7"

@@ -223,6 +223,7 @@ public class otherUserProfileActivity extends Fragment {
                     group.bio = (String) documentSnapshot.get("bio");
                     group.members = (ArrayList<String>)documentSnapshot.get("members");
                     group.size = group.members.size();
+                    group.owner = (String) documentSnapshot.get("owner");
                     group.privacy = (boolean) documentSnapshot.get("privacy");
                     group.profileImagePath = (String) documentSnapshot.get("profileImagePath");
                     group.posts = (ArrayList<String>)documentSnapshot.get("posts");

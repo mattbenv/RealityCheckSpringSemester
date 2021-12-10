@@ -35,10 +35,10 @@
         android:layout_height="258dp"
         android:layout_marginTop="72dp"
         android:src="@drawable/fakenewsss"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/realityCheckLogo"
+        app:layout_constraintBottom_toTopOf="@id/computerweb"/>
 
     <ImageView
         android:id="@+id/computerweb"
@@ -48,7 +48,7 @@
         android:src="@drawable/fake_news_web"
         app:layout_constraintBottom_toTopOf="@+id/slogin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintTop_toBottomOf="@id/realityCheckLogo"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
@@ -58,7 +58,7 @@
         android:layout_marginTop="72dp"
         android:src="@drawable/rx"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintBottom_toTopOf="@id/computerweb"
         app:layout_constraintStart_toEndOf="@+id/fakenews"
         app:layout_constraintTop_toTopOf="parent" />
 
