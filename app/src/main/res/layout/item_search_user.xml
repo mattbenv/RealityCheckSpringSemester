@@ -88,8 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_title"
         android:layout_marginEnd="6dp"
-        android:src="@drawable/ic_add_24"
-        />
+               />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/blackcheck"

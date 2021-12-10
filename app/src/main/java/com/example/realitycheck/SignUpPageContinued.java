@@ -25,7 +25,6 @@ import com.example.realitycheck.databinding.SignupcontinuedBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,7 +36,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 
 public class SignUpPageContinued extends Fragment{
@@ -49,6 +47,7 @@ public class SignUpPageContinued extends Fragment{
     private String nameValue;
     private String bioValue;
     private String birthdateValue;
+    public static boolean done;
     private String profileImagePath;
     private Uri profileImage;
     private FirebaseFirestore fStorage;
@@ -98,6 +97,7 @@ public class SignUpPageContinued extends Fragment{
                 nameValue = binding.name.getText().toString().trim();
                 bioValue = binding.UserBio.getText().toString().trim();
                 birthdateValue = binding.dateOfBirth.getText().toString().trim();
+                done=true;
                 uploadImage();
                 createdProfile();
             }

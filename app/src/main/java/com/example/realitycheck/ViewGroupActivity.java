@@ -58,6 +58,7 @@ public class ViewGroupActivity extends Fragment {
         binding.members.setText(group.size + " members");
         binding.tvContent.setText(group.bio);
 
+
         if(group.members.contains(LoginPage.currUser.username)){
             binding.buttonJoin.setText("Leave");
         }
@@ -104,6 +105,9 @@ public class ViewGroupActivity extends Fragment {
                             }).setNegativeButton(android.R.string.no, null)
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
+                }
+                else{
+
                 }
             }
         });
@@ -275,6 +279,13 @@ public class ViewGroupActivity extends Fragment {
             }
         }
 
+        binding.imageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(ViewGroupActivity.this)
+                        .navigate(R.id.action_ViewGroupActivity_to_ProfileActivity);
+            }
+        });
 
 
 

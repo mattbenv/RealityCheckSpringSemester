@@ -19,7 +19,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.CreateGroupActivity;
 import com.example.realitycheck.Group;
-import com.example.realitycheck.LoginPage;
 import com.example.realitycheck.R;
 import com.example.realitycheck.User;
 import com.example.realitycheck.databinding.ItemSearchUserBinding;
@@ -74,6 +73,13 @@ public class AddMembersAdapter extends RecyclerView.Adapter<AddMembersAdapter.Ad
         //initialize selected user
         selectedUser = users.get(position);
 
+        if (!CreateGroupActivity.newGroup.members.contains(selectedUser.username)) {
+            holder.binding.ivMore.setBackgroundResource(R.drawable.ic_add_24);
+        }
+        else if(CreateGroupActivity.newGroup.members.contains(selectedUser.username)){
+            holder.binding.ivMore.setBackgroundResource(R.drawable.fui_ic_check_circle_black_128dp);
+        }
+
 
 
         //on click of user profile photo navigates to their profile page
@@ -124,7 +130,7 @@ public class AddMembersAdapter extends RecyclerView.Adapter<AddMembersAdapter.Ad
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 String owner = (String) documentSnapshot.get("owner");
                 String groupName = (String) documentSnapshot.get("groupName");
-              String bio = (String) documentSnapshot.get("bio");
+                String bio = (String) documentSnapshot.get("bio");
                 ArrayList<String> members = (ArrayList<String>)documentSnapshot.get("members");
                 Boolean privacy = (boolean) documentSnapshot.get("privacy");
                 String profileImagePath = (String) documentSnapshot.get("profileImagePath");
@@ -147,26 +153,15 @@ public class AddMembersAdapter extends RecyclerView.Adapter<AddMembersAdapter.Ad
                 if(!currGroup.members.contains(selectedUser.username)){
                     animationView.setVisibility(View.VISIBLE);
                     currGroup.members.add(selectedUser.username);
+                    holder.binding.ivMore.setBackgroundResource(R.drawable.fui_ic_check_circle_black_128dp);
 
-                    //update user list of groups
-
-                    // Declaring the animation view
-                    animationView
-                            .addAnimatorUpdateListener(
-                                    (animation) -> {
-                                        // Do something.
-                                    });
-                    animationView
-                            .playAnimation();
-                    if (animationView.isAnimating()) {
-                        // Do something.
-                    }
                     FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).update("members",AddMembersAdapter.currGroup.members);
                     FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).update("size",AddMembersAdapter.currGroup.members.size());
                     Toast.makeText(AddMembersAdapter.this.context, ("Added " + selectedUser.username +" to your group"), Toast.LENGTH_SHORT).show();
                 }
                 else if(currGroup.members.contains(selectedUser.username)){
                     animationView.setVisibility(View.GONE);
+                    holder.binding.ivMore.setBackgroundResource(R.drawable.ic_add_24);
                     currGroup.members.remove(selectedUser.username);
                     FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).update("members",AddMembersAdapter.currGroup.members);
                     FirebaseFirestore.getInstance().collection("Groups").document(CreateGroupActivity.newGroupName).update("size",AddMembersAdapter.currGroup.members.size());

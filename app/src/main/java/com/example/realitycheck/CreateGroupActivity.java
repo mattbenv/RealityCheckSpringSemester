@@ -42,6 +42,7 @@ public class CreateGroupActivity extends Fragment {
 
     public String groupName, bio, profileImagePath, owner;
     private Uri profileImage;
+    public static Group newGroup;
     public boolean privacy; //true is private, false is public
     public int size; //number of members
     public ArrayList<String> members = new ArrayList<>();
@@ -121,6 +122,7 @@ public class CreateGroupActivity extends Fragment {
                     currGroup.put("profileImagePath", group.profileImagePath);
                     currGroup.put("size", 0);
                     document.set(currGroup);
+                    newGroup = group;
                     NavHostFragment.findNavController(CreateGroupActivity.this)
                             .navigate(R.id.action_CreateGroupActivity_to_AddGroupMembers);
                 }

@@ -1,6 +1,5 @@
 package com.example.realitycheck;
 
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -77,43 +74,45 @@ public class WelcomePage extends Fragment {
         //basically saves the logged in user when app is closed
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null){
-            DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(user.getDisplayName());
-            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot value) {
-                    Map<String, Object> userMap = value.getData();
-                    String uid = userMap.get("uid").toString();
-                    String email = userMap.get("email").toString();
-                    String username = userMap.get("username").toString();
-                    String name = userMap.get("name").toString();
-                    String bio = userMap.get("bio").toString();
-                    String birthday = userMap.get("birthday").toString();
-                    String profileImagePath = userMap.get("profileImagePath").toString();
-                    ArrayList<String> posts = (ArrayList<String>) userMap.get("posts");
-                    ArrayList<String> followers = (ArrayList<String>) userMap.get("followers");
-                    ArrayList<String> following = (ArrayList<String>) userMap.get("following");
-                    ArrayList<String> friends = (ArrayList<String>) userMap.get("friends");
-                    Boolean privateMode = (Boolean) userMap.get("private");
-                    Boolean notificationsEnabled = (Boolean) userMap.get("notificationsEnabled");
+            if(SignUpPageContinued.done == true) {
+                DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(user.getDisplayName());
+                docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot value) {
+                        Map<String, Object> userMap = value.getData();
+                        String uid = userMap.get("uid").toString();
+                        String email = userMap.get("email").toString();
+                        String username = userMap.get("username").toString();
+                        String name = userMap.get("name").toString();
+                        String bio = userMap.get("bio").toString();
+                        String birthday = userMap.get("birthday").toString();
+                        String profileImagePath = userMap.get("profileImagePath").toString();
+                        ArrayList<String> posts = (ArrayList<String>) userMap.get("posts");
+                        ArrayList<String> followers = (ArrayList<String>) userMap.get("followers");
+                        ArrayList<String> following = (ArrayList<String>) userMap.get("following");
+                        ArrayList<String> friends = (ArrayList<String>) userMap.get("friends");
+                        Boolean privateMode = (Boolean) userMap.get("private");
+                        Boolean notificationsEnabled = (Boolean) userMap.get("notificationsEnabled");
 
-                    ArrayList<String> taggedIn = (ArrayList<String>) userMap.get("taggedIn");
-                    ArrayList<String> reposted = (ArrayList<String>) userMap.get("reposted");
-                    LoginPage.currUser = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends,privateMode,notificationsEnabled,taggedIn,reposted);
+                        ArrayList<String> taggedIn = (ArrayList<String>) userMap.get("taggedIn");
+                        ArrayList<String> reposted = (ArrayList<String>) userMap.get("reposted");
+                        LoginPage.currUser = new User(uid, email, username, name, bio, birthday, profileImagePath, posts, followers, following, friends, privateMode, notificationsEnabled, taggedIn, reposted);
 
-                  // Reference to an image file in Cloud Storage
-                    FirebaseStorage.getInstance().getReference().child("images/" + profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            LoginPage.storageProfilePictureReference = uri;
-                        }
-                    });
+                        // Reference to an image file in Cloud Storage
+                        FirebaseStorage.getInstance().getReference().child("images/" + profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                LoginPage.storageProfilePictureReference = uri;
+                            }
+                        });
 
-                    NavHostFragment.findNavController(WelcomePage.this)
-                            .navigate(R.id.action_to_PostActivity);
+                        NavHostFragment.findNavController(WelcomePage.this)
+                                .navigate(R.id.action_to_PostActivity);
 
-                }
+                    }
 
-            });
+                });
+            }
 
         }
         binding = WelcomeBinding.inflate(inflater, container, false);

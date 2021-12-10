@@ -84,14 +84,16 @@
 
             <Switch
                 android:id="@+id/switch1"
-                android:layout_width="140dp"
+                android:layout_width="125dp"
                 android:layout_height="match_parent"
                 android:text="Private Mode Off"
                 android:textColor="@color/white"
                 android:textSize="23dp"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/message"/>
 
             <TextView
+                android:id="@+id/message"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:layout_marginStart="5dp"

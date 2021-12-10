@@ -5,19 +5,54 @@
     android:layout_width="match_parent"
     android:animateLayoutChanges="false"
     android:layout_height="match_parent"
-
+    android:background="@color/black"
     tools:context=".SearchPage">
+
+    <LinearLayout
+
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#060707"
+        android:gravity="center_vertical"
+        android:padding="15dp">
+
+
+        <android.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/editProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="Add Group Members"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:tint="@color/white" />
+        <android.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+          </LinearLayout>
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/simpleSearchView"
+        android:background="@drawable/roundable"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="10dp"
         android:padding="6dp"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/rl_search_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/topbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rl_search_box"

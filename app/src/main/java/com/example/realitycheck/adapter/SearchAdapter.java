@@ -70,6 +70,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
         //initialize selected user
         selectedUser = users.get(position);
+        if (!LoginPage.currUser.following.contains(selectedUser.username)) {
+            holder.binding.ivMore.setBackgroundResource(R.drawable.ic_add_24);
+        }
+        else if(LoginPage.currUser.following.contains(selectedUser.username)){
+            holder.binding.ivMore.setBackgroundResource(R.drawable.fui_ic_check_circle_black_128dp);
+        }
 
 
 
@@ -141,19 +147,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             selectedUser.followers.add(LoginPage.currUser.username);
             fStore.collection("Users").document(selectedUser.username).update("followers", selectedUser.followers);
             // Declaring the animation view
-            animationView
-                    .addAnimatorUpdateListener(
-                            (animation) -> {
-                                // Do something.
-                            });
-            animationView
-                    .playAnimation();
-            if (animationView.isAnimating()) {
-                // Do something.
-            }
+            holder.binding.ivMore.setBackgroundResource(R.drawable.fui_ic_check_circle_black_128dp);
+
             Toast.makeText(SearchAdapter.this.context, ("Followed " + selectedUser.username), Toast.LENGTH_SHORT).show();
         }
         else if(LoginPage.currUser.following.contains(selectedUser.username)){
+            holder.binding.ivMore.setBackgroundResource(R.drawable.ic_add_24);
             LoginPage.currUser.following.remove(selectedUser.username);
             fStore.collection("Users").document(LoginPage.currUser.username).update("following", LoginPage.currUser.following);
             selectedUser.followers.remove(LoginPage.currUser.username);

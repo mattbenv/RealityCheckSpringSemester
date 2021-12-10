@@ -16,6 +16,13 @@
         android:gravity="center_vertical"
         android:padding="15dp">
 
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/abc_vector_test" />
+
+
         <android.widget.Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,7 +111,7 @@
                     android:layout_marginStart="10dp"
                     android:text="DERAGAYA_"
                     android:textColor="#fff"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/members"
                     app:layout_constraintStart_toEndOf="@id/avatarCard"
@@ -117,7 +124,7 @@
                     android:text="DERAGAYA_"
 
                     android:textColor="#fff"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     app:layout_constraintBottom_toTopOf="@+id/tv_content"
                     app:layout_constraintStart_toStartOf="@+id/groupname"
                     app:layout_constraintTop_toBottomOf="@+id/groupname" />
@@ -146,7 +153,7 @@
                     android:padding="6dp"
                     android:text="11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
                     android:textColor="#fff"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/members" />
 
