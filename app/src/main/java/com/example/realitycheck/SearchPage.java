@@ -83,6 +83,7 @@ public class SearchPage extends Fragment {
                                 group.groupName = (String) documentSnapshot.get("groupName");
                                 group.bio = (String) documentSnapshot.get("bio");
                                 group.members = (ArrayList<String>)documentSnapshot.get("members");
+                                group.owner = (String) documentSnapshot.get("owner");
                                 group.size = group.members.size();
                                 group.privacy = (boolean) documentSnapshot.get("privacy");
                                 group.profileImagePath = (String) documentSnapshot.get("profileImagePath");

@@ -83,6 +83,7 @@ public class ViewGroupActivity extends Fragment {
                     NavHostFragment.findNavController(ViewGroupActivity.this).navigate(R.id.action_ViewGroupActivity_to_CreateGroupPost);
                 }
                 else{
+                    Toast.makeText(ViewGroupActivity.this.getActivity(), "Only members can post in the group", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -91,7 +92,7 @@ public class ViewGroupActivity extends Fragment {
         binding.ivMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(group.owner.compareTo(LoginPage.currUser.username)==0){
+                if(group.owner.contains(LoginPage.currUser.username)){
                     new AlertDialog.Builder(getContext())
                             .setTitle("Delete Group")
                             .setMessage("Are you sure you want to delete this group?")
@@ -112,6 +113,7 @@ public class ViewGroupActivity extends Fragment {
                             .show();
                 }
                 else{
+                    return;
 
                 }
             }
