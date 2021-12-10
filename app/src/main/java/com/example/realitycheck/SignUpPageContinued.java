@@ -47,7 +47,6 @@ public class SignUpPageContinued extends Fragment{
     private String nameValue;
     private String bioValue;
     private String birthdateValue;
-    public static boolean done;
     private String profileImagePath;
     private Uri profileImage;
     private FirebaseFirestore fStorage;
@@ -97,7 +96,6 @@ public class SignUpPageContinued extends Fragment{
                 nameValue = binding.name.getText().toString().trim();
                 bioValue = binding.UserBio.getText().toString().trim();
                 birthdateValue = binding.dateOfBirth.getText().toString().trim();
-                done=true;
                 uploadImage();
                 createdProfile();
             }

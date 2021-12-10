@@ -53,7 +53,7 @@ public class otherUserProfileActivity extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        if(previousActivty == "post" || previousActivty == "taggedIn"){
+        if(previousActivty == "post"){
             thisUser = PostAdapter.userToNavTo;
         }
         if(previousActivty == "search"){
@@ -250,33 +250,35 @@ public class otherUserProfileActivity extends Fragment {
         list = new ArrayList<Post>();
         PostAdapter postAdapter = new PostAdapter(this.getContext(),list);
 
-        for(int i= 0;i<thisUser.posts.size();i++){
-            DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Posts").document(thisUser.posts.get(i));
-            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Post post = new TextPost();
-                    post.setPostAuthor(documentSnapshot.get("postAuthor").toString());
-                    post.setPostDate(documentSnapshot.get("postDate").toString());
-                    post.setContent(documentSnapshot.get("content").toString());
-                    post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
-                    post.setPostId(documentSnapshot.get("postId").toString());
-                    //need to fix
-                    post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
-                    post.setRepostedBy((ArrayList<HashMap<String, String>>) documentSnapshot.get("repostedBy"));
-                    post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
-                    post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
-                    post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
-                    if(documentSnapshot.get("photo")!=null){
-                        post.setPhoto(documentSnapshot.get("photo").toString());
+        if(thisUser.posts!=null) {
+            for (int i = 0; i < thisUser.posts.size(); i++) {
+                DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Posts").document(thisUser.posts.get(i));
+                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Post post = new TextPost();
+                        post.setPostAuthor(documentSnapshot.get("postAuthor").toString());
+                        post.setPostDate(documentSnapshot.get("postDate").toString());
+                        post.setContent(documentSnapshot.get("content").toString());
+                        post.setLikeCount(Integer.parseInt(documentSnapshot.get("likeCount").toString()));
+                        post.setPostId(documentSnapshot.get("postId").toString());
+                        //need to fix
+                        post.setLikedBy((ArrayList<String>) documentSnapshot.get("likedBy"));
+                        post.setRepostedBy((ArrayList<HashMap<String, String>>) documentSnapshot.get("repostedBy"));
+                        post.setRepostCount(Integer.parseInt(documentSnapshot.get("repostCount").toString()));
+                        post.setComments((ArrayList<Comment>) documentSnapshot.get("comments"));
+                        post.setCommentCount(Integer.parseInt(documentSnapshot.get("commentCount").toString()));
+                        if (documentSnapshot.get("photo") != null) {
+                            post.setPhoto(documentSnapshot.get("photo").toString());
+                        }
+                        list.add(0, post);
+                        postAdapter.notifyDataSetChanged();
+
                     }
-                    list.add(0,post);
-                    postAdapter.notifyDataSetChanged();
 
-                }
+                });
 
-            });
-
+            }
         }
 
         if(thisUser.reposted!=null) {

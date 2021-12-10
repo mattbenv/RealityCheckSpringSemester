@@ -142,7 +142,7 @@
                     android:textSize="25sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/groupname" />
+                    app:layout_constraintTop_toBottomOf="@id/groupname" />
 
 
                 <TextView

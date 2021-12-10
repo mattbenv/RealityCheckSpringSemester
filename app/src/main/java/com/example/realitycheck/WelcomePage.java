@@ -74,7 +74,6 @@ public class WelcomePage extends Fragment {
         //basically saves the logged in user when app is closed
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null){
-            if(SignUpPageContinued.done == true) {
                 DocumentReference docRef = FirebaseFirestore.getInstance().collection("Users").document(user.getDisplayName());
                 docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -112,7 +111,6 @@ public class WelcomePage extends Fragment {
                     }
 
                 });
-            }
 
         }
         binding = WelcomeBinding.inflate(inflater, container, false);

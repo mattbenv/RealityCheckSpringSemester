@@ -76,7 +76,9 @@ public class EditProfileActivity extends Fragment {
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadImage();
+                if(profileImage!=null){
+                    uploadImage();
+                }
                 LoginPage.currUser.bio = binding.userBio.getText().toString();
                 LoginPage.currUser.name = binding.realName.getText().toString();
                 profileImagePath = LoginPage.currUser.username+ "_profile_picture" ;
@@ -169,8 +171,7 @@ public class EditProfileActivity extends Fragment {
         FirebaseStorage.getInstance().getReference().child("images/"+ profileImagePath).delete();
         final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle("Uploading...");
-        if(profileImage!= null) {
-            progressDialog.show();
+                    progressDialog.show();
             //adds image to the database
             StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/"+ profileImagePath);
             ref.putFile(profileImage)
@@ -196,7 +197,6 @@ public class EditProfileActivity extends Fragment {
                             progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
-        }
     }
     @Override
     public void onDestroyView() {

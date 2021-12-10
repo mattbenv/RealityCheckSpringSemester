@@ -123,10 +123,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String,Object> userMap = documentSnapshot.getData();
                 String profileImagePath = userMap.get("profileImagePath").toString();
+                String realName = userMap.get("name").toString();
+                holder.binding.tvDescription.setText(realName);
                 // Reference to an image file in Cloud Storage
                 FirebaseStorage.getInstance().getReference().child("images/"+profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
+
                         postAuthorProfilePhoto = uri;
                         ImageView imageView = holder.binding.sivAvatar;
                         Glide.with(context)
@@ -573,10 +576,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     // TODO: 11/30/2021 notifications are only working on each specific device need to research Firebase Cloud Messaging for notifications across devices
     //
     public void likeNotifications(String postID, PostViewHolder holder){
-        Intent intent = new Intent(context,PostAdapter.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        if(LoginPage.currUser.posts.contains(postID)){
+            if(LoginPage.currUser.posts.contains(postID)){
             DocumentReference document = fStore.collection("Posts").document(postID.toString());
             document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -590,9 +590,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         likeNotification = new Notification.Builder(holder.itemView.getContext(),"my_channel_01")
                                 .setContentTitle(likee+ " liked your post at "+ now.format(dtf3))
                                 .setContentText("Like Received")
-                                .setContentIntent(pendingIntent)
-                                .setSmallIcon(R.drawable.ic_like).build();
-
+                                .setSmallIcon(R.drawable.ic_cycle).build();
                     }
 
                     PostActivity.mNotificationManager.notify(getNotificationID(),likeNotification);

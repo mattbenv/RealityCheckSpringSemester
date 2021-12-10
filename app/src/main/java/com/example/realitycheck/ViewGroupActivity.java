@@ -78,8 +78,13 @@ public class ViewGroupActivity extends Fragment {
         binding.addpost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateGroupPostActivity.thisGroup = group;
-                NavHostFragment.findNavController(ViewGroupActivity.this).navigate(R.id.action_ViewGroupActivity_to_CreateGroupPost);
+                if(group.members.contains(LoginPage.currUser.username)) {
+                    CreateGroupPostActivity.thisGroup = group;
+                    NavHostFragment.findNavController(ViewGroupActivity.this).navigate(R.id.action_ViewGroupActivity_to_CreateGroupPost);
+                }
+                else{
+
+                }
             }
         });
 

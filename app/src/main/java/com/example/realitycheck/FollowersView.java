@@ -3,20 +3,16 @@
 package com.example.realitycheck;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavHostController;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.realitycheck.adapter.FollowerAdapter;
-import com.example.realitycheck.adapter.SearchAdapter;
 import com.example.realitycheck.databinding.ActivityFollowersViewBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -73,12 +69,9 @@ public class FollowersView extends Fragment {
             //the selected is getting updated to the last user to appear int he follower view
             //could create own adapt for followers and then use Followadapter.selecteduser
             //userToUse = SearchAdapter.selectedUser;
-            if(previousActivity == "otherprofile"){
                 userToUse = otherUserProfileActivity.thisUser;
-            }
-            else {
-                userToUse = FollowerAdapter.selectedUser;
-            }
+
+
         }
 
         if(type== true) {

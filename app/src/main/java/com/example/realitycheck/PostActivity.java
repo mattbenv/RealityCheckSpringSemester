@@ -36,7 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -236,6 +235,7 @@ public class PostActivity extends Fragment {
 
 
             //loads reposts need to add repost message
+            /*
             for(int j = 0;j<LoginPage.currUser.following.size();j++){
                 DocumentReference dRef = FirebaseFirestore.getInstance().collection("Users").document(LoginPage.currUser.following.get(j));
                 dRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -272,6 +272,7 @@ public class PostActivity extends Fragment {
                     }
                 });
             }
+            */
 
         }
 
