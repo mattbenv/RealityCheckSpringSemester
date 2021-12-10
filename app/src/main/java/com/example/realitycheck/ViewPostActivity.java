@@ -68,8 +68,6 @@ public class ViewPostActivity  extends Fragment {
         binding.likeCount.setText(String.valueOf(currPost.getLikeCount()));
         binding.repostCount.setText(String.valueOf(currPost.getRepostCount()));
 
-
-
         //if the post has an image or gif than it gets loaded here
         if(currPost.getPhoto()!=null){
             FirebaseStorage.getInstance().getReference().child("images/" + currPost.getPhoto()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -143,6 +141,8 @@ public class ViewPostActivity  extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String,Object> userMap = documentSnapshot.getData();
                 String profileImagePath = userMap.get("profileImagePath").toString();
+                String realName = userMap.get("name").toString();
+                binding.realName.setText(realName);
                 // Reference to an image file in Cloud Storage
                 FirebaseStorage.getInstance().getReference().child("images/"+profileImagePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override

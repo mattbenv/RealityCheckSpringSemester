@@ -8,12 +8,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 // [START post_class]
 @IgnoreExtraProperties
 public abstract class Post {
     private String postDate;
     private String postAuthor;
+    private String realName;
     private int likeCount;
     private ArrayList<String> likedBy;
     private String postId;
@@ -26,7 +28,6 @@ public abstract class Post {
 
 
     private int commentCount;
-
     private int repostCount;
     private ArrayList<HashMap<String,String>> repostedBy;
     public FirebaseAuth mAuth;
