@@ -40,6 +40,7 @@ public class CreateGroupActivity extends Fragment {
     private FirebaseAuth mAuth;
     //public static EditText groupName, addMembers;
 
+    //initializing group attribues
     public String groupName, bio, profileImagePath, owner;
     private Uri profileImage;
     public static Group newGroup;
@@ -110,6 +111,7 @@ public class CreateGroupActivity extends Fragment {
                 if (!groupName.isEmpty() && !bio.isEmpty()) {
                     owner = LoginPage.currUser.username;
                     members.add(owner);
+                    //creating new group based off information from Create Group Page
                     Group group = new Group(owner, groupName, bio, profileImagePath, privacy, posts, members);
                     DocumentReference document = fStorage.collection("Groups").document(groupName);
                     Map<String, Object> currGroup = new HashMap<>();
@@ -131,6 +133,7 @@ public class CreateGroupActivity extends Fragment {
             }
         });
 
+        //changes in privacy button based on user interaction
         binding.setSecurity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -196,7 +199,7 @@ public class CreateGroupActivity extends Fragment {
 
     // this uploads image to the database
     private void uploadImage() {
-        //creates a profile image path for the newly uploaded image
+        //creates a group profile image path for the newly uploaded image
         profileImagePath = groupName+ "_profile_picture" ;
         final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle("Uploading...");

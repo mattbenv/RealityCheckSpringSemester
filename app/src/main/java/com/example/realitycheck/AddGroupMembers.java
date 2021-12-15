@@ -37,7 +37,8 @@ public class AddGroupMembers extends Fragment {
     ArrayList<User> list;
 
 
-
+    //creates the simple search view page so user can search
+    //for members to add
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -45,7 +46,7 @@ public class AddGroupMembers extends Fragment {
     ) {
         binding  =  AddGroupMembersBinding.inflate(inflater, container, false);
         SearchView simpleSearchView =  binding.getRoot().findViewById(R.id.simpleSearchView);
-
+        //initializes recycler view to include search box
         recyclerView = binding.getRoot().findViewById(R.id.rl_search_box);
         //searchAdapter = new SearchAdapter(this.getContext());
 
@@ -59,12 +60,15 @@ public class AddGroupMembers extends Fragment {
 
         //recyclerView.setAdapter(searchAdapter);
 
+        //adjusts layout of recycler view
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new LinearLayoutDivider(this.getContext(), LinearLayoutManager.VERTICAL));
 
+        //get instance of Firebase collection of users
         database = FirebaseFirestore.getInstance().collection("Users");
         list = new ArrayList<User>();
+
         addMemberAdapter = new AddMembersAdapter(this.getContext(),list);
         recyclerView.setAdapter(addMemberAdapter);
 
