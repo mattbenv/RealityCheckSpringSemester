@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.realitycheck">
+
     <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -10,17 +11,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RealityCheck"
-        ><![CDATA[>
-
-
-        ]]>
+        android:theme="@style/Theme.RealityCheck">
+        <activity
+            android:name=".AdminPage"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
             android:label="@string/app_name"
-            android:theme="@style/Theme.RealityCheck.NoActionBar">
+            android:theme="@style/Theme.RealityCheck.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -49,9 +49,13 @@
             android:id="@+id/action_LogInPage_to_PostActivity"
             app:destination="@id/PostActivity" />
         <action
+            android:id="@+id/action_LogInPage_to_AdminPage"
+            app:destination="@id/adminPage" />
+        <action
             android:id="@+id/action_LogInPage_to_ResetPasswordActivity"
             app:destination="@id/ResetPasswordActivity" />
     </fragment>
+
 
     <fragment
         android:id="@+id/SignUpPageContinued"
@@ -364,6 +368,11 @@
             app:destination="@+id/ViewGroupActivity"/>
 
     </fragment>
+    <activity
+        android:id="@+id/adminPage"
+        android:name="com.example.realitycheck.AdminPage"
+        android:label="admin_page"
+        tools:layout="@layout/admin_page" />
 
 
 </navigation>

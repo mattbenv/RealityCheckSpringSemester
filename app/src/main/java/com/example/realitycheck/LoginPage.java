@@ -24,14 +24,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,6 +46,7 @@ public class LoginPage extends Fragment {
     private LoginBinding binding;
     private FirebaseFirestore fStorage;
     private FirebaseStorage fImageStorage;
+    private FirebaseFirestore database;
     private FirebaseAuth mAuth;
     public static User currUser;
     public static Uri storageProfilePictureReference;
@@ -50,6 +55,9 @@ public class LoginPage extends Fragment {
     Animation fadeinAnimation;
     Animation slideupAnimation;
     ImageView realitycheckbox;
+    boolean adminSwitch = false;
+
+    ArrayList<Tokens> list_tokens;
 
     //List of functions of Animations
     private void slideupAnimation(){
@@ -158,7 +166,7 @@ public class LoginPage extends Fragment {
         }
 
         //Authenticates with firebase and signs in user
-
+        System.out.print(mAuth);
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -204,10 +212,34 @@ public class LoginPage extends Fragment {
                     }
                 });
 
+
+                ////we want to check the collection (token) and then we want to either Navigate PostActivity or we want to go to Admin Page
+                //TODO : write up an algorithim to iterate through the collection tokens and then if match simply go to fragment, if not keep moving.
+                /*String currusername = currUser.username;
+                System.out.println("USERNAME: ***************************************");
+                System.out.println(currusername);
+                database = FirebaseFirestore.getInstance();
+                CollectionReference token_ref = database.collection("Tokens");
+                System.out.println(token_ref);
+                adminSwitch = false;
+                token_ref.whereEqualTo("token",currusername).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        adminSwitch = true;
+                        NavHostFragment.findNavController(LoginPage.this)
+                                .navigate(R.id.action_LogInPage_to_AdminPage);
+                        Toast.makeText(getContext(), "Successful login to Admin Account Special Permissions \n", Toast.LENGTH_LONG).show();
+                    }
+                });
+                if (adminSwitch==false){
+                    NavHostFragment.findNavController(LoginPage.this)
+                            .navigate(R.id.action_LogInPage_to_PostActivity);
+                    Toast.makeText(getContext(), "Successful login to account \n", Toast.LENGTH_LONG).show();
+                }*/
+
                 NavHostFragment.findNavController(LoginPage.this)
                         .navigate(R.id.action_LogInPage_to_PostActivity);
                 Toast.makeText(getContext(), "Successful login to account \n", Toast.LENGTH_LONG).show();
-
             }
 
         });
