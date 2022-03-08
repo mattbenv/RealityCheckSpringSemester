@@ -3,6 +3,24 @@ package com.example.realitycheck.util;
 import java.util.ArrayList;
 
 public class Administrator {
+    //Lets build an array of features for the administrator to have control over USERS specific privelages
+    public String name;
+    public ArrayList features;
+    public boolean can_post;
+    public boolean is_blocked;
+    public boolean banned_group;
+    public boolean banned_followers;
+    public boolean banned_following;
+    public boolean can_like;
+    public boolean can_follow;
+    public boolean can_joingroup;
+    public boolean mediaImages;
+    public boolean getnotified;
+
+    //Lets build an array of features within the POSTS & COMMENTS
+    public boolean flaggedposts;
+    
+
     public Administrator(String name, ArrayList features, boolean can_post, boolean is_blocked, boolean banned_group, boolean banned_followers, boolean banned_following, boolean can_like, boolean can_follow, boolean can_joingroup, boolean mediaImages, boolean getnotified, boolean flaggedposts) {
         this.name = name;
         this.features = features;
@@ -21,23 +39,6 @@ public class Administrator {
     public Administrator(){
 
     }
-
-    //Lets build an array of features for the administrator to have control over USERS specific privelages
-    public String name;
-    public ArrayList features;
-    public boolean can_post;
-    public boolean is_blocked;
-    public boolean banned_group;
-    public boolean banned_followers;
-    public boolean banned_following;
-    public boolean can_like;
-    public boolean can_follow;
-    public boolean can_joingroup;
-    public boolean mediaImages;
-    public boolean getnotified;
-
-    //Lets build an array of features within the POSTS & COMMENTS
-    public boolean flaggedposts;
 
     public String getName() {
         return name;
