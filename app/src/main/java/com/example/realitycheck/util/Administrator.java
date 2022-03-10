@@ -19,7 +19,7 @@ public class Administrator {
 
     //Lets build an array of features within the POSTS & COMMENTS
     public boolean flaggedposts;
-    
+
 
     public Administrator(String name, ArrayList features, boolean can_post, boolean is_blocked, boolean banned_group, boolean banned_followers, boolean banned_following, boolean can_like, boolean can_follow, boolean can_joingroup, boolean mediaImages, boolean getnotified, boolean flaggedposts) {
         this.name = name;

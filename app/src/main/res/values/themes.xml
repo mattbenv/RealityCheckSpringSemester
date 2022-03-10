@@ -36,6 +36,7 @@
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
     </style>
+
     <style name="YourApplicationTheme" parent="android:style/Theme.NoTitleBar">
         <item name="android:buttonStyle">@style/button</item>
     </style>
