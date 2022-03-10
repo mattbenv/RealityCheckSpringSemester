@@ -146,6 +146,14 @@ public class WelcomePage extends Fragment {
             }
         });
 
+        //Button that navigates to the administrator page
+        binding.adminBotton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(WelcomePage.this)
+                        .navigate(R.id.action_LogInPage_to_AdminPage);
+            }
+        });
         //button that navigates to login page
         binding.buttonSignin.setOnClickListener(new View.OnClickListener() {
             @Override

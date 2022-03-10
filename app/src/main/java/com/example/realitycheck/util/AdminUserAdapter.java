@@ -1,4 +1,4 @@
-package com.example.realitycheck.adapter;
+package com.example.realitycheck.util;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.realitycheck.R;
 import com.example.realitycheck.User;
 import java.util.ArrayList;
 public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.AddUserHolder>{
@@ -26,15 +27,15 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.AddU
     @NonNull
     @Override
     public AddUserHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item,parent,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.item_admin_card,parent,false);
         return new AddUserHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AddUserHolder holder, int position) {
         User user = user_list.get(position);
-        holder.information1.setText(user.getusername()); //We have not made any getters or setters for the user class
-        holder.extended_information.setText(user.get()); //We have not made any getters or setters for the user class
+        holder.information1.setText("wassup"); //We have not made any getters or setters for the user class
+        holder.extended_information.setText("wassup2"); //We have not made any getters or setters for the user class
     }
 
     @Override
@@ -52,9 +53,9 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.AddU
             super(itemView);
 
             //You can find the R.id for the Text you want in the item_admin_card.xml file
-            username = itemView.findViewById(R.tv_username);
-            information1 = itemView.findViewById(R.tv_info);
-            extended_information = itemView.findViewById(R.tv_additional_info);
+            username = itemView.findViewById(R.id.tv_username);
+            information1 = itemView.findViewById(R.id.tv_info);
+            extended_information = itemView.findViewById(R.id.tv_additional_info);
 
         }
     }
