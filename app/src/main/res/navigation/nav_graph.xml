@@ -376,7 +376,9 @@
         tools:layout="@layout/admin_page" >
         <action
             android:id="@+id/action_adminPage_to_userList2"
-            app:destination="@id/userList2" />
+            app:destination="@id/userList2"
+            app:enterAnim="@anim/slideup"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <activity
         android:id="@+id/userList2"
