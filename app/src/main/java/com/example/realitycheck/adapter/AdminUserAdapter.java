@@ -1,4 +1,4 @@
-package com.example.realitycheck.util;
+package com.example.realitycheck.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -34,8 +34,12 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.AddU
     @Override
     public void onBindViewHolder(@NonNull AddUserHolder holder, int position) {
         User user = user_list.get(position);
-        holder.information1.setText("wassup"); //We have not made any getters or setters for the user class
-        holder.extended_information.setText("wassup2"); //We have not made any getters or setters for the user class
+        holder.username.setText(user.username); //We have not made any getters or setters for the user class
+        holder.information1.setText(user.email); //We have not made any getters or setters for the user class
+        holder.extended_information.setText(user.getBio()); //We have not made any getters or setters for the user class
+        holder.more_info_followers.setText(String.valueOf(user.followers.size()));
+        holder.even_more_info_following.setText(String.valueOf(user.following.size()));
+
     }
 
     @Override
@@ -46,8 +50,9 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.AddU
 
     //The inner class has been created
     public static class AddUserHolder extends RecyclerView.ViewHolder{
+
         //We will define some textviews that we want to be displayed on the AdminUserList Page
-        TextView username, information1, extended_information;
+        TextView username, information1, extended_information, more_info_followers, even_more_info_following;
 
         public AddUserHolder(@NonNull View itemView) {
             super(itemView);
@@ -56,6 +61,8 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.AddU
             username = itemView.findViewById(R.id.tv_username);
             information1 = itemView.findViewById(R.id.tv_info);
             extended_information = itemView.findViewById(R.id.tv_additional_info);
+            more_info_followers = itemView.findViewById(R.id.tv_numfollowers);
+            even_more_info_following = itemView.findViewById(R.id.tv_numfollowing);
 
         }
     }

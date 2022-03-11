@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:animateLayoutChanges="false"
     android:layout_height="match_parent"
-    tools:context=".PostActivity">
+    tools:context=".Activitys.PostActivity">
 <androidx.drawerlayout.widget.DrawerLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:animateLayoutChanges="false"
         android:layout_height="match_parent"
-        tools:context=".PostActivity">
+        tools:context=".Activitys.PostActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_post_topBar"

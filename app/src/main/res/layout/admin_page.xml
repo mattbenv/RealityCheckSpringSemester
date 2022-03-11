@@ -10,36 +10,35 @@
         android:id="@+id/imageView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/picforadmin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/picforadmin" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Welcome Administrator"
-        android:textColor="#1E88E5"
-        android:textSize="34sp"
+        android:layout_width="327dp"
+        android:layout_height="33dp"
+        android:text="Welcome Administrator: "
+        android:textColor="#039BE5"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView7"
+    <Button
+        android:id="@+id/information_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Customize Feautures"
-        android:textColor="#1E88E5"
-        android:textSize="34sp"
+        android:textColor="@android:color/white"
+        android:text="info"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.619"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView10"
-        app:layout_constraintVertical_bias="0.375" />
+         />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.realitycheck;
+package com.example.realitycheck.Activitys;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,29 +13,24 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.realitycheck.R;
+import com.example.realitycheck.Tokens;
+import com.example.realitycheck.User;
 import com.example.realitycheck.databinding.LoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,7 +56,7 @@ public class LoginPage extends Fragment {
 
     //List of functions of Animations
     private void slideupAnimation(){
-        slideupAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.slideup);
+        slideupAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.slideup);
         binding.login.startAnimation(slideupAnimation);
 
     }

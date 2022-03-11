@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/WelcomePage"
-        android:name="com.example.realitycheck.WelcomePage"
+        android:name="com.example.realitycheck.Activitys.WelcomePage"
         android:label=""
         tools:layout="@layout/welcome">
 
@@ -20,11 +20,15 @@
         <action
             android:id="@+id/action_to_PostActivity"
             app:destination="@+id/PostActivity" />
+        <action
+            android:id="@+id/action_WelcomePage_to_adminPage2"
+            app:destination="@id/adminPage"
+            app:enterAnim="@anim/slideup" />
 
     </fragment>
     <fragment
         android:id="@+id/SignUpPage"
-        android:name="com.example.realitycheck.SignUpPage"
+        android:name="com.example.realitycheck.Activitys.SignUpPage"
         android:label="Sign Up Page"
         tools:layout="@layout/signup">
 
@@ -38,7 +42,7 @@
 
     <fragment
         android:id="@+id/LoginPage"
-        android:name="com.example.realitycheck.LoginPage"
+        android:name="com.example.realitycheck.Activitys.LoginPage"
         android:label=""
         tools:layout="@layout/login">
 
@@ -49,9 +53,6 @@
             android:id="@+id/action_LogInPage_to_PostActivity"
             app:destination="@id/PostActivity" />
         <action
-            android:id="@+id/action_LogInPage_to_AdminPage"
-            app:destination="@id/adminPage" />
-        <action
             android:id="@+id/action_LogInPage_to_ResetPasswordActivity"
             app:destination="@id/ResetPasswordActivity" />
     </fragment>
@@ -59,7 +60,7 @@
 
     <fragment
         android:id="@+id/SignUpPageContinued"
-        android:name="com.example.realitycheck.SignUpPageContinued"
+        android:name="com.example.realitycheck.Activitys.SignUpPageContinued"
         tools:layout="@layout/signupcontinued">
 
         <action
@@ -70,7 +71,7 @@
 
     <fragment
         android:id="@+id/PostActivity"
-        android:name="com.example.realitycheck.PostActivity"
+        android:name="com.example.realitycheck.Activitys.PostActivity"
         android:label="Post Activity"
         tools:layout="@layout/activity_post">
         <action
@@ -102,7 +103,7 @@
 
     <fragment
         android:id="@+id/ProfileActivity"
-        android:name="com.example.realitycheck.ProfileActivity"
+        android:name="com.example.realitycheck.Activitys.ProfileActivity"
         tools:layout="@layout/activity_profile">
 
 
@@ -178,7 +179,7 @@
 
     <fragment
         android:id="@+id/OtherUserProfileActivity"
-        android:name="com.example.realitycheck.otherUserProfileActivity"
+        android:name="com.example.realitycheck.Activitys.otherUserProfileActivity"
         tools:layout="@layout/activity_profile">
 
         <action
@@ -213,7 +214,7 @@
 
     <fragment
         android:id="@+id/CreatePostActivity"
-        android:name="com.example.realitycheck.CreatePostActivity"
+        android:name="com.example.realitycheck.Activitys.CreatePostActivity"
         tools:layout="@layout/activity_create_post">
 
         <action
@@ -240,7 +241,7 @@
 
     <fragment
         android:id="@+id/ViewPostActivity"
-        android:name="com.example.realitycheck.ViewPostActivity"
+        android:name="com.example.realitycheck.Activitys.ViewPostActivity"
         tools:layout="@layout/activity_view_post">
 
         <action
@@ -254,7 +255,7 @@
     </fragment>
     <fragment
         android:id="@+id/CreateGroupActivity"
-        android:name="com.example.realitycheck.CreateGroupActivity"
+        android:name="com.example.realitycheck.Activitys.CreateGroupActivity"
         android:label="CreateGroupActivity"
         tools:layout="@layout/create_group">
 
@@ -321,7 +322,7 @@
 
     <fragment
         android:id="@+id/EditProfileActivity"
-        android:name="com.example.realitycheck.EditProfileActivity"
+        android:name="com.example.realitycheck.Activitys.EditProfileActivity"
         android:label="EditProfileActivity"
         tools:layout="@layout/activity_edit_profile">
 
@@ -335,7 +336,7 @@
 
     <fragment
         android:id="@+id/ViewGroupActivity"
-        android:name="com.example.realitycheck.ViewGroupActivity"
+        android:name="com.example.realitycheck.Activitys.ViewGroupActivity"
         android:label="ViewGroupActivity"
         tools:layout="@layout/activity_view_group">
 
@@ -360,7 +361,7 @@
 
     <fragment
         android:id="@+id/CreateGroupPostActivity"
-        android:name="com.example.realitycheck.CreateGroupPostActivity"
+        android:name="com.example.realitycheck.Activitys.CreateGroupPostActivity"
         tools:layout="@layout/activity_create_group_post">
 
         <action
@@ -368,11 +369,20 @@
             app:destination="@+id/ViewGroupActivity"/>
 
     </fragment>
-    <activity
+    <fragment
         android:id="@+id/adminPage"
         android:name="com.example.realitycheck.AdminPage"
         android:label="admin_page"
-        tools:layout="@layout/admin_page" />
+        tools:layout="@layout/admin_page" >
+        <action
+            android:id="@+id/action_adminPage_to_userList2"
+            app:destination="@id/userList2" />
+    </fragment>
+    <activity
+        android:id="@+id/userList2"
+        android:name="com.example.realitycheck.UserList"
+        android:label="activity_user_list"
+        tools:layout="@layout/activity_user_list" />
 
 
 </navigation>

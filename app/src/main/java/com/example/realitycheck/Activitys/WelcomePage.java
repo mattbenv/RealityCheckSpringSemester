@@ -1,4 +1,4 @@
-package com.example.realitycheck;
+package com.example.realitycheck.Activitys;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.realitycheck.R;
+import com.example.realitycheck.User;
 import com.example.realitycheck.databinding.WelcomeBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,7 +43,7 @@ public class WelcomePage extends Fragment {
 
     //List of functions used to animate this fragment
     private void slideupAnimation(){
-        slideupAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.slideup);
+        slideupAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.slideup);
         binding.buttonSignup.startAnimation(slideupAnimation);
         binding.buttonSignin.startAnimation(slideupAnimation);
     }
@@ -151,9 +153,10 @@ public class WelcomePage extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(WelcomePage.this)
-                        .navigate(R.id.action_LogInPage_to_AdminPage);
+                        .navigate(R.id.action_WelcomePage_to_adminPage2);
             }
         });
+
         //button that navigates to login page
         binding.buttonSignin.setOnClickListener(new View.OnClickListener() {
             @Override

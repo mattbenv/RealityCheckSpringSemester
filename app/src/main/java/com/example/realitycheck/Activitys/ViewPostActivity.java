@@ -1,4 +1,4 @@
-package com.example.realitycheck;
+package com.example.realitycheck.Activitys;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -17,6 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
+import com.example.realitycheck.Comment;
+import com.example.realitycheck.Post;
+import com.example.realitycheck.R;
+import com.example.realitycheck.TextPost;
 import com.example.realitycheck.adapter.CommentAdapter;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.databinding.ActivityViewPostBinding;

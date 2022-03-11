@@ -1,4 +1,4 @@
-package com.example.realitycheck;
+package com.example.realitycheck.Activitys;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -19,11 +19,22 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
-import com.example.realitycheck.databinding.ActivityCreateGroupPostBinding;
+import com.example.realitycheck.Comment;
+import com.example.realitycheck.ImagePost;
+import com.example.realitycheck.Post;
+import com.example.realitycheck.R;
+import com.example.realitycheck.TextPost;
+import com.example.realitycheck.databinding.ActivityCreatePostBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -31,15 +42,15 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateGroupPostActivity extends Fragment {
-    private ActivityCreateGroupPostBinding binding;
+public class CreatePostActivity extends Fragment {
+    private ActivityCreatePostBinding binding;
     public String postId;
     public static Post newPost;
-    public static Group thisGroup;
 
     private String imagePath;
     private Uri image;
@@ -56,7 +67,7 @@ public class CreateGroupPostActivity extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        binding  =  ActivityCreateGroupPostBinding.inflate(inflater, container, false);
+        binding  =  ActivityCreatePostBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -70,8 +81,8 @@ public class CreateGroupPostActivity extends Fragment {
         binding.ivCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(CreateGroupPostActivity.this)
-                        .navigate(R.id.action_CreateGroupPostActivity_to_ViewGroup);
+                NavHostFragment.findNavController(CreatePostActivity.this)
+                        .navigate(R.id.action_CreatePostActivity_to_PostActivity);
 
             }
 
@@ -93,20 +104,20 @@ public class CreateGroupPostActivity extends Fragment {
 
                 //sets up the name of the new posts to be created
 
-                int numposts = thisGroup.posts.size();
+                int numposts = LoginPage.currUser.posts.size();
                 if(numposts == 0) {
-                    postId = thisGroup.groupName + "_Post_" + numposts;
+                    postId = LoginPage.currUser.username + "_Post_" + numposts;
                 }
                 else {
-                    String lastNumberedPost = thisGroup.posts.get(numposts - 1);
+                    String lastNumberedPost = LoginPage.currUser.posts.get(numposts - 1);
                     String numberOfNewPost = lastNumberedPost.substring(lastNumberedPost.length() - 1);
-                    postId = thisGroup.groupName + "_Post_" + (Integer.parseInt(numberOfNewPost) + 1);
+                    postId = LoginPage.currUser.username + "_Post_" + (Integer.parseInt(numberOfNewPost) + 1);
 
                 }
                 uploadImage(postId);
                 createPost(postId);
-                NavHostFragment.findNavController(CreateGroupPostActivity.this)
-                        .navigate(R.id.action_CreateGroupPostActivity_to_ViewGroup);
+                NavHostFragment.findNavController(CreatePostActivity.this)
+                        .navigate(R.id.action_CreatePostActivity_to_PostActivity);
 
 
             }
@@ -137,7 +148,7 @@ public class CreateGroupPostActivity extends Fragment {
         String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
         Post post;
         if(imagePath!=null){
-            post = new ImagePost(LoginPage.currUser.username, currentDateTimeString,imagePath);
+             post = new ImagePost(LoginPage.currUser.username, currentDateTimeString,imagePath);
         }
         else {
             post = new TextPost(LoginPage.currUser.username, currentDateTimeString);
@@ -147,7 +158,34 @@ public class CreateGroupPostActivity extends Fragment {
         //Login.currUser stores the current user logged in
         post.setPostAuthor(LoginPage.currUser.username);
         post.setContent(binding.tvContent.getText().toString());
+
+
         post.setPostDate(currentDateTimeString);
+        ArrayList<String> allUsers = new ArrayList<>();
+        FirebaseFirestore.getInstance().collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(QueryDocumentSnapshot snapshot:task.getResult()){
+                    allUsers.add(snapshot.get("username").toString());
+                    for(String user:allUsers){
+                        if(post.getContent().contains("@"+user)){
+                            ArrayList<String> taggedIn = new ArrayList<>();
+                            FirebaseFirestore.getInstance().collection("Users").document(user).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    taggedIn.addAll((Collection<? extends String>) documentSnapshot.get("taggedIn"));
+                                    taggedIn.add(post.getPostId());
+                                    FirebaseFirestore.getInstance().collection("Users").document(user).update("taggedIn",taggedIn);
+                                }
+                            });
+
+
+                        }
+
+                    }
+                }
+            }
+        });
 
 
 
@@ -176,8 +214,8 @@ public class CreateGroupPostActivity extends Fragment {
         document.set(currPost);
 
         //add post id to user posts feild
-        thisGroup.posts.add(postId);
-        FirebaseFirestore.getInstance().collection("Groups").document(thisGroup.groupName).update("posts", thisGroup.posts).addOnSuccessListener(new OnSuccessListener<Void>() {
+        LoginPage.currUser.posts.add(postId);
+        FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getDisplayName()).update("posts", LoginPage.currUser.posts).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
 
@@ -255,14 +293,14 @@ public class CreateGroupPostActivity extends Fragment {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(CreateGroupPostActivity.this.getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreatePostActivity.this.getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(CreateGroupPostActivity.this.getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreatePostActivity.this.getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -281,5 +319,4 @@ public class CreateGroupPostActivity extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }

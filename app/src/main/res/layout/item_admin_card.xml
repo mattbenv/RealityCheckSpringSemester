@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app= "http://schemas.android.com/apk/res-auto"
-    app:cardElevation = "2dp"
-    app:cardCornerRadius="5dp"
     android:layout_margin="16dp"
-    android:background="#000">
+    android:background="#000"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
+
+    <ImageView
+        android:id="@+id/feauture_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="350dp"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:src="@drawable/ic_bar_chart"
+        app:layout_constraintStart_toEndOf="@id/tv_username"
+        app:layout_constraintTop_toBottomOf="@id/tv_username" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -18,8 +30,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
             android:orientation="horizontal">
 
             <TextView
@@ -37,21 +49,22 @@
                 android:layout_marginStart="8dp"
                 android:text="Matt "
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textStyle="normal" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Information: "
+                android:text="Email: "
                 android:textColor="@color/black"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -63,7 +76,7 @@
                 android:layout_marginStart="8dp"
                 android:text="from database "
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textStyle="normal" />
 
         </LinearLayout>
@@ -71,14 +84,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Continued info: "
+                android:text="Bio: "
                 android:textColor="@color/black"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -90,13 +103,63 @@
                 android:layout_marginStart="8dp"
                 android:text="database stuff"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textStyle="normal" />
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="followers: "
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/tv_numfollowers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="3 "
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="normal" />
 
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="followers: "
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_numfollowing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="10 "
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="normal" />
+
+        </LinearLayout>
     </LinearLayout>
+
 
 </androidx.cardview.widget.CardView>

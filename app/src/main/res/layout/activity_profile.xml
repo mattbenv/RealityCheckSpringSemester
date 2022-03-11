@@ -6,7 +6,7 @@
     android:background="#060707"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ProfileActivity">
+    tools:context=".Activitys.ProfileActivity">
 
 
     <!--Top Header Layout-->

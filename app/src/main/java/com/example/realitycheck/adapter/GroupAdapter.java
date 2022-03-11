@@ -20,10 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.Group;
-import com.example.realitycheck.LoginPage;
+import com.example.realitycheck.Activitys.LoginPage;
 import com.example.realitycheck.R;
 import com.example.realitycheck.User;
-import com.example.realitycheck.ViewPostActivity;
 import com.example.realitycheck.databinding.ItemGroupBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;

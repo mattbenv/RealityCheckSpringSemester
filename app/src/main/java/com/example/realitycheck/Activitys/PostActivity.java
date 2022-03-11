@@ -1,4 +1,4 @@
-package com.example.realitycheck;
+package com.example.realitycheck.Activitys;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
@@ -22,6 +22,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.realitycheck.Comment;
+import com.example.realitycheck.Post;
+import com.example.realitycheck.R;
+import com.example.realitycheck.TextPost;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.databinding.ActivityPostBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;
@@ -70,7 +74,7 @@ public class PostActivity extends Fragment {
         recyclerView = binding.rlPostBox;
         PostAdapter.postPage = "postActivity";
         postIDFeed = new ArrayList<>();
-        toggle = new ActionBarDrawerToggle(this.getActivity(),binding.drawerLayout,R.string.Open,R.string.Close);
+        toggle = new ActionBarDrawerToggle(this.getActivity(),binding.drawerLayout, R.string.Open,R.string.Close);
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 

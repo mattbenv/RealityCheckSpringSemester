@@ -1,4 +1,4 @@
-package com.example.realitycheck;
+package com.example.realitycheck.Activitys;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,6 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.realitycheck.Comment;
+import com.example.realitycheck.Group;
+import com.example.realitycheck.Post;
+import com.example.realitycheck.R;
+import com.example.realitycheck.TextPost;
+import com.example.realitycheck.User;
 import com.example.realitycheck.adapter.GroupAdapter;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.adapter.SearchAdapter;

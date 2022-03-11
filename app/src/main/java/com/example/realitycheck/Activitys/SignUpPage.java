@@ -1,41 +1,31 @@
-package com.example.realitycheck;
+package com.example.realitycheck.Activitys;
 //https://firebase.google.com/docs/auth/android/google-signin?utm_source=studio
 import android.content.DialogInterface;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.realitycheck.databinding.WelcomeBinding;
-import com.example.realitycheck.databinding.SignupBinding;
+import com.example.realitycheck.R;
 
+import com.example.realitycheck.databinding.SignupBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import android.widget.ImageView;
+
 // we are using firebase authentication to allow users to signup and collect their email/password
 public class SignUpPage extends Fragment {
 

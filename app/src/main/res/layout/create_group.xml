@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="#060707"
     android:layout_height="match_parent"
-    tools:context=".CreateGroupActivity">
+    tools:context=".Activitys.CreateGroupActivity">
 
     <EditText
         android:id="@+id/addBio"

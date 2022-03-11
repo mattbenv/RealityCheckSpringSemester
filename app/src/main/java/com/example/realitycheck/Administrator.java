@@ -1,4 +1,4 @@
-package com.example.realitycheck.util;
+package com.example.realitycheck;
 
 import java.util.ArrayList;
 

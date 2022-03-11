@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.realitycheck.Activitys.LoginPage;
+import com.example.realitycheck.Activitys.otherUserProfileActivity;
 import com.example.realitycheck.adapter.FollowerAdapter;
 import com.example.realitycheck.databinding.ActivityFollowersViewBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;

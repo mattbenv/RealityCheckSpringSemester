@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
-import com.example.realitycheck.LoginPage;
+import com.example.realitycheck.Activitys.LoginPage;
 import com.example.realitycheck.R;
 import com.example.realitycheck.User;
+import com.example.realitycheck.Activitys.otherUserProfileActivity;
 import com.example.realitycheck.databinding.ItemSearchUserBinding;
-import com.example.realitycheck.otherUserProfileActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;

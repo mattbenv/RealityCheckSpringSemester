@@ -12,7 +12,7 @@ public class Group {
     public int size; //number of members
     public ArrayList<String> members;
 
-     public String owner;
+    public String owner;
     public ArrayList<String> posts;
     public ArrayList<Post> postLiked;
     public ArrayList<Post> reposted;

@@ -1,4 +1,4 @@
-package com.example.realitycheck;
+package com.example.realitycheck.Activitys;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -18,6 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.realitycheck.Group;
+import com.example.realitycheck.Post;
+import com.example.realitycheck.R;
 import com.example.realitycheck.databinding.CreateGroupBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

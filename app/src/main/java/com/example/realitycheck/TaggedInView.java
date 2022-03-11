@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.realitycheck.Activitys.LoginPage;
+import com.example.realitycheck.Activitys.otherUserProfileActivity;
 import com.example.realitycheck.adapter.PostAdapter;
 import com.example.realitycheck.databinding.ActivityTaggedInBinding;
 import com.example.realitycheck.util.LinearLayoutDivider;

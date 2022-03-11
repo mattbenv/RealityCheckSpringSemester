@@ -160,5 +160,155 @@ public class User {
             System.out.println("" + names[i]);
     }
 
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public boolean isPrivateMode() {
+        return privateMode;
+    }
+
+    public void setPrivateMode(boolean privateMode) {
+        this.privateMode = privateMode;
+    }
+
+    public boolean isNotificationsEnabled() {
+        return notificationsEnabled;
+    }
+
+    public void setNotificationsEnabled(boolean notificationsEnabled) {
+        this.notificationsEnabled = notificationsEnabled;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
+    }
+
+    public int getNumfollowers() {
+        return numfollowers;
+    }
+
+    public void setNumfollowers(int numfollowers) {
+        this.numfollowers = numfollowers;
+    }
+
+    public int getNumfollowing() {
+        return numfollowing;
+    }
+
+    public void setNumfollowing(int numfollowing) {
+        this.numfollowing = numfollowing;
+    }
+
+    public int getNumfriends() {
+        return numfriends;
+    }
+
+    public void setNumfriends(int numfriends) {
+        this.numfriends = numfriends;
+    }
+
+    public ArrayList<String> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(ArrayList<String> followers) {
+        this.followers = followers;
+    }
+
+    public ArrayList<String> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(ArrayList<String> following) {
+        this.following = following;
+    }
+
+    public ArrayList<String> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(ArrayList<String> posts) {
+        this.posts = posts;
+    }
+
+    public ArrayList<String> getTaggedIn() {
+        return taggedIn;
+    }
+
+    public void setTaggedIn(ArrayList<String> taggedIn) {
+        this.taggedIn = taggedIn;
+    }
+
+    public ArrayList<String> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(ArrayList<String> friends) {
+        this.friends = friends;
+    }
+
+    public ArrayList<Post> getPostLiked() {
+        return postLiked;
+    }
+
+    public void setPostLiked(ArrayList<Post> postLiked) {
+        this.postLiked = postLiked;
+    }
+
+    public ArrayList<String> getReposted() {
+        return reposted;
+    }
+
+    public void setReposted(ArrayList<String> reposted) {
+        this.reposted = reposted;
+    }
 }

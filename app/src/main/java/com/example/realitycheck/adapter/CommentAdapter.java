@@ -18,14 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.realitycheck.Comment;
-import com.example.realitycheck.LoginPage;
-import com.example.realitycheck.Post;
+import com.example.realitycheck.Activitys.LoginPage;
 import com.example.realitycheck.R;
-import com.example.realitycheck.TextPost;
 import com.example.realitycheck.User;
-import com.example.realitycheck.ViewPostActivity;
+import com.example.realitycheck.Activitys.ViewPostActivity;
+import com.example.realitycheck.Activitys.otherUserProfileActivity;
 import com.example.realitycheck.databinding.ItemCommentBinding;
-import com.example.realitycheck.otherUserProfileActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;

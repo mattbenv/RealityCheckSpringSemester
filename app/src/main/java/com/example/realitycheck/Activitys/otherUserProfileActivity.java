@@ -1,4 +1,4 @@
-package com.example.realitycheck;
+package com.example.realitycheck.Activitys;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.realitycheck.Comment;
+import com.example.realitycheck.FollowersView;
+import com.example.realitycheck.Group;
+import com.example.realitycheck.Post;
+import com.example.realitycheck.R;
+import com.example.realitycheck.TaggedInView;
+import com.example.realitycheck.TextPost;
+import com.example.realitycheck.User;
 import com.example.realitycheck.adapter.CommentAdapter;
 import com.example.realitycheck.adapter.FollowerAdapter;
 import com.example.realitycheck.adapter.GroupAdapter;
