@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #txt{
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                width:1000px;
+                font-size:25px;
+            }
+            #centered_blue{
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                color:white;
+                background-color: blue;
+                text-align: center;
+                font-size: 25px;
+                padding-bottom:20px;
+                padding-top: 5px;
+                height: 100px;
+            }
+            /*The div.scroll is defined as a class
+            */
+            div.scroll {
+                margin:4px, 4px;
+                padding:4px;
+                background-color: lightblue;
+                width: 250px;
+                height: 100px;
+                overflow-x: hidden;
+                overflow-y: auto;
+                text-align:justify;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="centered_blue">
+        <h1>Administrator Page</h1> </div>
+        <div id ="txt"><h2>Unstructured Firestore Reality Check Data</h2></div>
+    </body>
+    <h2>
+        <body>
+            <a href = "realitycheck_April15th.txt">Reality Check Data</a>
+        </body>
+    </h2>
+<header>
+    <hr>
+    <li> User: bio. birthday, email, followers[], following [], friends  [], name, notification enabled, posts(name), private, profile image, reposted, adn tagged in.</li>
+    <li>Groups: bio, groupname, members, owner, posts, privacy,profileimagepath, size </li>
+    <li>Posts: comment count, comments, comment author, content, commentdate, content, likedby, photo, postauthor, postdate, postid, repostcouunt, and repostedby</li>
+    <img src="user_schema.JPG" title="User Schema" width="500" height="500">
+    <img src="groups_schema.JPG" title="Groups Schema" width="500" height="500">
+    <img src="posts_schema.JPG" title="Posts Schema" width="500" height="500">
+</header>
+<h3>
+    <hr>
+    <div id ="txt"><h2>Data Analytics</h2></div>
+    <div class = "scroll">
+        I imagine the project is going to contain a wide array of data, so a scrollable location, we can set the dimensions to view a particular users, group or post analytics, would be pretty cool.
+    </div>
+</h3>
+
+</body>
+
+<!-- These are the table -->
+ <body>
+    <div id="wrapper">
+       <div class="chart">
+          <h4>We can begin with the user data and expand a scrollable table for each data frame</h4>
+          <table id="data-table1" border="1" cellpadding="10" cellspacing="0"
+          summary="The effects of the zombie outbreak on the populations
+          of endangered species from 2012 to 2016">
+             <caption>User Table</caption>
+             <thead>
+                <tr>
+                   <td>&nbsp;</td>
+                   <th scope="col">Matthew Benvenuto</th>
+                   <th scope="col">Griffin</th>
+                   <th scope="col">Aditye</th>
+                   <th scope="col">Griffin</th>
+                   <th scope="col">Prithvi</th>
+                </tr>
+             </thead>
+             <tbody>
+                <tr>
+                   <th scope="row">Bio</th>
+                   <td>This is my bio.......</td>
+                   <td>comp sci major</td>
+                   <td>6240</td>
+                   <td>3520</td>
+                   <td>2240</td>
+                </tr>
+                <tr>
+                   <th scope="row">birthday</th>
+                   <td>08/14/1999</td>
+                   <td>11/10/1999</td>
+                   <td>6240</td>
+                   <td>5120</td>
+                   <td>2640</td>
+                </tr>
+                <tr>
+                   <th scope="row">email</th>
+                   <td>mattbenv@udel.edu</td>
+                   <td>wgriffin@udel.edu</td>
+                   <td>2880</td>
+                   <td>4720</td>
+                   <td>7520</td>
+                </tr>
+             </tbody>
+          </table>
+          <hr>
+
+          <table id="data-table2" border="1" cellpadding="10" cellspacing="0"
+          summary="The effects of the zombie outbreak on the populations
+          of endangered species from 2012 to 2016">
+             <caption>Groups Table</caption>
+             <thead>
+                <tr>
+                   <td>&nbsp;</td>
+                   <th scope="col">Founding Fathers</th>
+                   <th scope="col">Car Fanatics</th>
+                   <th scope="col">Aditye</th>
+                   <th scope="col">Griffin</th>
+                   <th scope="col">Prithvi</th>
+                </tr>
+             </thead>
+             <tbody>
+                <tr>
+                   <th scope="row">Bio</th>
+                   <td>This is my bio.......</td>
+                   <td>join and post your car pictures</td>
+                   <td>6240</td>
+                   <td>3520</td>
+                   <td>2240</td>
+                </tr>
+                <tr>
+                   <th scope="row">groupname</th>
+                   <td>Founding fathers</td>
+                   <td>Car Fanatics</td>
+                   <td>6240</td>
+                   <td>5120</td>
+                   <td>2640</td>
+                </tr>
+                <tr>
+                   <th scope="row">owner</th>
+                   <td>Maxmanfre</td>
+                   <td>Drake</td>
+                   <td>2880</td>
+                   <td>4720</td>
+                   <td>7520</td>
+                </tr>
+             </tbody>
+          </table>
+          <hr>
+
+
+
+          <table id="data-table2" border="1" cellpadding="10" cellspacing="0"
+          summary="The effects of the zombie outbreak on the populations
+          of endangered species from 2012 to 2016">
+             <caption>Posts Table</caption>
+             <thead>
+                <tr>
+                   <td>&nbsp;</td>
+                   <th scope="col">Founding Fathers</th>
+                   <th scope="col">Car Fanatics</th>
+                   <th scope="col">Aditye</th>
+                   <th scope="col">Griffin</th>
+                   <th scope="col">Prithvi</th>
+                </tr>
+             </thead>
+             <tbody>
+                <tr>
+                   <th scope="row">Bio</th>
+                   <td>This is my bio.......</td>
+                   <td>join and post your car pictures</td>
+                   <td>6240</td>
+                   <td>3520</td>
+                   <td>2240</td>
+                </tr>
+                <tr>
+                   <th scope="row">groupname</th>
+                   <td>Founding fathers</td>
+                   <td>Car Fanatics</td>
+                   <td>6240</td>
+                   <td>5120</td>
+                   <td>2640</td>
+                </tr>
+                <tr>
+                   <th scope="row">owner</th>
+                   <td>Maxmanfre</td>
+                   <td>Drake</td>
+                   <td>2880</td>
+                   <td>4720</td>
+                   <td>7520</td>
+                </tr>
+             </tbody>
+          </table>
+
+
+
+       </div>
+    </div>
+ </body>
+
+<!-- These are the graphs -->
+<hr>
+<!-- Pie chart -->
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript">
+        google.charts.load('current', {'packages':['line']});
+        google.charts.setOnLoadCallback(drawChart);
+  
+      function drawChart() {
+  
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Day');
+        data.addColumn('number', 'Matthew Benvenuto');
+        data.addColumn('number', 'Nishanth');
+        data.addColumn('number', 'The rock');
+  
+        data.addRows([
+          [1,  37.8, 80.8, 41.8],
+          [2,  30.9, 69.5, 32.4],
+          [3,  25.4,   57, 25.7],
+          [4,  11.7, 18.8, 10.5],
+          [5,  11.9, 17.6, 10.4],
+          [6,   8.8, 13.6,  7.7],
+          [7,   7.6, 12.3,  9.6],
+          [8,  12.3, 29.2, 10.6],
+          [9,  16.9, 42.9, 14.8],
+          [10, 12.8, 30.9, 11.6],
+          [11,  5.3,  7.9,  11],
+          [12,  6.6,  90,  5.2],
+          [13,  4.8,  51,  3.6],
+          [14,  4.2,  62,  92],
+          [15, 15,15,15],
+        ]);
+  
+        var options = {
+          chart: {
+            title: 'User Engagment first two Weeks of Experiment',
+            subtitle: 'time spent (in hours/day)'
+          },
+          width: 1200,
+          height: 500,
+          axes: {
+            x: {
+              0: {side: 'top'}
+            }
+          }
+        };
+  
+        var chart = new google.charts.Line(document.getElementById('line_top_x'));
+  
+        chart.draw(data, google.charts.Line.convertOptions(options));
+      }
+    </script>
+  </head>
+  <body>
+    <div id="line_top_x"></div>
+  </body>
+
+<!-- Pie Chart -->
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+  </body>
+
+  <!-- Curve Chart -->
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Christmas Post', 'Easter Post'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Time spent on a post',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+
+    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+  </body>
+
+
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript">
+        google.charts.load('current', {'packages':['line']});
+        google.charts.setOnLoadCallback(drawChart);
+  
+      function drawChart() {
+  
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Day');
+        data.addColumn('number', 'Matthew Benvenuto');
+        data.addColumn('number', 'Nishanth');
+        data.addColumn('number', 'The rock');
+  
+        data.addRows([
+          [1,  37.8, 80.8, 41.8],
+          [2,  30.9, 69.5, 32.4],
+          [3,  25.4,   57, 25.7],
+          [4,  11.7, 18.8, 10.5],
+          [5,  11.9, 17.6, 10.4],
+          [6,   8.8, 13.6,  7.7],
+          [7,   7.6, 12.3,  9.6],
+          [8,  12.3, 29.2, 10.6],
+          [9,  16.9, 42.9, 14.8],
+          [10, 12.8, 30.9, 11.6],
+          [11,  5.3,  7.9,  11],
+          [12,  6.6,  90,  5.2],
+          [13,  4.8,  51,  3.6],
+          [14,  4.2,  62,  92],
+          [15, 15,15,15]
+        ]);
+  
+        var options = {
+          chart: {
+            title: 'User Engagment first Two Weeks of Opening',
+            subtitle: 'time spent (in hours/day)'
+          },
+          width: 1000,
+          height: 500,
+          axes: {
+            x: {
+              0: {side: 'top'}
+            }
+          }
+        };
+  
+        var chart = new google.charts.Line(document.getElementById('line_top_x'));
+  
+        chart.draw(data, google.charts.Line.convertOptions(options));
+      }
+    </script>
+  </head>
+  <body>
+    <div id="line_top_x"></div>
+  </body>
+</html>
