@@ -174,6 +174,8 @@ public class FollowersView extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         previousUser = userToUse;
+        System.out.println(previousUser.username);
+        System.out.println("**************************************************************************************");
         binding = null;
     }
 }

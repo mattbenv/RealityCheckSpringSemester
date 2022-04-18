@@ -60,7 +60,6 @@ public class otherUserProfileActivity extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         if(previousActivty == "post"){
             thisUser = PostAdapter.userToNavTo;
         }
