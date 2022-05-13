@@ -29,6 +29,7 @@ public class User {
     public ArrayList<String> friends;
     public ArrayList<Post> postLiked;
     public ArrayList<String> reposted;
+    public ArrayList<String> saved;
 
     //more information to track
     public User(){
@@ -54,6 +55,7 @@ public class User {
         this.numfriends = returnNumfriends(followers, following);
 
         this.posts = posts;
+        this.saved = saved;
 
         this.privateMode = privateMode;
         this.notificationsEnabled = notificationsEnabled;
@@ -278,6 +280,14 @@ public class User {
 
     public void setPosts(ArrayList<String> posts) {
         this.posts = posts;
+    }
+
+    public ArrayList<String> getSaved() {
+        return saved;
+    }
+
+    public void setSaved(ArrayList<String> saved) {
+        this.saved = saved;
     }
 
     public ArrayList<String> getTaggedIn() {
