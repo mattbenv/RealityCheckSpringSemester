@@ -3,11 +3,15 @@ package com.example.realitycheck.Activitys;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -32,6 +36,8 @@ public class SignUpPage extends Fragment {
     private SignupBinding binding;
     private FirebaseAuth mAuth;
     public static EditText email, username, password, confirmpassword;
+    public CheckBox c1;
+    public boolean terms = false;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     @Override
@@ -41,17 +47,25 @@ public class SignUpPage extends Fragment {
     ) {
 
 
+
         mAuth = FirebaseAuth.getInstance();
         binding = SignupBinding.inflate(inflater, container, false);
-        return binding.getRoot();
 
+
+        return binding.getRoot();
     }
+
+
     // binding connects the view to the class, and stores user-inputed information
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         email = binding.email;
         username = binding.username;
         password = binding.password;
         confirmpassword = binding.confirmpassword;
+        //c1 = binding.TaC;
+        TextView textView = (TextView) binding.getRoot().findViewById(R.id.termLink);
+
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         super.onViewCreated(view, savedInstanceState);
         // this is to create an account
@@ -62,13 +76,11 @@ public class SignUpPage extends Fragment {
                 if(testInformation()== false){
                     testInformation();
                 }
-                if(testInformation()==true){
+                if(testInformation()==true && terms==true){
                     registerUser();
                 }
             }
         });
-
-
 
         binding.showPassowrd.setChecked(true);
         binding.showPassowrd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -82,6 +94,8 @@ public class SignUpPage extends Fragment {
                 }
             }
         });
+
+
 
         binding.showConfirmPassowrd.setChecked(true);
         binding.showConfirmPassowrd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -97,8 +111,27 @@ public class SignUpPage extends Fragment {
         });
 
 
+        c1 = (CheckBox) binding.getRoot().findViewById(R.id.TaC);
+
+        c1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked){
+                    terms = true;
+                    Log.d("myTag", "Checkbox is true");
+                }
+                else {
+                    terms = false;
+                    Log.d("myTag", "Checkbox is false");
+                }
+
+            }
+        });
+
 
     }
+
+
     // this functions tests the validity of the credentials: including password length etc...
     public boolean testInformation(){
         //gets string values
@@ -106,6 +139,8 @@ public class SignUpPage extends Fragment {
         String usernameValue =username.getText().toString().trim();
         String passwordValue =password.getText().toString().trim();
         String confirmedpasswordValue = confirmpassword.getText().toString().trim();
+
+        //boolean confirmCheck =
         Matcher m = VALID_EMAIL_ADDRESS_REGEX.matcher(emailValue);
 
         //test format of information
@@ -124,6 +159,7 @@ public class SignUpPage extends Fragment {
             username.requestFocus();
             return false;
         }
+        //if()
         if(passwordValue.length()<6){
             password.setError("Password must be at least 6 characters");
             password.requestFocus();
@@ -187,5 +223,6 @@ public class SignUpPage extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 
 }
